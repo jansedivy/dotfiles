@@ -1,0 +1,38 @@
+[hub]
+  protocol = https
+[user]
+  name = AUTHORNAME
+  email = AUTHOREMAIL
+[alias]
+  co = checkout
+  promote = !$ZSH/bin/git-promote
+  wtf     = !$ZSH/bin/git-wtf
+  rank-contributers = !$ZSH/bin/git-rank-contributers
+  count   = !git shortlog -sn
+  st      = status
+  ci      = commit --verbose
+  aa      = add --all
+
+  l = "!. ~/.githelpers && pretty_git_log"
+  r = !git l -30
+  ra = !git r --all
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  ui = true
+[core]
+  excludesfile = ~/.gitignore
+  editor = vim
+[apply]
+  whitespace = nowarn
+[mergetool]
+  keepBackup = false
+[difftool]
+  prompt = false
+[help]
+  autocorrect = 1
+[push]
+  default = simple
+[credential]
+  helper = GIT_CREDENTIAL_HELPER

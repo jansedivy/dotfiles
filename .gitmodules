@@ -1,0 +1,6 @@
+[submodule "lib/selecta"]
+	path = lib/selecta
+	url = https://github.com/garybernhardt/selecta
+[submodule "lib/z"]
+	path = lib/z
+	url = https://github.com/rupa/z
