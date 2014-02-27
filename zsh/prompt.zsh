@@ -42,8 +42,8 @@ need_push () {
   fi
 }
 
-jobs_count() {
-  count=`echo $(jobs | wc -l)`
+vim_jobs_count() {
+  count=`echo $(jobs | grep vim | wc -l)`
   if [ $count -ne "0" ]
   then
     echo "$count:"
@@ -54,4 +54,4 @@ directory_name(){
   echo "%{$fg_bold[cyan]%}%1/%{$reset_color%}"
 }
 
-export PROMPT=$'$(jobs_count)$(directory_name)$(git_dirty) › '
+export PROMPT=$'$(vim_jobs_count)$(directory_name)$(git_dirty) › '
