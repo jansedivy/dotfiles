@@ -164,8 +164,6 @@ augroup vimrcEx
   " Don't syntax highlight markdown because it's often wrong
   autocmd! FileType mkd setlocal syn=off
 
-  autocmd! User Rails let b:surround_{char2nr('-')} = "<% \r %>" " displays <% %> correctly
-
   " Leave the return key alone when in command line windows, since it's used
   " to run commands there.
   autocmd! CmdwinEnter * :unmap <cr>
@@ -189,8 +187,6 @@ set stl=%f\ %m\ %r%{fugitive#statusline()}\ Line:%l/%L[%p%%]
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap ; :
 
-inoremap <expr> <C-K> BDG_GetDigraph()
-
 command! W :w
 command! Q :q
 command! Qall :qall
@@ -205,12 +201,6 @@ nmap j gj
 nmap k gk
 
 map Y y$
-
-" easier window navigation
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
 
 map <C-s> <esc>:w<CR>
 imap <C-s> <esc>:w<CR>
@@ -233,12 +223,7 @@ map <Leader>ra :%s/
 
 map <leader>o :!open .<cr>
 
-map <leader>gr :topleft :split config/routes.rb<cr>
-map <leader>gR :call ShowRoutes()<cr>
-map <leader>gg :topleft 100 :split Gemfile<cr>
-
 map <leader>sy :SyntasticToggleMode<cr>
-map <leader>bi :BundleInstall!<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
