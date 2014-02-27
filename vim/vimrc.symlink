@@ -99,7 +99,6 @@ set undofile
 set backspace=indent,eol,start
 syntax on
 filetype plugin indent on
-" make tab completion for files/buffers act like bash
 let mapleader=","
 
 set wildmenu
@@ -179,8 +178,6 @@ augroup END
 set t_co=256
 set t_ut=
 color noctu
-" colorscheme wombat256mod
-" set background=dark
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
@@ -317,7 +314,6 @@ else
   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Abbreviations
