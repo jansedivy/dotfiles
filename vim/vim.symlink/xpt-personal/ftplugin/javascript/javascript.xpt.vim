@@ -1,5 +1,18 @@
 XPTemplate priority=personal
 
+XPT fclass
+var Class = require('./class');
+
+module.exports = function(app) {
+  var `name^ = Class.extend({
+    init: function() {
+      `cursor^`
+    }
+  });
+
+  return `name^;
+};
+
 XPT class
 var Class = require('./class');
 
