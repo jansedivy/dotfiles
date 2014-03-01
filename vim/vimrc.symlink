@@ -40,6 +40,7 @@ Bundle 'elixir-lang/vim-elixir'
 Bundle 'wting/rust.vim'
 Bundle 'dart-lang/dart-vim-plugin'
 Bundle 'dag/vim2hs'
+Bundle 'airblade/vim-gitgutter'
 
 " color schemes
 Bundle 'noahfrederick/vim-noctu'
@@ -224,6 +225,9 @@ map <Leader>ra :%s/
 map <leader>o :!open .<cr>
 
 map <leader>sy :SyntasticToggleMode<cr>
+map <leader>g :GitGutterToggle<cr>
+
+let g:gitgutter_enabled = 0
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
