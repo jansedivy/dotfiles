@@ -36,3 +36,5 @@
   default = simple
 [credential]
   helper = GIT_CREDENTIAL_HELPER
+[diff]
+  algorithm = patience
