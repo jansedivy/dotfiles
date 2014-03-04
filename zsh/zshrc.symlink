@@ -18,7 +18,6 @@ do
 done
 
 source $ZSH/lib/z/z.sh
-# source /usr/local/share/chruby/chruby.sh
 
 # initialize autocomplete here, otherwise functions won't be loaded
 autoload -U compinit
