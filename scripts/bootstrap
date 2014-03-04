@@ -122,6 +122,7 @@ install_dotfiles () {
 
 setup_gitconfig
 install_dotfiles
+git submodule update --init
 
 # If we're on a Mac, let's install and setup homebrew.
 if [ "$(uname -s)" == "Darwin" ]
