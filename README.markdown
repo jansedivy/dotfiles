@@ -3,7 +3,7 @@
 ## install
 
 ```sh
-git clone https://github.com/jsedivy/dotfiles.git ~/.dotfiles
+git clone https://github.com/jansedivy/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 scripts/bootstrap
 ```
