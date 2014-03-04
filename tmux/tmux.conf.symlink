@@ -70,11 +70,9 @@ set-window-option -g window-status-current-attr bright
 # show host name and IP address on left side of status bar
 set -g status-interval 2
 set -g status-left-length 140
-set -g status-left "#[fg=green] #h :: #[fg=yellow]#(ifconfig en0 | grep 'inet ' | awk '{print $2}') #[fg=red]:: #(tmux-mem-cpu-load 1)"
-# set -g status-left "#[fg=green] #h :: #[fg=yellow]#(ifconfig en0 | grep 'inet ' | awk '{print $2}') #[fg=red]::"
+set -g status-left "#[fg=green] #h :: #[fg=yellow]#(ifconfig en1 | grep 'inet ' | awk '{print $2}') #[fg=red]:: #(tmux-mem-cpu-load 2)"
 
 # show session name, window & pane number, date and time on right side of
 # status bar
-set -g status-right-length 60
-set -g status-right "#(/usr/local/bin/node ~/Dropbox/experiments/javascript/nodejs/minutes/app.js) #[fg=green]:: %H:%M %d-%h-%Y "
-# set -g status-right "#[fg=green]:: %H:%M %d-%h-%Y "
+set -g status-right-length 20
+set -g status-right "#(/usr/local/bin/node ~/Dropbox/experiments/javascript/nodejs/minutes/app.js) #[fg=green]:: %H:%M "
