@@ -221,10 +221,12 @@ map <leader>w :normal ma<cr>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl
 map <leader>e :edit %%
 map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
+map <Leader>s :set spell!<cr>
+map <Leader>v :e ~/.vimrc<cr>
 
 map <leader>o :!open .<cr>
 
-map <leader>sy :SyntasticToggleMode<cr>
+map <leader>y :SyntasticToggleMode<cr>
 map <leader>g :GitGutterToggle<cr>
 
 let g:gitgutter_enabled = 0
