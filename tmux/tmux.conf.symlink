@@ -25,6 +25,9 @@ set-option -g default-command "reattach-to-user-namespace -l zsh"
 set -g base-index 1
 set -g pane-base-index 1
 
+setw -g automatic-rename on
+set -g set-titles on
+
 # ----------------------
 # set some pretty colors
 # ----------------------
