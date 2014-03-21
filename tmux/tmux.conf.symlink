@@ -16,6 +16,8 @@ set -g prefix C-a
 unbind C-b
 bind C-a send-prefix
 
+set-window-option -g aggressive-resize on
+
 unbind r
 bind r source-file ~/.tmux.conf
 
