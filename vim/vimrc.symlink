@@ -2,50 +2,55 @@ set nocompatible
 
 autocmd!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set runtimepath+=~/.vim/bundle/neobundle.vim/
 
-Bundle 'gmarik/vundle'
+call neobundle#rc(expand('~/.vim/bundle/'))
 
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-rails'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-commentary'
-Bundle 'scrooloose/syntastic'
-Bundle 'scrooloose/nerdtree'
-Bundle 'tsaleh/vim-matchit'
-Bundle 'godlygeek/tabular'
-Bundle 'rking/ag.vim'
-Bundle 'Raimondi/delimitMate'
-Bundle 'mattn/emmet-vim'
-Bundle 'drmingdrmer/xptemplate'
-Bundle 'vim-scripts/VisIncr'
-Bundle 'wikitopian/hardmode'
-Bundle 'tommcdo/vim-exchange'
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-endwise'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-commentary'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'godlygeek/tabular'
+NeoBundle 'rking/ag.vim'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'mattn/emmet-vim'
+NeoBundle 'drmingdrmer/xptemplate'
+NeoBundle 'vim-scripts/VisIncr'
+NeoBundle 'wikitopian/hardmode'
+NeoBundle 'tommcdo/vim-exchange'
 
 " syntax
-Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'pangloss/vim-javascript'
-Bundle 'hail2u/vim-css3-syntax'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'groenewege/vim-less'
-Bundle 'othree/html5.vim'
-Bundle 'digitaltoad/vim-jade'
-Bundle 'nono/vim-handlebars'
-Bundle 'leafgarland/typescript-vim'
-Bundle 'elixir-lang/vim-elixir'
-Bundle 'wting/rust.vim'
-Bundle 'dart-lang/dart-vim-plugin'
-Bundle 'dag/vim2hs'
-Bundle 'airblade/vim-gitgutter'
+NeoBundle 'cakebaker/scss-syntax.vim'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'groenewege/vim-less'
+NeoBundle 'othree/html5.vim'
+NeoBundle 'digitaltoad/vim-jade'
+NeoBundle 'nono/vim-handlebars'
+NeoBundle 'leafgarland/typescript-vim'
+NeoBundle 'elixir-lang/vim-elixir'
+NeoBundle 'wting/rust.vim'
+NeoBundle 'dart-lang/dart-vim-plugin'
+NeoBundle 'dag/vim2hs'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'tpope/vim-dispatch'
 
 " color schemes
-Bundle 'noahfrederick/vim-noctu'
-Bundle 'dsolstad/vim-wombat256i'
-Bundle 'vim-scripts/wombat256.vim'
+NeoBundle 'noahfrederick/vim-noctu'
+NeoBundle 'dsolstad/vim-wombat256i'
+NeoBundle 'vim-scripts/wombat256.vim'
+
+NeoBundleCheck
+
+runtime macros/matchit.vim
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BASIC EDITING CONFIGURATION
