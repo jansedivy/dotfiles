@@ -30,6 +30,16 @@ set -g pane-base-index 1
 setw -g automatic-rename on
 set -g set-titles on
 
+# quick pane cycling
+unbind ^A
+bind ^A select-pane -t :.+
+
+# Easier splits
+unbind-key '"'
+unbind-key '%'
+bind-key | split-window -h
+bind-key _ split-window -v
+
 # ----------------------
 # set some pretty colors
 # ----------------------
