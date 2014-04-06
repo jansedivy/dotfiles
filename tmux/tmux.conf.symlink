@@ -46,7 +46,6 @@ bind-key _ split-window -v
 set-option -g pane-border-fg colour235 #base02
 set-option -g pane-active-border-fg colour240 #base01
 
-# colorize messages in the command line
 set-option -g message-bg black #base02
 set-option -g message-fg brightred #orange
 
@@ -65,10 +64,10 @@ set-window-option -g window-status-current-attr bright
 ###########################
 #  Status Bar
 ###########################
+
 set -g status-utf8 on
 set-option -g status on
 set -g status-justify centre
-# set-option -g status-position top
 
 set -g status-interval 30
 
