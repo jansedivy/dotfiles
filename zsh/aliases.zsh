@@ -6,7 +6,8 @@ alias activate='d=`pwd`; $(deactivate &>/dev/null); while [ "$d" != "" ]; do [ -
 alias dt='cd ~/.dotfiles'
 alias dr='cd ~/Dropbox'
 alias d='cd ~/Desktop'
-alias e='cd ~/Dropbox/experiments'
+alias exp='cd ~/Dropbox/experiments'
+alias dev='cd ~/Dropbox/dev'
 
 alias gp='git push'
 alias gl='git pull'
