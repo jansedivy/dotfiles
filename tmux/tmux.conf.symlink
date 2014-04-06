@@ -1,38 +1,37 @@
+###########################
+#  Configuration
+###########################
+
 set -g default-terminal "screen-256color"
-set -g history-limit 20000
+set -g history-limit 5000
 
-setw -g utf8 on
-set -g status-utf8 on
-
-set-window-option -g mode-mouse on
-set-option -g mouse-select-pane on
-set-option -g mouse-resize-pane on
-set-option -g mouse-select-window on
+# disable mouse
+setw -g mode-mouse off
 
 set -sg escape-time 0
 
-# use c-a instead of c-b
-set -g prefix C-a
-unbind C-b
-bind C-a send-prefix
+set-option -g default-command "reattach-to-user-namespace -l zsh"
 
 set-window-option -g aggressive-resize on
-
-unbind r
-bind r source-file ~/.tmux.conf
-
-set-option -g default-command "reattach-to-user-namespace -l zsh"
 
 # Start windows and panes at 1, not 0
 set -g base-index 1
 set -g pane-base-index 1
 
+set -g renumber-windows on
 setw -g automatic-rename on
 set -g set-titles on
 
-# quick pane cycling
-unbind ^A
-bind ^A select-pane -t :.+
+###########################
+#  Key Bindings
+###########################
+
+unbind-key C-b
+set-option -g prefix C-t
+bind-key t send-prefix
+
+unbind r
+bind r source-file ~/.tmux.conf
 
 # Easier splits
 unbind-key '"'
@@ -40,10 +39,10 @@ unbind-key '%'
 bind-key | split-window -h
 bind-key _ split-window -v
 
-# ----------------------
-# set some pretty colors
-# ----------------------
-# set pane colors - hilight the active pane
+###########################
+#  Colors
+###########################
+
 set-option -g pane-border-fg colour235 #base02
 set-option -g pane-active-border-fg colour240 #base01
 
@@ -51,25 +50,10 @@ set-option -g pane-active-border-fg colour240 #base01
 set-option -g message-bg black #base02
 set-option -g message-fg brightred #orange
 
-# ----------------------
-# Status Bar
-# -----------------------
-set-option -g status on                # turn the status bar on
-set -g status-utf8 on                  # set utf-8 for the status bar
-set -g status-interval 5               # set update frequencey (default 15 seconds)
-set -g status-justify centre           # center window list for clarity
-# set-option -g status-position top    # position the status bar at top of screen
-
-# visual notification of activity in other windows
-setw -g monitor-activity on
-set -g visual-activity on
-
-# set color for status bar
 set-option -g status-bg 0
 set-option -g status-fg yellow
 set-option -g status-attr dim
 
-# set window list colors - red for active and cyan for inactive
 set-window-option -g window-status-fg brightblue #base0
 set-window-option -g window-status-bg 0
 set-window-option -g window-status-attr dim
@@ -78,12 +62,20 @@ set-window-option -g window-status-current-fg brightred #orange
 set-window-option -g window-status-current-bg 0
 set-window-option -g window-status-current-attr bright
 
-# show host name and IP address on left side of status bar
-set -g status-interval 2
-set -g status-left-length 140
-set -g status-left "#[fg=green] #h :: #[fg=yellow]#(ifconfig en0 | grep 'inet ' | awk '{print $2}') #[fg=red]:: #(tmux-mem-cpu-load 2)"
+###########################
+#  Status Bar
+###########################
+set -g status-utf8 on
+set-option -g status on
+set -g status-justify centre
+# set-option -g status-position top
 
-# show session name, window & pane number, date and time on right side of
-# status bar
+set -g status-interval 30
+
+# Left
+set -g status-left-length 140
+set -g status-left "#[fg=green] ::#[fg=yellow] #[fg=red]:: "
+
+# Right
 set -g status-right-length 20
 set -g status-right "#(/usr/local/bin/node ~/Dropbox/experiments/javascript/nodejs/minutes/app.js) #[fg=green]:: %H:%M "
