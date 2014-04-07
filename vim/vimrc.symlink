@@ -234,6 +234,8 @@ map <leader>o :!open .<cr>
 map <leader>y :SyntasticToggleMode<cr>
 map <leader>g :GitGutterToggle<cr>
 
+map <leader>cn :e ~/Dropbox/coding-notes.txt<cr>
+
 let g:gitgutter_enabled = 0
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
