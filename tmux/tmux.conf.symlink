@@ -27,8 +27,8 @@ set -g set-titles on
 ###########################
 
 unbind-key C-b
-set-option -g prefix C-t
-bind-key t send-prefix
+set-option -g prefix C-a
+bind-key a send-prefix
 
 unbind r
 bind r source-file ~/.tmux.conf
@@ -67,13 +67,13 @@ set-window-option -g window-status-current-attr bright
 
 set -g status-utf8 on
 set-option -g status on
-set -g status-justify centre
+set -g status-justify left
 
 set -g status-interval 30
 
 # Left
-set -g status-left-length 140
-set -g status-left "#[fg=green] ::#[fg=yellow] #[fg=red]:: "
+# set -g status-left-length 140
+# set -g status-left "#[fg=green] ::#[fg=yellow] #[fg=red]:: "
 
 # Right
 set -g status-right-length 20
