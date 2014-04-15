@@ -1,25 +1,16 @@
 #!/usr/bin/env bash
-SPOTIFY_TRACK=$(osascript <<EOF
-if appIsRunning("Spotify")
-    tell app "Spotify" to get the name of the current track
+echo $(osascript <<EOF
+if appIsRunning("Spotify") then
+  tell application "Spotify"
+    if (player state = playing) then
+      set trackName to name of current track
+      set artistName to artist of current track
+      return trackName & " / " & artistName
+    end if
+  end tell
 end if
 
 on appIsRunning(appName)
-    tell app "System Events" to (name of processes) contains appName
+  tell application "System Events" to (name of processes) contains appName
 end appIsRunning
 EOF)
-
-if test "x$SPOTIFY_TRACK" != "x"; then
-SPOTIFY_ARTIST=$(osascript <<EOF
-if appIsRunning("Spotify")
-    tell app "Spotify" to get the artist of the current track
-end if
-
-
-on appIsRunning(appName)
-    tell app "System Events" to (name of processes) contains appName
-end appIsRunning
-EOF)
-
-    echo $SPOTIFY_TRACK '/' $SPOTIFY_ARTIST
-fi
