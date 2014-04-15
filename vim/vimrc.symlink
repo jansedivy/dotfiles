@@ -86,6 +86,9 @@ set nojoinspaces
 set shortmess=atI
 set lazyredraw
 
+set exrc
+set secure
+
 set modeline
 set modelines=3
 
