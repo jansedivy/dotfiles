@@ -24,7 +24,6 @@ NeoBundle 'drmingdrmer/xptemplate'
 NeoBundle 'vim-scripts/VisIncr'
 NeoBundle 'wikitopian/hardmode'
 NeoBundle 'tommcdo/vim-exchange'
-NeoBundle 'marijnh/tern_for_vim'
 
 " syntax
 NeoBundle 'cakebaker/scss-syntax.vim'
