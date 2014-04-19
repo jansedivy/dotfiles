@@ -45,8 +45,6 @@ NeoBundle 'tpope/vim-dispatch'
 
 " color schemes
 NeoBundle 'noahfrederick/vim-noctu'
-NeoBundle 'dsolstad/vim-wombat256i'
-NeoBundle 'vim-scripts/wombat256.vim'
 
 NeoBundleCheck
 
