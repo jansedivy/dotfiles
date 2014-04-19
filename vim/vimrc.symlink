@@ -102,6 +102,7 @@ set nowb
 silent !mkdir ~/.vim/backups > /dev/null 2>&1
 set undodir=~/.vim/backups
 set undofile
+set synmaxcol=128
 
 set backspace=indent,eol,start
 syntax on
