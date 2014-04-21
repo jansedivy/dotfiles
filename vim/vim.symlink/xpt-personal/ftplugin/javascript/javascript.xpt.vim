@@ -1,29 +1,5 @@
 XPTemplate priority=personal
 
-XPT fclass
-var Class = require('./class');
-
-module.exports = function(app) {
-  var `name^ = Class.extend({
-    init: function() {
-      `cursor^`
-    }
-  });
-
-  return `name^;
-};
-
-XPT class
-var Class = require('./class');
-
-var `name^ = Class.extend({
-  init: function() {
-    `cursor^
-  }
-});
-
-module.exports = `name^;
-
 XPT for
 XSET len=10
 for (var i=0; i<`len^; i++) {
@@ -49,16 +25,10 @@ setInterval(function() {
   `cursor^
 }, `time^);
 
-XPT f
-XSET arg*|post=ExpandIfNotEmpty(', ', 'arg*')
-var `name^ = function(`arg*^) {
-  `cursor^
-};
-
 XPT r
 var `name^ = require('`cursor^');
 
-XPT ex
+XPT m
 module.exports = `cursor^;
 
 XPT qu
