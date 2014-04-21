@@ -9,7 +9,6 @@
   wtf     = !$ZSH/bin/git-wtf
   rank-contributers = !$ZSH/bin/git-rank-contributers
   count   = !git shortlog -sn
-  st      = status
   ci      = commit --verbose
   aa      = add --all
 
