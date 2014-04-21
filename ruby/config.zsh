@@ -1,1 +1,0 @@
-unset RUBY_HEAP_MIN_SLOTS
