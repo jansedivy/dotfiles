@@ -27,6 +27,7 @@
     "jQuery": false,
     "describe": false,
     "it": false,
+    "beforeEach": false,
     "ei": false,
     "expect": false
   }
