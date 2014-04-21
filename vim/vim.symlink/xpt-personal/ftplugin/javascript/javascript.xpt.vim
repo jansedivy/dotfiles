@@ -26,7 +26,7 @@ module.exports = `name^;
 
 XPT for
 XSET len=10
-for (var i=0, i<`len^; i++) {
+for (var i=0; i<`len^; i++) {
   `cursor^
 }
 
