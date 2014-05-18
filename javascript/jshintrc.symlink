@@ -5,6 +5,7 @@
   "node": true,
   "browser": true,
   "devel": true,
+  "evil": true,
   "es5": true,
   "esnext": true,
   "camelcase": false,
