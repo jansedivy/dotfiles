@@ -6,7 +6,7 @@ then
   ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)" > /tmp/homebrew-install.log
 fi
 
-brew install hub tmux grc coreutils reattach-to-user-namespace ag
+brew install zsh node hub tmux grc coreutils reattach-to-user-namespace ag
 brew install vim --override-system-vim
 
 exit 0
