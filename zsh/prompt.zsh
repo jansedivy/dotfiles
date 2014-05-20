@@ -42,11 +42,13 @@ need_push () {
   fi
 }
 
+
+
 vim_jobs_count() {
   count=`echo $(jobs | grep vim | wc -l)`
   if [ $count -ne "0" ]
   then
-    echo "$count:"
+    echo "%{$fg_bold[green]%}`echo $(jot -b ! $count) | sed 's/ //g'`%{$reset_color%}"
   fi
 }
 
