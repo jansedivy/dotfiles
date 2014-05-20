@@ -42,6 +42,7 @@ NeoBundle 'dart-lang/dart-vim-plugin'
 NeoBundle 'dag/vim2hs'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'jnwhiteh/vim-golang'
 
 " color schemes
 NeoBundle 'noahfrederick/vim-noctu'
