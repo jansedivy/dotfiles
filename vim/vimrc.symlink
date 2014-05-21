@@ -21,9 +21,8 @@ NeoBundle 'rking/ag.vim'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'drmingdrmer/xptemplate'
-NeoBundle 'vim-scripts/VisIncr'
-NeoBundle 'wikitopian/hardmode'
 NeoBundle 'tommcdo/vim-exchange'
+NeoBundle 'tpope/vim-dispatch'
 
 " syntax
 NeoBundle 'cakebaker/scss-syntax.vim'
@@ -40,8 +39,6 @@ NeoBundle 'elixir-lang/vim-elixir'
 NeoBundle 'wting/rust.vim'
 NeoBundle 'dart-lang/dart-vim-plugin'
 NeoBundle 'dag/vim2hs'
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'jnwhiteh/vim-golang'
 
 " color schemes
