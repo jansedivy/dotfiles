@@ -20,9 +20,9 @@ NeoBundle 'godlygeek/tabular'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'mattn/emmet-vim'
-NeoBundle 'drmingdrmer/xptemplate'
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'SirVer/ultisnips'
 
 " syntax
 NeoBundle 'cakebaker/scss-syntax.vim'
@@ -138,8 +138,7 @@ set nofoldenable
 highlight colorcolumn ctermbg=magenta
 call matchadd('colorcolumn', '\%81v', 100)
 
-" Add xpt personal directory
-set runtimepath+=~/.vim/xpt-personal
+let g:UltiSnipsExpandTrigger="<C-\\>"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM AUTOCMDS
