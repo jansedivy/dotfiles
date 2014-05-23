@@ -33,3 +33,20 @@ endsnippet
 snippet qua
 document.querySelectorAll($1);
 endsnippet
+
+snippet in
+$1.prototype = Object.create($2.prototype);
+$1.prototype.constructor = $2;
+endsnippet
+
+snippet it
+it("$1", function(${2:done}) {
+	$0
+});
+endsnippet
+
+snippet desc
+describe("$1", function() {
+	$0
+});
+endsnippet
