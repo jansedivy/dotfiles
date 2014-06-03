@@ -3,11 +3,11 @@ console.log($1);
 endsnippet
 
 snippet r
-var $1 = require('$1');
+var $1 = require('${2:$1}');
 endsnippet
 
 snippet rr
-var $1 = require('./$1');
+var $1 = require('./${2:$1}');
 endsnippet
 
 snippet m
@@ -45,8 +45,34 @@ it("$1", function(${2:done}) {
 });
 endsnippet
 
-snippet desc
+snippet de
 describe("$1", function() {
 	$0
 });
+endsnippet
+
+snippet a
+assert(${1:value}, ${2:message});
+endsnippet
+
+snippet ae
+assert.equal(${1:actual}, ${2:expected});
+endsnippet
+
+snippet class
+var $1 = function() {
+	$0
+};
+
+module.exports = $1;
+endsnippet
+
+snippet classf
+module.exports = function(app) {
+	var $1 = function() {
+		$0
+	};
+
+	return $1;
+};
 endsnippet
