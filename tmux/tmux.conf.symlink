@@ -36,10 +36,19 @@ bind r source-file ~/.tmux.conf
 # Easier splits
 unbind-key '"'
 unbind-key '%'
-bind-key | split-window -h
-bind-key _ split-window -v
 
-bind c new-window -c "#{pane_current_path}"
+bind-key h   select-pane -L
+bind-key C-h select-pane -L
+bind-key j   select-pane -D
+bind-key C-j select-pane -D
+bind-key k   select-pane -U
+bind-key C-k select-pane -U
+bind-key l   select-pane -R
+bind-key C-l select-pane -R
+
+bind-key "|" split-window -h -c "#{pane_current_path}"
+bind-key "-" split-window -v -c "#{pane_current_path}"
+bind-key "c" new-window -c "#{pane_current_path}"
 
 ###########################
 #  Colors
