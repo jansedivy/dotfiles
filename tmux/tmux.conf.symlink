@@ -5,6 +5,8 @@
 set -g default-terminal "screen-256color"
 set -g history-limit 5000
 
+set-window-option -g xterm-keys on
+
 # disable mouse
 setw -g mode-mouse off
 
