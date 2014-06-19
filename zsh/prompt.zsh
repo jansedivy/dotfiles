@@ -51,7 +51,7 @@ vim_jobs_count() {
 }
 
 directory_name() {
-  echo "%{$fg_bold[cyan]%}%1/%{$reset_color%}"
+  echo "%{$fg_bold[blue]%}%1/%{$reset_color%}"
 }
 
 export PROMPT=$'$(vim_jobs_count)$(directory_name)$(git_dirty) › '
