@@ -23,7 +23,6 @@
   "smarttabs": true,
   "globals": {
     "angular": false,
-    "$": false,
     "kendo": false,
     "jQuery": false,
     "describe": false,
