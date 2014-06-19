@@ -292,7 +292,7 @@ let command = 'find * -type f
       \ | grep -v "tmp/"
       \ | grep -v "deps/"
       \ | grep -v "bundle.min.js"
-      \ | grep -i -v -w ".*\.\(pyc\|eot\|ttf\|svg\|woff\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
+      \ | grep -i -v -w ".*\.\(pyc\|eot\|ttf\|svg\|woff\|gif\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
 
 map <leader>t :call SelectaCommand(command, "", ":e")<cr>
 
