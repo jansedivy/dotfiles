@@ -23,6 +23,7 @@ NeoBundle 'mattn/emmet-vim'
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'SirVer/ultisnips'
+NeoBundle 'majutsushi/tagbar'
 
 " syntax
 NeoBundle 'cakebaker/scss-syntax.vim'
