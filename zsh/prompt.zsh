@@ -42,8 +42,6 @@ need_push () {
   fi
 }
 
-
-
 vim_jobs_count() {
   count=`echo $(jobs | grep vim | wc -l)`
   if [ $count -ne "0" ]
@@ -52,7 +50,7 @@ vim_jobs_count() {
   fi
 }
 
-directory_name(){
+directory_name() {
   echo "%{$fg_bold[cyan]%}%1/%{$reset_color%}"
 }
 
