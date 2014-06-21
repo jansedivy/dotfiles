@@ -10,7 +10,7 @@ brew tap caskroom/cask
 brew tap caskroom/versions
 
 brew install brew-cask
-brew install zsh node hub tmux grc coreutils reattach-to-user-namespace ag
+brew install zsh node hub tmux grc coreutils reattach-to-user-namespace the_silver_searcher
 brew install vim --override-system-vim
 
 brew cask install google-chrome-canary
