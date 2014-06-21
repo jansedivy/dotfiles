@@ -22,6 +22,12 @@ brew cask install spotify
 brew cask install iterm2
 brew cask install things
 brew cask install mou
+brew cask install transmission
+brew cask install imageoptim
+brew cask install openemu
+brew cask install appcleaner
+brew cask install atom
+brew cask install hex-fiend
 brew cask install teamviewer
 brew cask install coconutbattery
 brew cask install dropbox
