@@ -89,4 +89,4 @@ set -g status-left '#[fg=green]#S#[fg=blue] #I:#P#[default]'
 
 set -g status-interval 10
 set -g status-right-length 90
-set-option -g status-right '#[fg=green]#(spotify-current-track) #[fg=blue]%m/%d/%y %H:%M #[fg=red]#(battery discharging)#[fg=green]#(battery charging)'
+set-option -g status-right '#[fg=green]#(spotify-current-track) #[fg=blue]%d/%m/%y %H:%M #[fg=red]#(battery discharging)#[fg=green]#(battery charging)'
