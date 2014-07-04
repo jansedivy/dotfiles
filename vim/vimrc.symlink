@@ -228,7 +228,7 @@ map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.vimrc<cr>
 
-map <leader>o :!open .<cr>
+map <leader>o :silent !open .<cr>
 
 map <leader>y :SyntasticToggleMode<cr>
 

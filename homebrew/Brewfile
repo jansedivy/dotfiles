@@ -1,0 +1,16 @@
+update
+
+upgrade
+
+install zsh
+install node
+install hub
+install tmux 
+install rc 
+install oreutils 
+install eattach-to-user-namespace 
+install he_silver_searcher
+
+install vim --override-system-vim
+
+cleanup
