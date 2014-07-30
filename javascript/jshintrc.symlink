@@ -11,6 +11,7 @@
   "camelcase": false,
   "curly": true,
   "eqeqeq": true,
+  "eqnull": true,
   "immed": false,
   "indent": 2,
   "latedef": true,
