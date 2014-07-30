@@ -98,9 +98,20 @@ set noswapfile
 set nobackup
 set nowb
 
-silent !mkdir ~/.vim/backups > /dev/null 2>&1
-set undodir=~/.vim/backups
 set undofile
+
+set undodir=~/.vim/backups
+
+if !isdirectory(expand(&undodir))
+  call mkdir(expand(&undodir), "p")
+endif
+
+nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<cr>
+
+" Keep search matches in the middle of the window.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
 set synmaxcol=256
 
 set backspace=indent,eol,start
@@ -124,7 +135,11 @@ set autoread
 set list listchars=tab:▸⋅,trail:⋅,nbsp:⋅
 " Optimize for fast terminal connections
 set ttyfast
-set timeout timeoutlen=1000 ttimeoutlen=100
+
+set notimeout
+set ttimeout
+set ttimeoutlen=10
+
 " Hide tabline
 verbose set showtabline=1
 " When at 3 spaces and I hit >>, go to 4, not 5.
@@ -285,6 +300,8 @@ endfunction
 
 let command = 'find * -type f
       \ | grep -v "node_modules/"
+      \ | grep -v "^dist/"
+      \ | grep -v "bower_components/"
       \ | grep -v "cache/"
       \ | grep -v ".git/"
       \ | grep -v "tmp/"
@@ -293,6 +310,25 @@ let command = 'find * -type f
       \ | grep -i -v -w ".*\.\(pyc\|eot\|ttf\|svg\|woff\|gif\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
 
 map <leader>t :call SelectaCommand(command, "", ":e")<cr>
+
+function! SelectaFindMethodsCommand(selecta_args)
+  let a:choice_command = 'cat ' . bufname("%") . " | egrep -o -w -n -h \"([A-Z]\\w+)(?:\\s?=\\s?function|.prototype.(\\S+)\\s?=\\s?function)\" | awk -F\"[:.=]\" '{print $1 \":\" (($4 == \"\") ? $2 : $2 \".\" $4) }' | column -t -s ':'"
+  echo a:choice_command
+
+  try
+    silent let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+  catch /Vim:Interrupt/
+    " Swallow the ^C so that the redraw below happens; otherwise there will be
+    " leftovers from selecta on the screen
+    redraw!
+    return
+  endtry
+  redraw!
+  exec split(selection, ' ')[0]
+  normal zz
+endfunction
+
+map <leader>m :call SelectaFindMethodsCommand("")<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
@@ -307,7 +343,6 @@ let g:syntastic_mode_map = { 'mode': 'active',
   \ 'active_filetypes': [],
   \ 'passive_filetypes': ['html'] }
 
-let g:syntastic_javascript_jshint_conf="~/.jshintrc"
 " let g:syntastic_javascript_checkers = ['jsxhint']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
