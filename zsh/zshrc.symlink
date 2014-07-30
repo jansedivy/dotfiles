@@ -19,6 +19,8 @@ done
 
 source $ZSH/lib/z/z.sh
 
+source $ZSH/lib/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 # initialize autocomplete here, otherwise functions won't be loaded
 autoload -U compinit
 compinit
