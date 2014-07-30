@@ -84,3 +84,21 @@ module.exports = function(app) {
 	return $1;
 };
 endsnippet
+
+snippet p
+$1.prototype.$2 = function($3) {
+	$0
+};
+endsnippet
+
+snippet rectb
+app.video.ctx.fillRect(this.bounds.l, this.bounds.t, this.bounds.width, this.bounds.height);
+endsnippet
+
+snippet style
+app.video.ctx.fillStyle = $0;
+endsnippet
+
+snippet rect
+app.video.ctx.fillRect($0);
+endsnippet
