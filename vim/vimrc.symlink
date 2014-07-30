@@ -15,7 +15,6 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-commentary'
 NeoBundle 'scrooloose/syntastic'
-NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'Raimondi/delimitMate'
@@ -302,7 +301,7 @@ let g:UltiSnipsExpandTrigger="<C-\\>"
 let g:UltiSnipsJumpForwardTrigger="<C-n>"
 let g:UltiSnipsJumpBackwardTrigger="<C-p>"
 
-let NERDTreeIgnore = ['\.pyc$']
+let g:netrw_liststyle=3
 
 let g:syntastic_mode_map = { 'mode': 'active',
   \ 'active_filetypes': [],
