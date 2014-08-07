@@ -25,4 +25,6 @@ cask install skype 2> /dev/null
 cask install smcfancontrol 2> /dev/null
 cask install toggldesktop 2> /dev/null
 cask install macdown 2> /dev/null
+cask install colorpicker-skalacolor 2> /dev/null
+cask install teamspeak-client 2> /dev/null
 # cask install parallels 2> /dev/null
