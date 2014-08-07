@@ -1,8 +1,0 @@
-#!/bin/sh
-
-set -e
-
-cp -R "$HOME/.project-templates/$1" $2
-cd $2
-npm install potion --save
-npm install
