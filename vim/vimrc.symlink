@@ -349,7 +349,9 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " Abbreviations
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 abbr tihs this
+abbr htis this
 abbr vra var
 abbr funciton function
 abbr functino function
 abbr reutrn return
+abbr heigth height
