@@ -305,11 +305,14 @@ endfunction
 let command = 'find * -type f
       \ | grep -v "node_modules/"
       \ | grep -v "^dist/"
+      \ | grep -v "^vim/vim.symlink/backups/"
+      \ | grep -v "^vim/vim.symlink/bundle/"
       \ | grep -v "bower_components/"
       \ | grep -v "cache/"
       \ | grep -v ".git/"
       \ | grep -v "tmp/"
       \ | grep -v "deps/"
+      \ | grep -v "^_build/"
       \ | grep -v "bundle.min.js"
       \ | grep -i -v -w ".*\.\(pyc\|eot\|ttf\|svg\|woff\|gif\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
 
