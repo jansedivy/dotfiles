@@ -346,9 +346,11 @@ let g:UltiSnipsJumpBackwardTrigger="<C-p>"
 
 let g:netrw_liststyle=3
 
-let g:syntastic_mode_map = { 'mode': 'active',
+let g:syntastic_mode_map = {
+  \ 'mode': 'active',
   \ 'active_filetypes': [],
-  \ 'passive_filetypes': ['html'] }
+  \ 'passive_filetypes': ['html']
+  \ }
 
 " let g:syntastic_javascript_checkers = ['jsxhint']
 
