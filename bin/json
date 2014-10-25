@@ -1,11 +1,7 @@
 #!/bin/sh
 
 main() {
-  if [ -t 0 ]; then # argument
-    python -mjson.tool <<< "$*" | pygmentize -l javascript
-  else # pipe
-    python -mjson.tool | pygmentize -l javascript
-  fi
+  underscore print --outfmt pretty
 }
 
 main

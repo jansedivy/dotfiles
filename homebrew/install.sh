@@ -47,6 +47,9 @@ brew cask install toggldesktop 2> /dev/null
 brew cask install macdown 2> /dev/null
 brew cask install colorpicker-skalacolor 2> /dev/null
 brew cask install teamspeak-client 2> /dev/null
+brew cask install calibre 2> /dev/null
+brew cask install mailbox 2> /dev/null
+brew cask install launchrocket 2> /dev/null
 # cask install parallels 2> /dev/null
 
 brew cleanup

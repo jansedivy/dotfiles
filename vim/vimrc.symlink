@@ -4,7 +4,7 @@ autocmd!
 
 set runtimepath+=~/.vim/bundle/neobundle.vim/
 
-call neobundle#rc(expand('~/.vim/bundle/'))
+call neobundle#begin(expand('~/.vim/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -23,6 +23,8 @@ NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'majutsushi/tagbar'
+NeoBundle 'jalcine/cmake.vim'
+NeoBundle 'kristijanhusak/vim-multiple-cursors'
 
 " syntax
 NeoBundle 'cakebaker/scss-syntax.vim'
@@ -44,6 +46,9 @@ NeoBundle 'jnwhiteh/vim-golang'
 " color schemes
 NeoBundle 'noahfrederick/vim-noctu'
 NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'whatyouhide/vim-gotham'
+
+call neobundle#end()
 
 NeoBundleCheck
 
@@ -81,6 +86,9 @@ set shell=bash
 set nojoinspaces
 set shortmess=atI
 set lazyredraw
+set showcmd
+set title
+set cursorline
 
 set exrc
 set secure
@@ -88,7 +96,7 @@ set secure
 set modeline
 set modelines=3
 
-set scrolloff=3
+set scrolloff=1
 
 set t_ti= t_te=
 set cpoptions+=$
@@ -174,15 +182,13 @@ augroup vimrcEx
 
   autocmd! BufRead,BufNewFile *.sass setfiletype sass
 
-  autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
-  autocmd BufRead *.markdown  set ai formatoptions=tcroqn2 comments=n:&gt;
+  autocmd! BufRead,BufNewFile *.lol setfiletype clojure
+
+  autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
 
   autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
 
   autocmd Filetype gitcommit setlocal spell textwidth=72
-
-  " Don't syntax highlight markdown because it's often wrong
-  autocmd! FileType mkd setlocal syn=off
 
   " Leave the return key alone when in command line windows, since it's used
   " to run commands there.
@@ -193,10 +199,14 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COLOR
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:hybrid_use_iTerm_colors = 1
 set t_co=256
 set t_ut=
+
+let g:hybrid_use_iTerm_colors = 1
 color hybrid
+
+" Fix contrast for search highlight color
+hi Search cterm=NONE ctermfg=8 ctermbg=3
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
@@ -287,11 +297,35 @@ function! RenameFile()
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Switch to header/implementatino file
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! OpenAlternativeFile()
+  let new_file = AlternateForCurrentFile()
+  exec ':e ' . new_file
+endfunction
+
+function! AlternateForCurrentFile()
+  let current_file = expand("%:r")
+  let current_extension = expand("%:e")
+
+  if current_extension == "h"
+    return current_file . ".cpp"
+  endif
+
+  if current_extension == "cpp"
+    return current_file . ".h"
+  endif
+endfunction
+
+
+nnoremap <leader>. :call OpenAlternativeFile()<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Selecta config
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! SelectaCommand(choice_command, selecta_args, vim_command)
   try
-    silent let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
   catch /Vim:Interrupt/
     " Swallow the ^C so that the redraw below happens; otherwise there will be
     " leftovers from selecta on the screen
@@ -312,6 +346,9 @@ let command = 'find * -type f
       \ | grep -v ".git/"
       \ | grep -v "tmp/"
       \ | grep -v "deps/"
+      \ | grep -v "^CMakeFiles/"
+      \ | grep -v "CMakeCache.txt"
+      \ | grep -v "cmake_install.cmake"
       \ | grep -v "^_build/"
       \ | grep -v "bundle.min.js"
       \ | grep -i -v -w ".*\.\(pyc\|eot\|ttf\|svg\|woff\|gif\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
@@ -323,7 +360,7 @@ function! SelectaFindMethodsCommand(selecta_args)
   echo a:choice_command
 
   try
-    silent let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
   catch /Vim:Interrupt/
     " Swallow the ^C so that the redraw below happens; otherwise there will be
     " leftovers from selecta on the screen
@@ -359,6 +396,7 @@ let g:syntastic_mode_map = {
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 abbr tihs this
 abbr htis this
+abbr thsi this
 abbr vra var
 abbr funciton function
 abbr functino function
