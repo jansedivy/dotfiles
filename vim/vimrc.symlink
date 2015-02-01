@@ -81,6 +81,7 @@ set hlsearch
 set ignorecase smartcase
 set mouse=a
 set encoding=utf-8 nobomb
+scriptencoding utf-8
 set cmdheight=1
 set switchbuf=useopen
 set numberwidth=3
@@ -131,7 +132,7 @@ set synmaxcol=256
 set backspace=indent,eol,start
 syntax on
 filetype plugin indent on
-let mapleader=","
+let g:mapleader=","
 
 set wildmenu
 set wildignore=*.o,*.obj,*~
@@ -162,11 +163,14 @@ set shiftround
 set noesckeys
 set gdefault
 
-set foldmethod=manual
-set nofoldenable
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-highlight colorcolumn ctermbg=magenta
-call matchadd('colorcolumn', '\%81v', 100)
+set foldmethod=manual
+" set nofoldenable
+"
+" highlight colorcolumn ctermbg=magenta
+" call matchadd('colorcolumn', '\%81v', 100)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM AUTOCMDS
@@ -187,7 +191,10 @@ augroup vimrcEx
 
   autocmd! BufRead,BufNewFile *.sass setfiletype sass
 
+  autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
+
   autocmd! BufRead,BufNewFile *.lol setfiletype clojure
+  autocmd! BufRead,BufNewFile *.wtf setfiletype cpp
 
   autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
 
@@ -217,6 +224,8 @@ hi Search cterm=NONE ctermfg=8 ctermbg=3
 " STATUSLINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set stl=%f\ %m\ %r\ Line:%l/%L[%p%%]
+
+hi StatusLine ctermfg=235 ctermbg=2
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
@@ -265,7 +274,7 @@ map <leader>o :silent !open .<cr>
 
 map <leader>y :SyntasticToggleMode<cr>
 
-map <leader>cn :e ~/Dropbox/coding-notes.txt<cr>
+map <leader>cn :e ~/Dropbox/coding-notes.markdown<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
