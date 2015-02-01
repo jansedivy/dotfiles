@@ -102,3 +102,11 @@ endsnippet
 snippet rect
 app.video.ctx.fillRect($0);
 endsnippet
+
+snippet text
+app.video.ctx.fillStyle = 'black';
+app.video.ctx.font = '20px sans-serif';
+app.video.ctx.textAlign = 'center';
+app.video.ctx.textBaseline = 'middle';
+app.video.ctx.fillText($1, $2, $3);
+endsnippet
