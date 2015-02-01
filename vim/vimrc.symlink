@@ -4,58 +4,54 @@ autocmd!
 
 set runtimepath+=~/.vim/bundle/neobundle.vim/
 
-call neobundle#begin(expand('~/.vim/bundle/'))
+call plug#begin('~/.vim/plugged')
 
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-endwise'
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-commentary'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'godlygeek/tabular'
-NeoBundle 'rking/ag.vim'
-NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'tommcdo/vim-exchange'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'majutsushi/tagbar'
-NeoBundle 'kristijanhusak/vim-multiple-cursors'
-NeoBundle 'tpope/vim-eunuch'
-NeoBundle 'nelstrom/vim-visual-star-search'
-NeoBundle 'mbbill/undotree'
-NeoBundle 'jansedivy/jai.vim'
-NeoBundle 'AndrewRadev/splitjoin.vim'
-NeoBundle 'OmniSharp/omnisharp-vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'scrooloose/syntastic'
+Plug 'godlygeek/tabular'
+Plug 'rking/ag.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'mattn/emmet-vim'
+Plug 'tommcdo/vim-exchange'
+Plug 'tpope/vim-dispatch'
+Plug 'SirVer/ultisnips'
+Plug 'majutsushi/tagbar'
+Plug 'kristijanhusak/vim-multiple-cursors'
+Plug 'tpope/vim-eunuch'
+Plug 'nelstrom/vim-visual-star-search'
+Plug 'mbbill/undotree'
+Plug 'jansedivy/jai.vim'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'OmniSharp/omnisharp-vim'
 
 " syntax
-NeoBundle 'cakebaker/scss-syntax.vim'
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'groenewege/vim-less'
-NeoBundle 'othree/html5.vim'
-NeoBundle 'digitaltoad/vim-jade'
-NeoBundle 'nono/vim-handlebars'
-NeoBundle 'leafgarland/typescript-vim'
-NeoBundle 'elixir-lang/vim-elixir'
-NeoBundle 'wting/rust.vim'
-NeoBundle 'dart-lang/dart-vim-plugin'
-NeoBundle 'dag/vim2hs'
-NeoBundle 'jnwhiteh/vim-golang'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'vim-ruby/vim-ruby'
+Plug 'pangloss/vim-javascript'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'kchmck/vim-coffee-script'
+Plug 'groenewege/vim-less'
+Plug 'othree/html5.vim'
+Plug 'digitaltoad/vim-jade'
+Plug 'nono/vim-handlebars'
+Plug 'leafgarland/typescript-vim'
+Plug 'elixir-lang/vim-elixir'
+Plug 'wting/rust.vim'
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'dag/vim2hs'
+Plug 'jnwhiteh/vim-golang'
 
 " color schemes
-NeoBundle 'noahfrederick/vim-noctu'
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'whatyouhide/vim-gotham'
+Plug 'noahfrederick/vim-noctu'
+Plug 'w0ng/vim-hybrid'
+Plug 'whatyouhide/vim-gotham'
 
-call neobundle#end()
-
-NeoBundleCheck
+call plug#end()
 
 runtime macros/matchit.vim
 
