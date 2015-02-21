@@ -45,6 +45,7 @@ Plug 'wting/rust.vim'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'dag/vim2hs'
 Plug 'jnwhiteh/vim-golang'
+Plug 'tikhomirov/vim-glsl'
 
 " color schemes
 Plug 'noahfrederick/vim-noctu'
