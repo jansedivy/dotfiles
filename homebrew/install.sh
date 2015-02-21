@@ -15,6 +15,7 @@ brew install tmux
 brew install coreutils
 brew install reattach-to-user-namespace
 brew install the_silver_searcher
+brew install selecta
 
 brew install vim --override-system-vim
 
