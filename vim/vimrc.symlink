@@ -190,9 +190,6 @@ augroup vimrcEx
 
   autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
-  autocmd! BufRead,BufNewFile *.lol setfiletype clojure
-  autocmd! BufRead,BufNewFile *.wtf setfiletype cpp
-
   autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
   autocmd BufNewFile,BufRead *.as setlocal filetype=javascript
 
