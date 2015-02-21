@@ -20,14 +20,14 @@ Plug 'mattn/emmet-vim'
 Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-dispatch'
 Plug 'SirVer/ultisnips'
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
 Plug 'kristijanhusak/vim-multiple-cursors'
 Plug 'tpope/vim-eunuch'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'mbbill/undotree'
 Plug 'jansedivy/jai.vim'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'OmniSharp/omnisharp-vim'
+Plug 'OmniSharp/omnisharp-vim', { 'for': 'cs' }
 
 " syntax
 Plug 'cakebaker/scss-syntax.vim'
