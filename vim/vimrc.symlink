@@ -194,6 +194,7 @@ augroup vimrcEx
   autocmd! BufRead,BufNewFile *.wtf setfiletype cpp
 
   autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+  autocmd BufNewFile,BufRead *.as setlocal filetype=javascript
 
   autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
 
