@@ -286,13 +286,13 @@ function! InsertTabWrapper()
   endif
 endfunction
 
-inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
+cnoremap <expr> %% expand('%:h').'/'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RENAME CURRENT FILE
