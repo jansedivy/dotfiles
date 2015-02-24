@@ -14,6 +14,7 @@ brew install hub
 brew install tmux
 brew install coreutils
 brew install reattach-to-user-namespace
+brew install ack
 brew install the_silver_searcher
 brew install selecta
 
