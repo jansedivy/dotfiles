@@ -349,6 +349,8 @@ endfunction
 
 let command = 'find * -type f
       \ | grep -v "node_modules/"
+      \ | grep -v "build/"
+      \ | grep -v "CMakeScripts/"
       \ | grep -v "^dist/"
       \ | grep -v "^vim/vim.symlink/backups/"
       \ | grep -v "^vim/vim.symlink/bundle/"
@@ -362,7 +364,7 @@ let command = 'find * -type f
       \ | grep -v "cmake_install.cmake"
       \ | grep -v "^_build/"
       \ | grep -v "bundle.min.js"
-      \ | grep -i -v -w ".*\.\(pyc\|eot\|ttf\|svg\|woff\|gif\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
+      \ | grep -i -v -w ".*\.\(pyc\|eot\|ttf\|svg\|woff\|gif\|dds\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
 
 map <leader>t :call SelectaCommand(command, "", ":e")<cr>
 
