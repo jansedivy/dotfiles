@@ -266,6 +266,7 @@ map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.vimrc<cr>
+map <leader>k :!vmd %&<cr><cr>
 
 map <leader>o :silent !open .<cr>
 
