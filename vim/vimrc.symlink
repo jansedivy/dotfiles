@@ -46,10 +46,12 @@ Plug 'dart-lang/dart-vim-plugin'
 Plug 'dag/vim2hs'
 Plug 'jnwhiteh/vim-golang'
 Plug 'tikhomirov/vim-glsl'
+Plug 'mxw/vim-jsx'
 
 " color schemes
 Plug 'noahfrederick/vim-noctu'
-Plug 'w0ng/vim-hybrid'
+Plug 'trusktr/seti.vim'
+Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
 Plug 'whatyouhide/vim-gotham'
 
 call plug#end()
