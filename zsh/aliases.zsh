@@ -17,6 +17,9 @@ alias u='cd ..'
 alias vi='vim'
 alias v='view -'
 
+alias keyoff='sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
+alias keyon='sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
+
 # alias notes='cd ~/Dropbox/notes'
 
 activate_virtualenv() {
