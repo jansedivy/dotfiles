@@ -18,6 +18,8 @@ brew install ack
 brew install the_silver_searcher
 brew install selecta
 
+npm install vmd -g
+
 brew install vim --override-system-vim
 
 brew install caskroom/cask/brew-cask
