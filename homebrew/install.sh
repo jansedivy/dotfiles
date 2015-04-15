@@ -31,7 +31,6 @@ brew cask install firefox-nightly 2> /dev/null
 brew cask install spotify 2> /dev/null
 brew cask install iterm2 2> /dev/null
 brew cask install things 2> /dev/null
-brew cask install mou 2> /dev/null
 brew cask install transmission 2> /dev/null
 brew cask install imageoptim 2> /dev/null
 brew cask install openemu 2> /dev/null
