@@ -2,8 +2,6 @@ set nocompatible
 
 autocmd!
 
-set runtimepath+=~/.vim/bundle/neobundle.vim/
-
 call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-fugitive'
