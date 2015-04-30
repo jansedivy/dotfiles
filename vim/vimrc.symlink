@@ -19,7 +19,7 @@ Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-dispatch'
 Plug 'SirVer/ultisnips'
 Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
-Plug 'kristijanhusak/vim-multiple-cursors'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-eunuch'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'mbbill/undotree'
@@ -46,11 +46,7 @@ Plug 'jnwhiteh/vim-golang'
 Plug 'tikhomirov/vim-glsl'
 Plug 'mxw/vim-jsx'
 
-" color schemes
-Plug 'noahfrederick/vim-noctu'
-Plug 'trusktr/seti.vim'
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
-Plug 'whatyouhide/vim-gotham'
 
 call plug#end()
 
