@@ -42,7 +42,7 @@ Plug 'elixir-lang/vim-elixir'
 Plug 'wting/rust.vim'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'dag/vim2hs'
-Plug 'jnwhiteh/vim-golang'
+Plug 'fatih/vim-go'
 Plug 'tikhomirov/vim-glsl'
 Plug 'mxw/vim-jsx'
 
