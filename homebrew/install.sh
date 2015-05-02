@@ -53,6 +53,7 @@ brew cask install teamspeak-client 2> /dev/null
 brew cask install calibre 2> /dev/null
 brew cask install mailbox 2> /dev/null
 brew cask install launchrocket 2> /dev/null
+brew cask install cloudup 2> /dev/null
 # cask install parallels 2> /dev/null
 
 brew cleanup
