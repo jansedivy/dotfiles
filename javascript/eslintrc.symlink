@@ -1,0 +1,18 @@
+{
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "no-underscore-dangle": false,
+    "quotes": false,
+    "strict": false,
+    "space-infix-ops": false,
+    "no-multiple-empty-lines": [2, {"max": 2}],
+    "brace-style": [2, "1tbs", { "allowSingleLine": true }]
+  }
+}
