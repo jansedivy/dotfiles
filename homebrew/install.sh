@@ -19,6 +19,7 @@ brew install the_silver_searcher
 brew install selecta
 
 npm install vmd -g
+npm install eslint -g
 
 brew install vim --override-system-vim
 
