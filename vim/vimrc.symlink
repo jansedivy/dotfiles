@@ -45,6 +45,7 @@ Plug 'dag/vim2hs'
 Plug 'fatih/vim-go'
 Plug 'tikhomirov/vim-glsl'
 Plug 'mxw/vim-jsx'
+Plug 'davidhalter/jedi-vim'
 
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
 
@@ -179,7 +180,7 @@ augroup vimrcEx
     \ endif
 
   autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
-  autocmd FileType python set sw=4 sts=4 et
+  autocmd FileType python set ts=4 sw=4 sts=4 et
   autocmd FileType qf set nowrap
 
   autocmd! BufRead,BufNewFile *.sass setfiletype sass
@@ -358,6 +359,8 @@ let command = 'find * -type f
       \ | grep -v "CMakeCache.txt"
       \ | grep -v "cmake_install.cmake"
       \ | grep -v "^_build/"
+      \ | grep -v "^ENV/"
+      \ | grep -v "^env/"
       \ | grep -v "bundle.min.js"
       \ | grep -i -v -w ".*\.\(pyc\|eot\|ttf\|svg\|woff\|gif\|dds\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
 
