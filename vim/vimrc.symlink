@@ -417,3 +417,8 @@ abbr functino function
 abbr reutrn return
 abbr heigth height
 abbr ligth light
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Python
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:jedi#use_tabs_not_buffers = 0
