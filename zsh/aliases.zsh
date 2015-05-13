@@ -17,48 +17,42 @@ alias keyon='sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Conte
 # alias notes='cd ~/Dropbox/notes'
 
 activate_virtualenv() {
-    if [ -f env/bin/activate ]; then . env/bin/activate;
-    elif [ -f ../env/bin/activate ]; then . ../env/bin/activate;
-    elif [ -f ../../env/bin/activate ]; then . ../../env/bin/activate;
-    elif [ -f ../../../env/bin/activate ]; then . ../../../env/bin/activate;
-    fi
+  if [ -f env/bin/activate ]; then . env/bin/activate;
+  elif [ -f ../env/bin/activate ]; then . ../env/bin/activate;
+  elif [ -f ../../env/bin/activate ]; then . ../../env/bin/activate;
+  elif [ -f ../../../env/bin/activate ]; then . ../../../env/bin/activate;
+  fi
 }
 
 function p() {
-    dev=$(ls ~/Dropbox/dev --color=never | selecta)
-    if [[ -n "$dev" ]]; then
-        cd ~/Dropbox/dev/$dev
-    fi
+  dev=$(ls ~/Dropbox/dev --color=never | selecta)
+  if [[ -n "$dev" ]]; then
+    cd ~/Dropbox/dev/$dev
+  fi
 }
 
-function notes {
-    note=$(ls ~/Dropbox/notes --color=never | selecta)
-    if [[ -n "$note" ]]; then
-        cd ~/Dropbox/notes/$note
-    fi
+function notes() {
+  note=$(ls ~/Dropbox/notes --color=never | selecta)
+  if [[ -n "$note" ]]; then
+    cd ~/Dropbox/notes/$note
+  fi
 }
 
-function up ()
-{
-    if [ "$1" != "" -a "$2" != "" ]; then
-        local DIR=$1
-        local TARGET=$2
-    elif [ "$1" ]; then
-        local DIR=$PWD
-        local TARGET=$1
-    fi
-    while [ ! -e $DIR/$TARGET -a $DIR != "/" ]; do
-        DIR=$(dirname $DIR)
-    done
-    test $DIR != "/" && echo $DIR/$TARGET
+function up() {
+  local DIR=$PWD
+  local TARGET=$1
+  while [ ! -e $DIR/$TARGET -a $DIR != "/" ]; do
+    DIR=$(dirname $DIR)
+  done
+  test $DIR != "/" && echo $DIR/$TARGET
 }
 
-function g {
-   if [[ $# > 0 ]]; then
-     git $@
-   else
-     git status
-   fi
+function g() {
+  if [[ $# > 0 ]]; then
+    git $@
+  else
+    git status
+  fi
 }
 
 # By default, ^S freezes terminal output and ^Q resumes it. Disable that so
