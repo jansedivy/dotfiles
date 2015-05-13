@@ -55,6 +55,9 @@ function g() {
   fi
 }
 
+function mcd() { mkdir -p $1 && cd $1 }
+function cdf() { cd *$1*/ }
+
 # By default, ^S freezes terminal output and ^Q resumes it. Disable that so
 # that those keys can be used for other things.
 unsetopt flowcontrol
