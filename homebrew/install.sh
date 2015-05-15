@@ -20,6 +20,7 @@ brew install selecta
 
 npm install vmd -g
 npm install eslint -g
+npm install eslint-plugin-react -g
 
 brew install vim --override-system-vim
 
