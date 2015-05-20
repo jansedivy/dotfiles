@@ -18,6 +18,8 @@ brew install ack
 brew install the_silver_searcher
 brew install selecta
 
+brew install jq
+
 npm install vmd -g
 npm install eslint -g
 npm install eslint-plugin-react -g

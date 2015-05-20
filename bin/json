@@ -1,7 +1,0 @@
-#!/bin/sh
-
-main() {
-  underscore print --outfmt pretty
-}
-
-main
