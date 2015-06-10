@@ -368,6 +368,16 @@ let command = 'find * -type f
 
 map <leader>t :call SelectaCommand(command, "", ":e")<cr>
 
+function! SelectaFile(path)
+  call SelectaCommand(g:command . " | grep " . a:path, "", ":e")
+endfunction
+
+map <leader>gm :call SelectaFile("models.py$")<cr>
+map <leader>ga :call SelectaFile("admin.py$")<cr>
+map <leader>gv :call SelectaFile("views.py$")<cr>
+map <leader>gt :call SelectaFile("/templates/")<cr>
+map <leader>gs :call SelectaFile("/static/")<cr>
+
 function! SelectaFindMethodsCommand(selecta_args)
   let a:choice_command = 'cat ' . bufname("%") . " | egrep -o -w -n -h \"([A-Z]\\w+)(?:\\s?=\\s?function|.prototype.(\\S+)\\s?=\\s?function)\" | awk -F\"[:.=]\" '{print $1 \":\" (($4 == \"\") ? $2 : $2 \".\" $4) }' | column -t -s ':'"
   echo a:choice_command
