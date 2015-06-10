@@ -138,6 +138,7 @@ set wildignore+=tmp/**
 set wildignore+=*sass-cache*
 set wildignore+=*DS_Store*
 set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.pyc
 
 " System clipboard
 set clipboard=unnamed
