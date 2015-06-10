@@ -380,7 +380,6 @@ map <leader>gs :call SelectaFile("/static/")<cr>
 
 function! SelectaFindMethodsCommand(selecta_args)
   let a:choice_command = 'cat ' . bufname("%") . " | egrep -o -w -n -h \"([A-Z]\\w+)(?:\\s?=\\s?function|.prototype.(\\S+)\\s?=\\s?function)\" | awk -F\"[:.=]\" '{print $1 \":\" (($4 == \"\") ? $2 : $2 \".\" $4) }' | column -t -s ':'"
-  echo a:choice_command
 
   try
     let selection = system(a:choice_command . " | selecta " . a:selecta_args)
