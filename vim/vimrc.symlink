@@ -345,8 +345,7 @@ function! SelectaCommand(choice_command, selecta_args, vim_command)
   exec a:vim_command . " " . selection
 endfunction
 
-let command = 'find * -type f
-      \ | grep -v "node_modules/"
+let filter = ' | grep -v "node_modules/"
       \ | grep -v "build/"
       \ | grep -v "CMakeScripts/"
       \ | grep -v "^dist/"
@@ -355,6 +354,7 @@ let command = 'find * -type f
       \ | grep -v "bower_components/"
       \ | grep -v "cache/"
       \ | grep -v ".git/"
+      \ | grep -v ".gitignore"
       \ | grep -v "tmp/"
       \ | grep -v "deps/"
       \ | grep -v "^CMakeFiles/"
@@ -364,7 +364,10 @@ let command = 'find * -type f
       \ | grep -v "^ENV/"
       \ | grep -v "^env/"
       \ | grep -v "bundle.min.js"
-      \ | grep -i -v -w ".*\.\(pyc\|eot\|ttf\|svg\|woff\|gif\|dds\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
+      \ | grep -v ".xcodeproj/"
+      \ | grep -i -v -w ".*\.\(otf\|ogg\|pyc\|rdb\|pdf\|eot\|ttf\|svg\|woff\|gif\|dds\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
+
+let command = 'find * -type f ' . g:filter
 
 map <leader>t :call SelectaCommand(command, "", ":e")<cr>
 
@@ -372,11 +375,25 @@ function! SelectaFile(path)
   call SelectaCommand(g:command . " | grep " . a:path, "", ":e")
 endfunction
 
-map <leader>gm :call SelectaFile("models.py$")<cr>
-map <leader>ga :call SelectaFile("admin.py$")<cr>
-map <leader>gv :call SelectaFile("views.py$")<cr>
+function! SelectaApps()
+  try
+    let selection = system("find $(find */apps -depth 1 -type d | selecta) -type f " . g:filter . " | selecta")
+  catch /Vim:Interrupt/
+    " Swallow the ^C so that the redraw below happens; otherwise there will be
+    " leftovers from selecta on the screen
+    redraw!
+    return
+  endtry
+  redraw!
+  exec ":e " . selection
+endfunction
+
+map <leader>gm :call SelectaFile("/models")<cr>
+map <leader>gd :call SelectaFile("admin.py$")<cr>
+map <leader>gv :call SelectaFile("/views")<cr>
 map <leader>gt :call SelectaFile("/templates/")<cr>
 map <leader>gs :call SelectaFile("/static/")<cr>
+map <leader>ga :call SelectaApps()<cr>
 
 function! SelectaFindMethodsCommand(selecta_args)
   let a:choice_command = 'cat ' . bufname("%") . " | egrep -o -w -n -h \"([A-Z]\\w+)(?:\\s?=\\s?function|.prototype.(\\S+)\\s?=\\s?function)\" | awk -F\"[:.=]\" '{print $1 \":\" (($4 == \"\") ? $2 : $2 \".\" $4) }' | column -t -s ':'"
