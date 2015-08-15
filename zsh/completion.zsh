@@ -77,3 +77,5 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' insert-tab pending
 
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}.
+
+bindkey '^R' history-incremental-search-backward

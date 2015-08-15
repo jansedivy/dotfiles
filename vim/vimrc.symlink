@@ -11,22 +11,24 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-eunuch'
 Plug 'scrooloose/syntastic'
 Plug 'godlygeek/tabular'
 Plug 'rking/ag.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'mattn/emmet-vim'
 Plug 'tommcdo/vim-exchange'
-Plug 'tpope/vim-dispatch'
 Plug 'SirVer/ultisnips'
 Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
 Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-eunuch'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'mbbill/undotree'
-Plug 'jansedivy/jai.vim'
+Plug '~/Dropbox/dev/jai.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'OmniSharp/omnisharp-vim', { 'for': 'cs' }
+Plug 'haya14busa/incsearch.vim'
+" Plug 'unblevable/quick-scope'
 
 " syntax
 Plug 'cakebaker/scss-syntax.vim'
@@ -47,6 +49,7 @@ Plug 'fatih/vim-go'
 Plug 'tikhomirov/vim-glsl'
 Plug 'mxw/vim-jsx'
 Plug 'davidhalter/jedi-vim'
+Plug 'gotcha/vimpdb'
 
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
 
@@ -97,8 +100,6 @@ set secure
 set modeline
 set modelines=3
 
-set scrolloff=1
-
 set t_ti= t_te=
 set cpoptions+=$
 set vb
@@ -114,13 +115,6 @@ set undodir=~/.vim/backups
 if !isdirectory(expand(&undodir))
   call mkdir(expand(&undodir), "p")
 endif
-
-nnoremap <silent> # :let stay_star_view = winsaveview()<cr>#:call winrestview(stay_star_view)<cr>
-nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<cr>
-
-" Keep search matches in the middle of the window.
-nnoremap n nzzzv
-nnoremap N Nzzzv
 
 set synmaxcol=256
 
@@ -182,7 +176,7 @@ augroup vimrcEx
     \ endif
 
   autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
-  autocmd FileType python set ts=4 sw=4 sts=4 et
+  autocmd FileType python set sw=4 sts=4 et
   autocmd FileType qf set nowrap
 
   autocmd! BufRead,BufNewFile *.sass setfiletype sass
@@ -214,6 +208,9 @@ color hybrid
 " Fix contrast for search highlight color
 hi Search cterm=NONE ctermfg=8 ctermbg=3
 
+" syntax keyword jaiDataType u8 u16 u32 u64 s8 s16 s32 s64
+" highlight link jaiDataType Type
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -241,6 +238,9 @@ nmap k gk
 
 map Y y$
 
+map <leader>q :!spot-selecta<cr><cr>
+map <leader>l :!gl3<cr><cr>
+
 " Sudo to write
 cnoremap w!! w !sudo tee % >/dev/null
 
@@ -256,6 +256,17 @@ function! MapCR()
 endfunction
 call MapCR()
 
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+nnoremap <silent> # :let stay_star_view = winsaveview()<cr>#:call winrestview(stay_star_view)<cr>
+nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<cr>
+
+" Keep search matches in the middle of the window.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
 map <leader><leader> <c-^>
 map <leader>w :normal ma<cr>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>:retab<CR>:normal 'a<cr>
 map <leader>e :edit %%
@@ -263,13 +274,15 @@ map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.vimrc<cr>
-map <leader>k :!vmd %&<cr><cr>
+" map <leader>k :!vmd %&<cr><cr>
 
 map <leader>o :silent !open .<cr>
 
 map <leader>y :SyntasticToggleMode<cr>
 
 map <leader>cn :e ~/Dropbox/coding-notes.markdown<cr>
+
+" nmap <leader>qs <plug>(QuickScopeToggle)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -285,7 +298,7 @@ function! InsertTabWrapper()
 endfunction
 
 inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-n>
+inoremap <expr> <s-tab> <c-n>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
@@ -309,11 +322,11 @@ endfunction
 " Switch to header/implementatino file
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! OpenAlternativeFile()
-  let new_file = AlternateForCurrentFile()
+  let new_file = AlternativeForCurrentFile()
   exec ':e ' . new_file
 endfunction
 
-function! AlternateForCurrentFile()
+function! AlternativeForCurrentFile()
   let current_file = expand("%:r")
   let current_extension = expand("%:e")
 
@@ -349,6 +362,7 @@ let filter = ' | grep -v "node_modules/"
       \ | grep -v "build/"
       \ | grep -v "CMakeScripts/"
       \ | grep -v "^dist/"
+      \ | grep -v "^libs/"
       \ | grep -v "^vim/vim.symlink/backups/"
       \ | grep -v "^vim/vim.symlink/bundle/"
       \ | grep -v "bower_components/"
@@ -363,9 +377,10 @@ let filter = ' | grep -v "node_modules/"
       \ | grep -v "^_build/"
       \ | grep -v "^ENV/"
       \ | grep -v "^env/"
+      \ | grep -v "^venv/"
       \ | grep -v "bundle.min.js"
       \ | grep -v ".xcodeproj/"
-      \ | grep -i -v -w ".*\.\(otf\|ogg\|pyc\|rdb\|pdf\|eot\|ttf\|svg\|woff\|gif\|dds\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
+      \ | grep -i -v -w ".*\.\(otf\|ogg\|gz\|pyc\|rdb\|pdf\|eot\|ttf\|svg\|woff\|gif\|dds\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
 
 let command = 'find * -type f ' . g:filter
 
@@ -377,7 +392,7 @@ endfunction
 
 function! SelectaApps()
   try
-    let selection = system("find $(find */apps -depth 1 -type d | selecta) -type f " . g:filter . " | selecta")
+    let selection = system("find $(find apps -depth 1 -type d | selecta) -type f " . g:filter . " | selecta")
   catch /Vim:Interrupt/
     " Swallow the ^C so that the redraw below happens; otherwise there will be
     " leftovers from selecta on the screen
@@ -425,11 +440,14 @@ let g:netrw_liststyle=3
 let g:syntastic_mode_map = {
   \ 'mode': 'active',
   \ 'active_filetypes': [],
-  \ 'passive_filetypes': ['html']
+  \ 'passive_filetypes': ['html', 'xml']
   \ }
+
+let g:syntastic_always_populate_loc_list = 1
 
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:syntastic_cpp_include_dirs = ['./libs/assimp/include', './libs/glew/include', './libs/glm', './libs/stb', './libs/perlin']
 
 let g:syntastic_javascript_checkers = ['eslint']
 
@@ -455,3 +473,5 @@ abbr ligth light
 " Python
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#show_call_signatures = "0"

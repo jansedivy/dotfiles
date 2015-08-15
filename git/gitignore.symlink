@@ -9,17 +9,18 @@
 .Trashes
 .AppleDouble
 .LSOverride
-Icon
-Icon?
 ehthumbs.db
 Thumbs.db
 .sass-cache/
+
+nohup.out
 
 .*.sw[a-z]
 *.un~
 Session.vim
 .netrwhist
 
+*.rdb
 *.log
 *.sql
 *.sqlite

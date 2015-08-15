@@ -2,11 +2,7 @@ alias aliases='vim ~/.dotfiles/zsh/aliases.zsh'
 alias d='cd ~/Documents/scratch'
 alias dr='cd ~/Dropbox'
 alias dt='cd ~/.dotfiles'
-alias exp='cd ~/Dropbox/experiments'
-alias ios='open -a /Applications/Xcode.app/Contents/Applications/iPhone\ Simulator.app'
-alias n='npm'
-alias ni='npm install'
-alias nt='npm test'
+alias dw='cd ~/Downloads'
 alias so='source ~/.dotfiles/zsh/aliases.zsh'
 alias u='cd ..'
 alias vi='vim'
@@ -16,11 +12,15 @@ alias keyon='sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Conte
 
 # alias notes='cd ~/Dropbox/notes'
 
-activate_virtualenv() {
-  if [ -f env/bin/activate ]; then . env/bin/activate;
-  elif [ -f ../env/bin/activate ]; then . ../env/bin/activate;
-  elif [ -f ../../env/bin/activate ]; then . ../../env/bin/activate;
-  elif [ -f ../../../env/bin/activate ]; then . ../../../env/bin/activate;
+venv () {
+  . $(up .env)
+}
+
+activate() {
+  if [ -f venv/bin/activate ]; then . venv/bin/activate;
+  elif [ -f ../venv/bin/activate ]; then . ../venv/bin/activate;
+  elif [ -f ../../venv/bin/activate ]; then . ../../venv/bin/activate;
+  elif [ -f ../../../venv/bin/activate ]; then . ../../../venv/bin/activate;
   fi
 }
 

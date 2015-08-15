@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+pushd ~/Documents/scratch/spot > /dev/null
+./venv/bin/python spot play $(./venv/bin/python spot list | selecta)
+popd
