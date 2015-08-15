@@ -60,6 +60,9 @@ brew cask install launchrocket 2> /dev/null
 brew cask install cloudup 2> /dev/null
 # cask install parallels 2> /dev/null
 
+
+brew tap caskroom/fonts
+
 brew cleanup
 
 exit 0
