@@ -187,6 +187,7 @@ augroup vimrcEx
   autocmd BufNewFile,BufRead *.as setlocal filetype=javascript
 
   autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+  autocmd BufNewFile,BufRead *.usf setfiletype glsl
 
   autocmd Filetype gitcommit setlocal spell textwidth=72
 
@@ -447,7 +448,7 @@ let g:syntastic_always_populate_loc_list = 1
 
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
-let g:syntastic_cpp_include_dirs = ['./libs/assimp/include', './libs/glew/include', './libs/glm', './libs/stb', './libs/perlin']
+let g:syntastic_cpp_include_dirs = ['./libs/assimp/include', './libs/glew/include', './libs/jemalloc/include', './libs/glm', './libs/stb', './libs/perlin']
 
 let g:syntastic_javascript_checkers = ['eslint']
 
