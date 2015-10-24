@@ -58,6 +58,10 @@ function g() {
 function mcd() { mkdir -p $1 && cd $1 }
 function cdf() { cd *$1*/ }
 
+function gif_video() {
+  ffmpeg -i "$1" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > out.gif
+}
+
 # By default, ^S freezes terminal output and ^Q resumes it. Disable that so
 # that those keys can be used for other things.
 unsetopt flowcontrol
