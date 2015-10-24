@@ -18,6 +18,7 @@ brew install ack
 brew install the_silver_searcher
 brew install jq
 brew install python3
+brew install pyenv
 
 npm install vmd -g
 npm install eslint -g
