@@ -344,7 +344,7 @@ nnoremap <leader>. :call OpenAlternativeFile()<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! SelectaCommand(choice_command, selecta_args, vim_command)
   try
-    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+    let selection = system(a:choice_command . " | hs " . a:selecta_args)
   catch /Vim:Interrupt/
     " Swallow the ^C so that the redraw below happens; otherwise there will be
     " leftovers from selecta on the screen
@@ -389,7 +389,7 @@ endfunction
 
 function! SelectaApps()
   try
-    let selection = system("find $(find apps -depth 1 -type d | selecta) -type f " . g:filter . " | selecta")
+    let selection = system("find $(find apps -depth 1 -type d | hs) -type f " . g:filter . " | hs")
   catch /Vim:Interrupt/
     " Swallow the ^C so that the redraw below happens; otherwise there will be
     " leftovers from selecta on the screen
@@ -411,7 +411,7 @@ function! SelectaFindMethodsCommand(selecta_args)
   let a:choice_command = 'cat ' . bufname("%") . " | egrep -o -w -n -h \"([A-Z]\\w+)(?:\\s?=\\s?function|.prototype.(\\S+)\\s?=\\s?function)\" | awk -F\"[:.=]\" '{print $1 \":\" (($4 == \"\") ? $2 : $2 \".\" $4) }' | column -t -s ':'"
 
   try
-    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+    let selection = system(a:choice_command . " | hs " . a:selecta_args)
   catch /Vim:Interrupt/
     " Swallow the ^C so that the redraw below happens; otherwise there will be
     " leftovers from selecta on the screen
