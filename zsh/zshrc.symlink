@@ -1,3 +1,5 @@
+export PYENV_ROOT="$HOME/.pyenv"
+
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
 
@@ -24,6 +26,8 @@ source $ZSH/lib/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # initialize autocomplete here, otherwise functions won't be loaded
 autoload -U compinit
 compinit
+
+eval "$(pyenv init -)"
 
 # load every completion after autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}
