@@ -241,7 +241,7 @@ map <leader>q :!spot-selecta<cr><cr>
 map <leader>l :!gl3<cr><cr>
 
 " Sudo to write
-cnoremap w!! w !sudo tee % >/dev/null
+cnoremap w!! w !sudo tee "%" >/dev/null
 
 map <C-s> <esc>:w<CR>
 imap <C-s> <esc>:w<CR>
