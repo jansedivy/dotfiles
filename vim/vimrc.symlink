@@ -28,7 +28,7 @@ Plug '~/Dropbox/dev/jai.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'OmniSharp/omnisharp-vim', { 'for': 'cs' }
 Plug 'haya14busa/incsearch.vim'
-" Plug 'unblevable/quick-scope'
+Plug 'unblevable/quick-scope'
 
 " syntax
 Plug 'cakebaker/scss-syntax.vim'
@@ -109,9 +109,7 @@ set nobackup
 set nowb
 
 set undofile
-
 set undodir=~/.vim/backups
-
 if !isdirectory(expand(&undodir))
   call mkdir(expand(&undodir), "p")
 endif
@@ -282,8 +280,6 @@ map <leader>o :silent !open .<cr>
 map <leader>y :SyntasticToggleMode<cr>
 
 map <leader>cn :e ~/Dropbox/coding-notes.markdown<cr>
-
-" nmap <leader>qs <plug>(QuickScopeToggle)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -456,6 +452,8 @@ let g:syntastic_python_checkers=['flake8']
 let g:syntastic_python_flake8_args='--ignore=E501'
 
 let g:syntastic_python_python_exec = '/usr/local/bin/python3'
+
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Abbreviations
