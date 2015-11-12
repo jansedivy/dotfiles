@@ -20,6 +20,7 @@ brew install jq
 brew install python3
 brew install pyenv
 
+npm install speed-test -g
 npm install vmd -g
 npm install eslint -g
 npm install eslint-plugin-react -g
