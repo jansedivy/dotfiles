@@ -1,4 +1,5 @@
 ---
+  parser: "babel-eslint"
   plugins:
     - "react"
   ecmaFeatures:
@@ -16,6 +17,7 @@
     no-extend-native: 1
     no-extra-bind: 1
     no-implied-eval: 1
+    no-undef: 1
     no-iterator: 1
     no-label-var: 1
     no-labels: 1
