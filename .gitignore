@@ -1,5 +1,6 @@
 vim/vim.symlink/.netrwhist
 vim/vim.symlink/plugged
 vim/vim.symlink/backups
+vim/vim.symlink/undos
 git/gitconfig.symlink
 cache/
