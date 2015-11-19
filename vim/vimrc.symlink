@@ -109,7 +109,7 @@ set nobackup
 set nowb
 
 set undofile
-set undodir=~/.vim/backups
+set undodir=~/.vim/undos
 if !isdirectory(expand(&undodir))
   call mkdir(expand(&undodir), "p")
 endif

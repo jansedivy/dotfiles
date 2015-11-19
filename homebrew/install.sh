@@ -24,6 +24,7 @@ npm install speed-test -g
 npm install vmd -g
 npm install eslint -g
 npm install eslint-plugin-react -g
+npm install babel-eslint -g
 
 brew install vim --override-system-vim --with-python3
 
