@@ -1,5 +1,3 @@
-set nocompatible
-
 autocmd!
 
 call plug#begin('~/.vim/plugged')
@@ -83,7 +81,7 @@ scriptencoding utf-8
 set cmdheight=1
 set switchbuf=useopen
 set numberwidth=3
-set showtabline=2
+set showtabline=1
 set winwidth=81
 set relativenumber
 set shell=zsh
@@ -143,8 +141,6 @@ set notimeout
 set ttimeout
 set ttimeoutlen=10
 
-" Hide tabline
-verbose set showtabline=1
 " When at 3 spaces and I hit >>, go to 4, not 5.
 set shiftround
 " Get rid of the delay when hitting esc!
@@ -156,7 +152,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 set foldmethod=manual
 " set nofoldenable
-"
+
 " highlight colorcolumn ctermbg=magenta
 " call matchadd('colorcolumn', '\%81v', 100)
 
@@ -205,9 +201,6 @@ color hybrid
 
 " Fix contrast for search highlight color
 hi Search cterm=NONE ctermfg=8 ctermbg=3
-
-" syntax keyword jaiDataType u8 u16 u32 u64 s8 s16 s32 s64
-" highlight link jaiDataType Type
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
@@ -328,13 +321,12 @@ function! AlternativeForCurrentFile()
 
   if current_extension == "h"
     return current_file . ".cpp"
-  endif
-
-  if current_extension == "cpp"
+  elseif current_extension == "cpp"
     return current_file . ".h"
   endif
-endfunction
 
+  return expand("%")
+endfunction
 
 nnoremap <leader>. :call OpenAlternativeFile()<cr>
 
