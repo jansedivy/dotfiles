@@ -9,7 +9,7 @@ for (u32 $1=0; $1<$2; $1++) {
 endsnippet
 
 snippet iter
-for (auto it = $1.begin(); it != $1.end(); it++) {
+for (auto it = array::begin($1); it != array::end($1); it++) {
 	$0
 }
 endsnippet
