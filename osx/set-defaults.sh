@@ -45,9 +45,6 @@ sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo Hos
 # Check for software updates daily, not just once per week
 defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 
-# Disable Notification Center and remove the menu bar icon
-launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2> /dev/null
-
 ###############################################################################
 # SSD-specific tweaks                                                         #
 ###############################################################################
@@ -150,20 +147,8 @@ chflags nohidden ~/Library
 # Dock
 ###############################################################################
 
-# Set the icon size of Dock items to 68 pixels
-defaults write com.apple.dock tilesize -int 68
+# Set the icon size of Dock items to 64 pixels
+defaults write com.apple.dock tilesize -int 64
 
 # Show indicator lights for open applications in the Dock
 defaults write com.apple.dock show-process-indicators -bool true
-
-###############################################################################
-# Kill affected applications                                                  #
-###############################################################################
-
-for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
-  "Dock" "Finder" "Google Chrome" "Google Chrome Canary" "Mail" "Messages" \
-  "Opera" "Safari" "SizeUp" "Spectacle" "SystemUIServer" "Terminal" \
-  "Transmission" "Tweetbot" "Twitter" "iCal"; do
-  killall "${app}" &> /dev/null
-done
-echo "Done. Note that some of these changes require a logout/restart to take effect."
