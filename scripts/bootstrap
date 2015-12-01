@@ -7,8 +7,6 @@ DOTFILES_ROOT=$(pwd)
 
 set -e
 
-echo ''
-
 info () {
   printf "  [ \033[00;34m..\033[0m ] $1"
 }
@@ -28,6 +26,7 @@ fail () {
 }
 
 setup_gitconfig () {
+  printf "[ \033[00;33mGit\033[0m ]\n"
   if ! [ -f git/gitconfig.symlink ]
   then
     info 'setup gitconfig'
@@ -48,7 +47,6 @@ setup_gitconfig () {
     success 'gitconfig'
   fi
 }
-
 
 link_file () {
   local src=$1 dst=$2
@@ -126,11 +124,12 @@ link_file () {
 }
 
 install_dotfiles () {
+  printf "[ \033[00;33mDotfiles\033[0m ]\n"
   info 'installing dotfiles'
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  for src in $(find "$DOTFILES_ROOT/" -maxdepth 2 -name '*.symlink')
+  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
   do
     dst="$HOME/.$(basename "${src%.*}")"
     link_file "$src" "$dst"
@@ -139,18 +138,5 @@ install_dotfiles () {
 
 setup_gitconfig
 install_dotfiles
-
-# If we're on a Mac, let's install and setup homebrew.
-if [ "$(uname -s)" == "Darwin" ]
-then
-  info "installing dependencies"
-  if source bin/dot > /tmp/dotfiles-dot 2>&1
-  then
-    success "dependencies installed"
-  else
-    fail "error installing dependencies"
-  fi
-fi
-
-echo ''
-echo '  All installed!'
+osx/setup.sh
+scripts/install
