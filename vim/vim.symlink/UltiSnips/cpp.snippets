@@ -13,3 +13,11 @@ for (auto it = array::begin($1); it != array::end($1); it++) {
 	$0
 }
 endsnippet
+
+snippet time
+auto start = std::chrono::high_resolution_clock::now();
+$0
+auto end = std::chrono::high_resolution_clock::now();
+auto diff = end - start;
+printf("time: %lld\n", std::chrono::duration_cast<std::chrono::milliseconds> (diff).count());
+endsnippet

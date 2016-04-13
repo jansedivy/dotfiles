@@ -11,7 +11,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
 Plug 'scrooloose/syntastic'
-Plug 'godlygeek/tabular'
+Plug 'junegunn/vim-easy-align'
 Plug 'rking/ag.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'mattn/emmet-vim'
@@ -20,12 +20,13 @@ Plug 'SirVer/ultisnips'
 Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
 Plug 'terryma/vim-multiple-cursors'
 Plug 'nelstrom/vim-visual-star-search'
-Plug 'mbbill/undotree'
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'OmniSharp/omnisharp-vim', { 'for': 'cs' }
 Plug 'haya14busa/incsearch.vim'
 Plug 'unblevable/quick-scope'
 Plug 'scrooloose/nerdtree'
+Plug 'wakatime/vim-wakatime'
 
 " syntax
 Plug 'cakebaker/scss-syntax.vim'
@@ -33,6 +34,7 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'pangloss/vim-javascript'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'kchmck/vim-coffee-script'
+Plug '~/Documents/scratch/vim-coffee-script'
 Plug 'groenewege/vim-less'
 Plug 'othree/html5.vim'
 Plug 'digitaltoad/vim-jade'
@@ -49,8 +51,12 @@ Plug 'davidhalter/jedi-vim'
 Plug 'gotcha/vimpdb'
 Plug '~/Dropbox/dev/jai.vim'
 Plug 'petRUShka/vim-opencl'
+Plug 'keith/swift.vim'
+" Plug 'flowtype/vim-flow'
 
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
+Plug 'atelierbram/vim-colors_atelier-schemes'
+Plug 'chriskempson/base16-vim'
 
 call plug#end()
 
@@ -92,6 +98,8 @@ set lazyredraw
 set showcmd
 set title
 set cursorline
+set virtualedit=block
+set nowrap
 
 set exrc
 set secure
@@ -135,6 +143,7 @@ set wildignore+=*.pyc
 set clipboard=unnamed
 set autoread
 set list listchars=tab:▸⋅,trail:⋅,nbsp:⋅
+let &showbreak = '↳ '
 " Optimize for fast terminal connections
 set ttyfast
 
@@ -180,6 +189,7 @@ augroup vimrcEx
 
   autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
   autocmd BufNewFile,BufRead *.as setlocal filetype=javascript
+  autocmd BufNewFile,BufRead *.cocoascript setlocal filetype=javascript
 
   autocmd BufNewFile,BufRead *.usf setfiletype glsl
 
@@ -189,6 +199,12 @@ augroup vimrcEx
   " to run commands there.
   autocmd! CmdwinEnter * :unmap <cr>
   autocmd! CmdwinLeave * :call MapCR()
+
+  autocmd WinEnter * set cursorline
+  autocmd WinLeave * set nocursorline
+
+  autocmd FocusGained * set cursorline
+  autocmd FocusLost * set nocursorline
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -214,6 +230,8 @@ hi StatusLine ctermfg=235 ctermbg=2
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap ; :
+
+nnoremap gV `[V`]
 
 command! W :w
 command! Q :q
@@ -252,8 +270,14 @@ map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
 nnoremap <silent> # :let stay_star_view = winsaveview()<cr>#:call winrestview(stay_star_view)<cr>
 nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<cr>
+
+map <c-k> :w\|:let stay_star_view = winsaveview()<cr>:%!clang-format %<cr>:call winrestview(stay_star_view)<cr>
+
 
 " Keep search matches in the middle of the window.
 nnoremap n nzzzv
@@ -344,10 +368,13 @@ function! SelectaCommand(choice_command, selecta_args, vim_command)
     return
   endtry
   redraw!
+  " Saves current location in jumplist
+  execute "normal " . line(".") . "G" . col(".") . "|"
   exec a:vim_command . " " . selection
 endfunction
 
 let filter = ' | grep -v "node_modules/"
+      \ | grep -v "libs/"
       \ | grep -v "build/"
       \ | grep -v "CMakeScripts/"
       \ | grep -v "^dist/"
@@ -368,11 +395,10 @@ let filter = ' | grep -v "node_modules/"
       \ | grep -v "^venv/"
       \ | grep -v "bundle.min.js"
       \ | grep -v ".xcodeproj/"
+      \ | grep -v ".dSYM/"
       \ | grep -i -v -w ".*\.\(otf\|ogg\|gz\|pyc\|rdb\|pdf\|eot\|ttf\|svg\|woff\|gif\|dds\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
 
 let command = 'find * -type f ' . g:filter
-
-map <leader>t :call SelectaCommand(command, "", ":e")<cr>
 
 function! SelectaFile(path)
   call SelectaCommand(g:command . " | grep " . a:path, "", ":e")
@@ -391,30 +417,14 @@ function! SelectaApps()
   exec ":e " . selection
 endfunction
 
+map <leader>t :call SelectaCommand(command, "", ":e")<cr>
+
 map <leader>gm :call SelectaFile("/models")<cr>
 map <leader>gd :call SelectaFile("admin.py$")<cr>
 map <leader>gv :call SelectaFile("/views")<cr>
 map <leader>gt :call SelectaFile("/templates/")<cr>
 map <leader>gs :call SelectaFile("/static/")<cr>
 map <leader>ga :call SelectaApps()<cr>
-
-function! SelectaFindMethodsCommand(selecta_args)
-  let a:choice_command = 'cat ' . bufname("%") . " | egrep -o -w -n -h \"([A-Z]\\w+)(?:\\s?=\\s?function|.prototype.(\\S+)\\s?=\\s?function)\" | awk -F\"[:.=]\" '{print $1 \":\" (($4 == \"\") ? $2 : $2 \".\" $4) }' | column -t -s ':'"
-
-  try
-    let selection = system(a:choice_command . " | hs " . a:selecta_args)
-  catch /Vim:Interrupt/
-    " Swallow the ^C so that the redraw below happens; otherwise there will be
-    " leftovers from selecta on the screen
-    redraw!
-    return
-  endtry
-  redraw!
-  exec split(selection, ' ')[0]
-  normal zz
-endfunction
-
-map <leader>m :call SelectaFindMethodsCommand("")<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
@@ -437,7 +447,7 @@ let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -Wno-int-to-void-pointer-cast'
 let g:syntastic_cpp_include_dirs = ['./libs/assimp/include', './libs/glew/include', './libs/jemalloc/include', './libs/glm', './libs/stb', './libs/perlin', './libs/vcache', './libs/base']
 
-let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_checkers = ['eslint', 'flow']
 
 let g:syntastic_python_checkers=['flake8']
 let g:syntastic_python_flake8_args='--ignore=E501'
@@ -449,6 +459,8 @@ let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 let g:user_emmet_mode='i'
 
 let g:jsx_ext_required = 0
+
+" let g:flow#enable = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Abbreviations
@@ -470,3 +482,12 @@ let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#popup_on_dot = 0
 let g:jedi#show_call_signatures = "0"
 let g:jedi#goto_command = "<c-]>"
+
+
+nmap <leader>z :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
