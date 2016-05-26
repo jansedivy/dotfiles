@@ -28,6 +28,7 @@
 [core]
   excludesfile = ~/.gitignore
   editor = vim
+  ignorecase = false
 [apply]
   whitespace = nowarn
 [merge]
@@ -44,3 +45,6 @@
   helper = GIT_CREDENTIAL_HELPER
 [diff]
   algorithm = patience
+[pager]
+  diff = diff-so-fancy | less --tabs=1,5 -RFX
+  show = diff-so-fancy | less --tabs=1,5 -RFX

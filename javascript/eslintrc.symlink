@@ -8,6 +8,8 @@
     browser: true
     node: true
     es6: true
+  globals:
+    $: true
   rules:
     no-array-constructor: 1
     no-caller: 1
@@ -38,7 +40,7 @@
     no-return-assign: 1
     no-script-url: 1
     no-sequences: 1
-    no-shadow: 1
+    no-shadow: 0
     no-shadow-restricted-names: 1
     no-spaced-func: 1
     no-trailing-spaces: 1
@@ -73,9 +75,7 @@
       -
         words: true
         nonwords: false
-    space-infix-ops:
-      - 2
-      - int32Hint: false
+    space-infix-ops: 0
     semi-spacing:
       - 2
       -

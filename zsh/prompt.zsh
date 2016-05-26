@@ -7,31 +7,28 @@ else
   git="/usr/bin/git"
 fi
 
-git_dirty() {
-  st=$($git status 2>/dev/null | tail -n 1)
-  if [[ $st == "" ]]
+git_prompt() {
+  git rev-parse --is-inside-work-tree &>/dev/null || return
+
+  git diff --quiet --ignore-submodules HEAD &>/dev/null
+  if [[ $? -eq 0 ]]
   then
-    echo ""
+    echo "(%{$fg_bold[green]%}$(git_prompt_branch)%{$reset_color%}$(need_push))"
   else
-    if [[ "$st" =~ ^nothing ]]
-    then
-      echo "(%{$fg_bold[green]%}$(git_prompt_info)%{$reset_color%}$(need_push))"
-    else
-      echo "(%{$fg_bold[red]%}$(git_prompt_info)%{$reset_color%}$(need_push))"
-    fi
+    echo "(%{$fg_bold[red]%}$(git_prompt_branch)%{$reset_color%}$(need_push))"
   fi
 }
 
-git_prompt_info () {
+git_prompt_branch() {
  ref=$($git symbolic-ref HEAD 2>/dev/null) || return
  echo "${ref#refs/heads/}"
 }
 
-unpushed () {
+unpushed() {
   $git cherry -v @{upstream} 2>/dev/null
 }
 
-need_push () {
+need_push() {
   if [[ $(unpushed) == "" ]]
   then
     echo ""
@@ -52,4 +49,4 @@ directory_name() {
   echo "%{$fg_bold[blue]%}%1/%{$reset_color%}"
 }
 
-export PROMPT=$'$(vim_jobs_count)$(directory_name)$(git_dirty) › '
+export PROMPT=$'$(vim_jobs_count)$(directory_name)$(git_prompt) › '

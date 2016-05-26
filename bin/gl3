@@ -1,6 +1,9 @@
 #!/bin/bash
 
 BASEDIR=$(dirname $0)
-echo $BASEDIR
+result=`cat $BASEDIR/gl3.data | fzf`
 
-open "http://docs.gl/gl3/$(cat $BASEDIR/gl3.data | selecta)"
+if [[ -n $result ]]
+then
+  open "http://docs.gl/gl3/$result"
+fi

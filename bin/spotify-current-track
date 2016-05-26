@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-echo $(osascript <<EOF
+value="$(osascript <<EOF
 if appIsRunning("Spotify") then
   tell application "Spotify"
     if (player state = playing) then
       set trackName to name of current track
       set artistName to artist of current track
-      return trackName & " / " & artistName
+      set trackDuratino to duration of current track
+      return trackName & " / " & artistName & "|" & trackDuratino & "|" & player position
     end if
   end tell
 end if
@@ -13,4 +14,22 @@ end if
 on appIsRunning(appName)
   tell application "System Events" to (name of processes) contains appName
 end appIsRunning
-EOF)
+EOF)"
+
+get_name() {
+  echo $value | cut -d '|' -f 1
+}
+
+name=$(echo `get_name`)
+
+if [[ -n "$name" ]]; then
+  python3 <<EOF
+name = "$name"
+duration = float("$(echo $value | cut -d '|' -f 2)".replace(',', '.')) / 1000.0
+position = float("$(echo $value | cut -d '|' -f 3)".replace(',', '.'))
+progress = position / duration
+step = round(progress * 10.0)
+
+print(("█" * step) + "#[fg=black]" + ("█" * (10 - step)) + " #[fg=green]" + name)
+EOF
+fi

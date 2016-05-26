@@ -1,9 +1,3 @@
-if [[ -n $SSH_CONNECTION ]]; then
-  export PS1='%m:%3~$(git_info_for_prompt)%# '
-else
-  export PS1='%3~$(git_info_for_prompt)%# '
-fi
-
 export GREP_OPTIONS="--color"
 
 export EDITOR='vim'
@@ -12,7 +6,7 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 
 export CLICOLOR=true
 
-export TERM="xterm-256color"
+export TERM="screen-256color"
 
 export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
 
@@ -62,3 +56,6 @@ bindkey '^[[Z' reverse-menu-complete
 
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+
+export FZF_DEFAULT_COMMAND='ag --ignore node_modules -g ""'
+export FZF_DEFAULT_OPTS="--reverse --inline-info"

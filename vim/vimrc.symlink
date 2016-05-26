@@ -24,9 +24,12 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'OmniSharp/omnisharp-vim', { 'for': 'cs' }
 Plug 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'unblevable/quick-scope'
 Plug 'scrooloose/nerdtree'
 Plug 'wakatime/vim-wakatime'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " syntax
 Plug 'cakebaker/scss-syntax.vim'
@@ -270,6 +273,10 @@ map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 
+map z/ <Plug>(incsearch-fuzzy-/)
+map z? <Plug>(incsearch-fuzzy-?)
+map zg/ <Plug>(incsearch-fuzzy-stay)
+
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
@@ -297,6 +304,8 @@ map <leader>o :silent !open .<cr>
 map <leader>y :SyntasticToggleMode<cr>
 
 map <leader>cn :e ~/Dropbox/coding-notes.markdown<cr>
+
+map <leader>i :GoImports<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -326,11 +335,15 @@ function! RenameFile()
     let old_name = expand('%')
     let new_name = input('New file name: ', expand('%'), 'file')
     if new_name != '' && new_name != old_name
+        let old_alt = expand('#')
         exec ':saveas ' . new_name
+        let @# = old_alt
+        exec ':bd ' . bufnr(old_name)
         exec ':silent !rm ' . old_name
         redraw!
     endif
 endfunction
+map <leader>n :call RenameFile()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Switch to header/implementatino file
@@ -417,14 +430,11 @@ function! SelectaApps()
   exec ":e " . selection
 endfunction
 
-map <leader>t :call SelectaCommand(command, "", ":e")<cr>
+map <leader>t :FZF<cr>
+map <leader>b :Buffers<cr>
 
-map <leader>gm :call SelectaFile("/models")<cr>
-map <leader>gd :call SelectaFile("admin.py$")<cr>
-map <leader>gv :call SelectaFile("/views")<cr>
-map <leader>gt :call SelectaFile("/templates/")<cr>
-map <leader>gs :call SelectaFile("/static/")<cr>
-map <leader>ga :call SelectaApps()<cr>
+
+" imap <c-x><c-k> <plug>(fzf-complete-word)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
@@ -447,10 +457,12 @@ let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -Wno-int-to-void-pointer-cast'
 let g:syntastic_cpp_include_dirs = ['./libs/assimp/include', './libs/glew/include', './libs/jemalloc/include', './libs/glm', './libs/stb', './libs/perlin', './libs/vcache', './libs/base']
 
-let g:syntastic_javascript_checkers = ['eslint', 'flow']
+let g:syntastic_javascript_checkers = ['eslint']
 
 let g:syntastic_python_checkers=['flake8']
 let g:syntastic_python_flake8_args='--ignore=E501'
+" let g:syntastic_css_checkers=['stylelint']
+" let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 
 let g:syntastic_python_python_exec = '/usr/local/bin/python3'
 

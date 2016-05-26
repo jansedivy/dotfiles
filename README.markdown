@@ -3,9 +3,7 @@
 ## install
 
 ```sh
-git clone https://github.com/jansedivy/dotfiles.git ~/.dotfiles --recursive
-cd ~/.dotfiles
-scripts/bootstrap
+curl -fsSL https://raw.githubusercontent.com/jansedivy/dotfiles/master/scripts/run | sh
 ```
 
 ## Thanks

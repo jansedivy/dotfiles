@@ -47,6 +47,8 @@ install_package "Installing Ag" brew install the_silver_searcher
 install_package "Installing jq" brew install jq
 install_package "Installing Python 3" brew install python3
 install_package "Installing PyEnv" brew install pyenv
+install_package "Installing gnu sed" brew install gnu-sed
+install_package "Installing diff-so-fancy" brew install diff-so-fancy
 
 install_package "Installing speed-test" npm install speed-test -g
 install_package "Installing vmd" npm install vmd -g

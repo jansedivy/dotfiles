@@ -1,5 +1,5 @@
 alias aliases='vim ~/.dotfiles/zsh/aliases.zsh'
-alias d='cd ~/Documents/scratch'
+alias d='cd ~/Documents/scratch/'
 alias dr='cd ~/Dropbox'
 alias dt='cd ~/.dotfiles'
 alias dw='cd ~/Downloads'
@@ -10,8 +10,6 @@ alias vi='vim'
 alias keyoff='sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
 alias keyon='sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
 
-# alias notes='cd ~/Dropbox/notes'
-
 venv () {
   . $(up .env)
 }
@@ -21,20 +19,6 @@ activate() {
   elif [ -f ../venv/bin/activate ]; then . ../venv/bin/activate;
   elif [ -f ../../venv/bin/activate ]; then . ../../venv/bin/activate;
   elif [ -f ../../../venv/bin/activate ]; then . ../../../venv/bin/activate;
-  fi
-}
-
-function p() {
-  dev=$(ls ~/Dropbox/dev --color=never | selecta)
-  if [[ -n "$dev" ]]; then
-    cd ~/Dropbox/dev/$dev
-  fi
-}
-
-function notes() {
-  note=$(ls ~/Dropbox/notes --color=never | selecta)
-  if [[ -n "$note" ]]; then
-    cd ~/Dropbox/notes/$note
   fi
 }
 
@@ -61,27 +45,6 @@ function cdf() { cd *$1*/ }
 function gif_video() {
   ffmpeg -i "$1" -s 600x400 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > out.gif
 }
-
-# By default, ^S freezes terminal output and ^Q resumes it. Disable that so
-# that those keys can be used for other things.
-unsetopt flowcontrol
-# Run Selecta in the current working directory, appending the selected path, if
-# any, to the current command.
-function insert-selecta-path-in-command-line() {
-    local selected_path
-    # Print a newline or we'll clobber the old prompt.
-    echo
-    # Find the path; abort if the user doesn't select anything.
-    selected_path=$(find * -type f | selecta) || return
-    # Append the selection to the current command buffer.
-    eval 'LBUFFER="$LBUFFER$selected_path"'
-    # Redraw the prompt since Selecta has drawn several new lines of text.
-    zle reset-prompt
-}
-# Create the zle widget
-zle -N insert-selecta-path-in-command-line
-# Bind the key to the newly created widget
-bindkey "^S" "insert-selecta-path-in-command-line"
 
 # grc overides for ls
 #   Made possible through contributions from generous benefactors like
