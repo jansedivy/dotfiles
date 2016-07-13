@@ -14,7 +14,6 @@
     no-array-constructor: 1
     no-caller: 1
     no-catch-shadow: 1
-    no-empty-label: 1
     no-eval: 1
     no-extend-native: 1
     no-extra-bind: 1
@@ -51,14 +50,14 @@
     comma-spacing: 1
     consistent-return: 1
     curly: 1
+    keyword-spacing: ["error", { "before": true }]
     dot-notation: 1
     eol-last: 1
     eqeqeq: [2, "smart"]
     key-spacing: 1
     new-cap: 1
     new-parens: 1
-    space-return-throw-case: 1
-    indent: 
+    indent:
       - 2
       - 2
       - SwitchCase: 1
@@ -90,7 +89,7 @@
 
     react/display-name: 0
     react/jsx-boolean-value: 1
-    react/jsx-quotes: 1
+    jsx-quotes: 1
     react/jsx-no-undef: 1
     react/jsx-sort-props: 0
     react/jsx-sort-prop-types: 1
