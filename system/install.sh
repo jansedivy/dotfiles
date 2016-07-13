@@ -58,7 +58,8 @@ install_package "Installing ESLint React" npm install eslint-plugin-react -g
 install_package "Installing ESLint babel" npm install babel-eslint -g
 install_package "Installing flow" npm install flow-bin -g
 
-install_package "Installing Vim" brew install vim --override-system-vim --with-python3
+install_package "Installing Vim" brew install vim --with-python3
+install_package "Installing Neovim" brew install neovim/neovim/neovim --override-system-vim --with-python3
 
 install_package "Homebrew Cask" brew install caskroom/cask/brew-cask
 install_package "Homebrew tap versions" brew tap caskroom/versions
