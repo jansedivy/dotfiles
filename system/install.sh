@@ -49,12 +49,14 @@ install_package "Installing Python 3" brew install python3
 install_package "Installing PyEnv" brew install pyenv
 install_package "Installing gnu sed" brew install gnu-sed
 install_package "Installing diff-so-fancy" brew install diff-so-fancy
+install_package "Installing fzf" brew install fzf && /usr/local/opt/fzf/install
 
 install_package "Installing speed-test" npm install speed-test -g
 install_package "Installing vmd" npm install vmd -g
 install_package "Installing ESLint" npm install eslint -g
 install_package "Installing ESLint React" npm install eslint-plugin-react -g
 install_package "Installing ESLint babel" npm install babel-eslint -g
+install_package "Installing flow" npm install flow-bin -g
 
 install_package "Installing Vim" brew install vim --override-system-vim --with-python3
 
@@ -84,8 +86,8 @@ install_package "Installing app smcFanControl" brew cask install smcfancontrol 2
 install_package "Installing app MacDown" brew cask install macdown 2> /dev/null
 install_package "Installing app TeamSpeak" brew cask install teamspeak-client 2> /dev/null
 install_package "Installing app Calibre" brew cask install calibre 2> /dev/null
-install_package "Installing app Cloudup" brew cask install cloudup 2> /dev/null
 install_package "Installing app Numi" brew cask install numi 2> /dev/null
+install_package "Installing app Cloak" brew cask install cloak 2> /dev/null
 
 install_package "Homebrew tap fonts" brew tap caskroom/fonts
 
