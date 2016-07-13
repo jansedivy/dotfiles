@@ -30,6 +30,6 @@ position = float("$(echo $value | cut -d '|' -f 3)".replace(',', '.'))
 progress = position / duration
 step = round(progress * 10.0)
 
-print(("█" * step) + "#[fg=black]" + ("█" * (10 - step)) + " #[fg=green]" + name)
+print("#[fg=green]" + ("█" * step) + "#[fg=black]" + ("█" * (10 - step)) + " #[fg=green]" + name)
 EOF
 fi
