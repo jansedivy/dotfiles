@@ -18,7 +18,6 @@ Plug 'mattn/emmet-vim'
 Plug 'tommcdo/vim-exchange'
 Plug 'SirVer/ultisnips'
 Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
-Plug 'terryma/vim-multiple-cursors'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'AndrewRadev/splitjoin.vim'
@@ -27,9 +26,9 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'unblevable/quick-scope'
 Plug 'scrooloose/nerdtree'
-Plug 'wakatime/vim-wakatime'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'craigemery/vim-autotag'
 
 " syntax
 Plug 'cakebaker/scss-syntax.vim'
@@ -85,7 +84,7 @@ set showmatch
 set incsearch
 set hlsearch
 set ignorecase smartcase
-set mouse=a
+set mouse=
 set encoding=utf-8 nobomb
 scriptencoding utf-8
 set cmdheight=1
@@ -303,7 +302,7 @@ map <leader>o :silent !open .<cr>
 
 map <leader>y :SyntasticToggleMode<cr>
 
-map <leader>cn :e ~/Dropbox/coding-notes.markdown<cr>
+map <leader>cn :e ~/Dropbox\ \(Personal\)/coding-notes.markdown<cr>
 
 map <leader>i :GoImports<cr>
 
@@ -451,6 +450,7 @@ let g:syntastic_mode_map = {
   \ 'passive_filetypes': ['html', 'xml']
   \ }
 
+let g:syntastic_aggregate_errors = 1
 let g:syntastic_always_populate_loc_list = 1
 
 let g:syntastic_cpp_compiler = 'clang++'
@@ -462,7 +462,9 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_python_checkers=['flake8']
 let g:syntastic_python_flake8_args='--ignore=E501'
 " let g:syntastic_css_checkers=['stylelint']
-" let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_go_checkers = ['go', 'govet', 'golint']
+
+" let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 
 let g:syntastic_python_python_exec = '/usr/local/bin/python3'
 
