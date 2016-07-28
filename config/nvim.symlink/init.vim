@@ -57,9 +57,14 @@ Plug 'petRUShka/vim-opencl'
 Plug 'keith/swift.vim'
 Plug 'flowtype/vim-flow'
 
+Plug 'mhartington/oceanic-next'
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
 Plug 'atelierbram/vim-colors_atelier-schemes'
+Plug 'jdkanani/vim-material-theme'
 Plug 'chriskempson/base16-vim'
+Plug 'whatyouhide/vim-gotham'
+Plug 'jacoborus/tender.vim'
+Plug 'joshdick/onedark.vim'
 
 call plug#end()
 
@@ -110,7 +115,6 @@ set secure
 set modeline
 set modelines=3
 
-set t_ti= t_te=
 set cpoptions+=$
 set vb
 
@@ -147,8 +151,6 @@ set clipboard=unnamed
 set autoread
 set list listchars=tab:▸⋅,trail:⋅,nbsp:⋅
 let &showbreak = '↳ '
-" Optimize for fast terminal connections
-set ttyfast
 
 set notimeout
 set ttimeout
@@ -216,10 +218,14 @@ augroup END
 " COLOR
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_co=256
-set t_ut=
-
+" set t_ut=
+ " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+ " colorscheme OceanicNext
+ " set background=dark
 let g:hybrid_use_iTerm_colors = 1
 color hybrid
+
+" colorscheme onedark
 
 " Fix contrast for search highlight color
 hi Search cterm=NONE ctermfg=8 ctermbg=3
