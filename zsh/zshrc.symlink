@@ -1,11 +1,9 @@
-export PYENV_ROOT="$HOME/.pyenv"
-
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
 
 # all of our zsh files
 typeset -U config_files
-config_files=($(find $ZSH/**/*.zsh | grep -v /vim/ | grep -v "/lib/*/"))
+config_files=($(find $ZSH/**/*.zsh | grep -v /nvim.symlink/ | grep -v /vim/ | grep -v "/lib/*/"))
 
 # load the path files
 for file in ${(M)config_files:#*/path.zsh}
