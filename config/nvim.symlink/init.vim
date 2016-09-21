@@ -188,7 +188,7 @@ augroup vimrcEx
   autocmd FileType python set sw=4 sts=4 et
   autocmd FileType qf set nowrap
 
-  autocmd BufWritePost,BufEnter *.js,*.coffee Neomake
+  autocmd BufWritePost,BufEnter *.js,*.coffee,*.go Neomake
 
   autocmd BufRead,BufNewFile *.sass setfiletype sass
 
@@ -474,6 +474,8 @@ let g:netrw_liststyle=3
 " let g:syntastic_python_python_exec = '/usr/local/bin/python3'
 
 let g:neomake_javascript_enabled_makers = ['eslint', 'flow']
+let g:neomake_jsx_enabled_makers = ['eslint', 'flow']
+let g:neomake_go_enabled_makers = ['go', 'govet', 'golint']
 
 let g:neomake_coffee_enabled_makers = ['coffeelint']
 
@@ -486,7 +488,7 @@ let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 let g:user_emmet_mode='i'
 
-" let g:jsx_ext_required = 0
+let g:jsx_ext_required = 0
 
 let g:javascript_plugin_flow = 1
 let g:flow#enable = 0
