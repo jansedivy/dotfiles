@@ -10,10 +10,9 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
-" Plug 'scrooloose/syntastic'
 Plug 'junegunn/vim-easy-align'
 Plug 'rking/ag.vim'
-Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'tommcdo/vim-exchange'
 Plug 'SirVer/ultisnips'
@@ -49,6 +48,7 @@ Plug 'dart-lang/dart-vim-plugin'
 Plug 'dag/vim2hs'
 Plug 'fatih/vim-go'
 Plug 'tikhomirov/vim-glsl'
+Plug 'beyondmarc/hlsl.vim'
 Plug 'mxw/vim-jsx'
 Plug 'davidhalter/jedi-vim'
 Plug 'gotcha/vimpdb'
@@ -56,6 +56,7 @@ Plug 'jansedivy/jai.vim'
 Plug 'petRUShka/vim-opencl'
 Plug 'keith/swift.vim'
 Plug 'flowtype/vim-flow'
+Plug 'ernstvanderlinden/vim-coldfusion'
 
 Plug 'mhartington/oceanic-next'
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
@@ -65,6 +66,10 @@ Plug 'chriskempson/base16-vim'
 Plug 'whatyouhide/vim-gotham'
 Plug 'jacoborus/tender.vim'
 Plug 'joshdick/onedark.vim'
+
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+Plug 'jodosha/vim-godebug' " Debugger integration via delve
 
 call plug#end()
 
@@ -158,8 +163,6 @@ set ttimeoutlen=10
 
 " When at 3 spaces and I hit >>, go to 4, not 5.
 set shiftround
-" Get rid of the delay when hitting esc!
-set noesckeys
 set gdefault
 
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
@@ -170,6 +173,9 @@ set foldmethod=manual
 
 " highlight colorcolumn ctermbg=magenta
 " call matchadd('colorcolumn', '\%81v', 100)
+
+let g:loaded_sql_completion = 0
+let g:omni_sql_no_default_maps = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM AUTOCMDS
@@ -185,7 +191,7 @@ augroup vimrcEx
     \ endif
 
   autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
-  autocmd FileType python set sw=4 sts=4 et
+  autocmd FileType python,sql set sw=4 sts=4 et
   autocmd FileType qf set nowrap
 
   autocmd BufWritePost,BufEnter *.js,*.coffee,*.go Neomake
@@ -212,6 +218,11 @@ augroup vimrcEx
 
   autocmd FocusGained * set cursorline
   autocmd FocusLost * set nocursorline
+
+  autocmd FileType eoz setlocal noexpandtab
+
+  autocmd Bufread,BufNewFile *.cfm set filetype=eoz
+  autocmd Bufread,BufNewFile *.cfc set filetype=eoz
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -445,6 +456,8 @@ map <leader>b :Buffers<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:deoplete#enable_at_startup = 1
+
 let g:UltiSnipsExpandTrigger="<C-\\>"
 let g:UltiSnipsJumpForwardTrigger="<C-n>"
 let g:UltiSnipsJumpBackwardTrigger="<C-p>"
@@ -492,6 +505,43 @@ let g:jsx_ext_required = 0
 
 let g:javascript_plugin_flow = 1
 let g:flow#enable = 0
+
+let g:go_fmt_command = "goimports"
+
+" let g:go_highlight_functions = 1  
+" let g:go_highlight_methods = 1  
+" let g:go_highlight_structs = 1  
+" let g:go_highlight_operators = 1  
+" let g:go_highlight_build_constraints = 1  
+
+
+let g:tagbar_type_go = {  
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Abbreviations

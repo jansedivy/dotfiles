@@ -3,10 +3,13 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until `.osx` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-#sudo scutil --set ComputerName "sedivy-macbook"
-#sudo scutil --set HostName "sedivy-macbook"
-#sudo scutil --set LocalHostName "sedivy-macbook"
-#sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "sedivy-macbook"
+sudo scutil --set ComputerName "sedivy-macbook"
+sudo scutil --set HostName "sedivy-macbook"
+sudo scutil --set LocalHostName "sedivy-macbook"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "sedivy-macbook"
+
+# Set standby delay to 24 hours (default is 1 hour)
+sudo pmset -a standbydelay 86400
 
 # Show scrollbars when scrolling
 defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling"
@@ -49,8 +52,11 @@ defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 # SSD-specific tweaks                                                         #
 ###############################################################################
 
-# Disable local Time Machine snapshots
-sudo tmutil disablelocal
+# Disable local Time Machine backups
+hash tmutil &> /dev/null && sudo tmutil disablelocal
+
+# Prevent Time Machine from prompting to use new hard drives as backup volume
+defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 # Disable hibernation (speeds up entering sleep mode)
 sudo pmset -a hibernatemode 0
@@ -76,13 +82,45 @@ defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
 defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
 # Set a blazingly fast keyboard repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 0
+defaults write NSGlobalDomain KeyRepeat -int 1
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
 
 # Disable press-and-hold for keys in favor of key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+###############################################################################
+# Appstore                                                                    #
+###############################################################################
+
+# Enable the WebKit Developer Tools in the Mac App Store
+defaults write com.apple.appstore WebKitDeveloperExtras -bool true
+
+# Enable Debug Menu in the Mac App Store
+defaults write com.apple.appstore ShowDebugMenu -bool true
+
+# Enable the automatic update check
+defaults write com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true
+
+# Check for software updates daily, not just once per week
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
+
+# Download newly available updates in background
+defaults write com.apple.SoftwareUpdate AutomaticDownload -int 1
+
+# Install System data files & security updates
+defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -int 1
+
+# Automatically download apps purchased on other Macs
+defaults write com.apple.SoftwareUpdate ConfigDataInstall -int 1
+
+# Turn on app auto-update
+defaults write com.apple.commerce AutoUpdate -bool true
+
+# Allow the App Store to reboot machine on macOS updates
+defaults write com.apple.commerce AutoUpdateRestartRequired -bool true
 
 ###############################################################################
 # Screen                                                                      #

@@ -36,6 +36,7 @@ install_package() {
 install_package "Homebrew Update" brew update
 install_package "Homebrew Upgrade" brew upgrade
 
+install_package "Installing mas" brew install mas
 install_package "Installing Zsh" brew install zsh
 install_package "Installing Node" brew install node
 install_package "Installing Hub" brew install hub
@@ -49,6 +50,7 @@ install_package "Installing Python 3" brew install python3
 install_package "Installing gnu sed" brew install gnu-sed
 install_package "Installing diff-so-fancy" brew install diff-so-fancy
 install_package "Installing fzf" brew install fzf && /usr/local/opt/fzf/install
+install_package "Installing grc" brew install grc
 
 install_package "Installing speed-test" npm install speed-test -g
 install_package "Installing vmd" npm install vmd -g

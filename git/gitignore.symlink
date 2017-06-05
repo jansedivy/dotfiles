@@ -22,6 +22,5 @@ Session.vim
 
 *.rdb
 *.log
-*.sql
 *.sqlite
 .python-version
