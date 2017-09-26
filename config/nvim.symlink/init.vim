@@ -3,6 +3,7 @@ autocmd!
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-repeat'
@@ -125,7 +126,7 @@ set vb
 
 set noswapfile
 set nobackup
-set nowb
+set nowritebackup
 
 set undofile
 set undodir=~/.config/nvim/undos
@@ -321,6 +322,7 @@ map <Leader>v :e ~/.config/nvim/init.vim<cr>
 map <leader>o :silent !open .<cr>
 
 map <leader>cn :e ~/Dropbox\ \(Personal\)/coding-notes.markdown<cr>
+map <leader>pn :e ~/Dropbox\ \(Personal\)/project-notes.markdown<cr>
 
 map <leader>i :GoImports<cr>
 
@@ -328,17 +330,17 @@ map <leader>i :GoImports<cr>
 " MULTIPURPOSE TAB KEY
 " Indent if we're at the beginning of a line. Else, do completion.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! InsertTabWrapper()
-  let col = col('.') - 1
-  if !col || getline('.')[col - 1] !~ '\k'
-    return "\<tab>"
-  else
-    return "\<c-p>"
-  endif
-endfunction
+" function! InsertTabWrapper()
+"   let col = col('.') - 1
+"   if !col || getline('.')[col - 1] !~ '\k'
+"     return "\<tab>"
+"   else
+"     return "\<c-n>"
+"   endif
+" endfunction
 
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <expr> <s-tab> <c-n>
+" inoremap <expr> <tab> InsertTabWrapper()
+" inoremap <expr> <s-tab> <c-p>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
@@ -385,73 +387,19 @@ endfunction
 
 nnoremap <leader>. :call OpenAlternativeFile()<cr>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Selecta config
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! SelectaCommand(choice_command, selecta_args, vim_command)
-  try
-    let selection = system(a:choice_command . " | hs " . a:selecta_args)
-  catch /Vim:Interrupt/
-    " Swallow the ^C so that the redraw below happens; otherwise there will be
-    " leftovers from selecta on the screen
-    redraw!
-    return
-  endtry
-  redraw!
-  " Saves current location in jumplist
-  execute "normal " . line(".") . "G" . col(".") . "|"
-  exec a:vim_command . " " . selection
-endfunction
-
-let filter = ' | grep -v "node_modules/"
-      \ | grep -v "libs/"
-      \ | grep -v "build/"
-      \ | grep -v "CMakeScripts/"
-      \ | grep -v "^dist/"
-      \ | grep -v "^vim/vim.symlink/backups/"
-      \ | grep -v "^vim/vim.symlink/bundle/"
-      \ | grep -v "bower_components/"
-      \ | grep -v "cache/"
-      \ | grep -v ".git/"
-      \ | grep -v ".gitignore"
-      \ | grep -v "tmp/"
-      \ | grep -v "deps/"
-      \ | grep -v "^CMakeFiles/"
-      \ | grep -v "CMakeCache.txt"
-      \ | grep -v "cmake_install.cmake"
-      \ | grep -v "^_build/"
-      \ | grep -v "^ENV/"
-      \ | grep -v "^env/"
-      \ | grep -v "^venv/"
-      \ | grep -v "bundle.min.js"
-      \ | grep -v ".xcodeproj/"
-      \ | grep -v ".dSYM/"
-      \ | grep -i -v -w ".*\.\(otf\|ogg\|gz\|pyc\|rdb\|pdf\|eot\|ttf\|svg\|woff\|gif\|dds\|png\|wav\|jpg\|sqlite3\|psd\|ai\|ico\|DS_Store\|.gitkeep\|o\)$"'
-
-let command = 'find * -type f ' . g:filter
-
-function! SelectaFile(path)
-  call SelectaCommand(g:command . " | grep " . a:path, "", ":e")
-endfunction
-
-function! SelectaApps()
-  try
-    let selection = system("find $(find apps -depth 1 -type d | hs) -type f " . g:filter . " | hs")
-  catch /Vim:Interrupt/
-    " Swallow the ^C so that the redraw below happens; otherwise there will be
-    " leftovers from selecta on the screen
-    redraw!
-    return
-  endtry
-  redraw!
-  exec ":e " . selection
-endfunction
-
 map <leader>t :FZF<cr>
 map <leader>b :Buffers<cr>
 
-
 " imap <c-x><c-k> <plug>(fzf-complete-word)
+"
+inoremap <silent><expr> <TAB>
+		\ pumvisible() ? "\<C-n>" :
+		\ <SID>check_back_space() ? "\<TAB>" :
+		\ deoplete#mappings#manual_complete()
+		function! s:check_back_space() abort "{{{
+		let col = col('.') - 1
+		return !col || getline('.')[col - 1]  =~ '\s'
+		endfunction"}}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins

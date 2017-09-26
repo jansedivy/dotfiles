@@ -51,7 +51,6 @@
     consistent-return: 1
     curly: 1
     keyword-spacing: ["error", { "before": true }]
-    dot-notation: 1
     eol-last: 1
     eqeqeq: [2, "smart"]
     key-spacing: 1

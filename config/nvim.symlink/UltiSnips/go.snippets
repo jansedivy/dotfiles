@@ -5,5 +5,16 @@ endsnippet
 snippet cc
 log.Println($1)
 endsnippet
-	
 
+snippet e
+logrus.WithFields(logrus.Fields{
+	"err": err,
+}).Error("$0")
+endsnippet
+
+snippet r
+return &rye.Response{
+	Err:        errors.New("$0"),
+	StatusCode: http.StatusInternalServerError,
+}
+endsnippet
