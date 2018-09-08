@@ -12,7 +12,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
 Plug 'junegunn/vim-easy-align'
-Plug 'rking/ag.vim'
+Plug 'mileszs/ack.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'tommcdo/vim-exchange'
@@ -21,7 +21,6 @@ Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'OmniSharp/omnisharp-vim', { 'for': 'cs' }
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'unblevable/quick-scope'
@@ -51,7 +50,6 @@ Plug 'fatih/vim-go'
 Plug 'tikhomirov/vim-glsl'
 Plug 'beyondmarc/hlsl.vim'
 Plug 'mxw/vim-jsx'
-Plug 'davidhalter/jedi-vim'
 Plug 'gotcha/vimpdb'
 Plug 'jansedivy/jai.vim'
 Plug 'petRUShka/vim-opencl'
@@ -94,6 +92,7 @@ set softtabstop=2
 set laststatus=2
 set showmatch
 set incsearch
+set inccommand=nosplit
 set hlsearch
 set ignorecase smartcase
 set mouse=
@@ -271,9 +270,6 @@ nmap k gk
 
 map Y y$
 
-map <leader>q :!spot-selecta<cr><cr>
-map <leader>l :!gl3<cr><cr>
-
 " Sudo to write
 cnoremap w!! w !sudo tee "%" >/dev/null
 
@@ -305,7 +301,6 @@ nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(st
 
 map <c-k> :w\|:let stay_star_view = winsaveview()<cr>:%!clang-format %<cr>:call winrestview(stay_star_view)<cr>
 
-
 " Keep search matches in the middle of the window.
 nnoremap n nzzzv
 nnoremap N Nzzzv
@@ -321,26 +316,8 @@ map <Leader>v :e ~/.config/nvim/init.vim<cr>
 
 map <leader>o :silent !open .<cr>
 
-map <leader>cn :e ~/Dropbox\ \(Personal\)/coding-notes.markdown<cr>
-map <leader>pn :e ~/Dropbox\ \(Personal\)/project-notes.markdown<cr>
-
-map <leader>i :GoImports<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" MULTIPURPOSE TAB KEY
-" Indent if we're at the beginning of a line. Else, do completion.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" function! InsertTabWrapper()
-"   let col = col('.') - 1
-"   if !col || getline('.')[col - 1] !~ '\k'
-"     return "\<tab>"
-"   else
-"     return "\<c-n>"
-"   endif
-" endfunction
-
-" inoremap <expr> <tab> InsertTabWrapper()
-" inoremap <expr> <s-tab> <c-p>
+map <leader>cn :e ~/Dropbox/coding-notes.markdown<cr>
+map <leader>pn :e ~/Dropbox/project-notes.markdown<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
@@ -368,21 +345,21 @@ map <leader>n :call RenameFile()<cr>
 " Switch to header/implementatino file
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! OpenAlternativeFile()
-  let new_file = AlternativeForCurrentFile()
-  exec ':e ' . new_file
-endfunction
-
-function! AlternativeForCurrentFile()
   let current_file = expand("%:r")
   let current_extension = expand("%:e")
 
   if current_extension == "h"
-    return current_file . ".cpp"
+    exec ':e ' . current_file . ".cpp"
+    return
   elseif current_extension == "cpp"
-    return current_file . ".h"
+    exec ':e ' . current_file . ".h"
+    return
+  elseif current_extension == "go"
+    exec ':GoAlternate!'
+    return
   endif
 
-  return expand("%")
+  exec ':e' . expand("%")
 endfunction
 
 nnoremap <leader>. :call OpenAlternativeFile()<cr>
@@ -390,16 +367,14 @@ nnoremap <leader>. :call OpenAlternativeFile()<cr>
 map <leader>t :FZF<cr>
 map <leader>b :Buffers<cr>
 
-" imap <c-x><c-k> <plug>(fzf-complete-word)
-"
 inoremap <silent><expr> <TAB>
-		\ pumvisible() ? "\<C-n>" :
-		\ <SID>check_back_space() ? "\<TAB>" :
-		\ deoplete#mappings#manual_complete()
-		function! s:check_back_space() abort "{{{
-		let col = col('.') - 1
-		return !col || getline('.')[col - 1]  =~ '\s'
-		endfunction"}}}
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#mappings#manual_complete()
+    function! s:check_back_space() abort "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction"}}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
@@ -411,28 +386,6 @@ let g:UltiSnipsJumpForwardTrigger="<C-n>"
 let g:UltiSnipsJumpBackwardTrigger="<C-p>"
 
 let g:netrw_liststyle=3
-
-" let g:syntastic_mode_map = {
-"   \ 'mode': 'active',
-"   \ 'active_filetypes': [],
-"   \ 'passive_filetypes': ['html', 'xml']
-"   \ }
-
-" let g:syntastic_aggregate_errors = 1
-" let g:syntastic_always_populate_loc_list = 1
-
-" let g:syntastic_cpp_compiler = 'clang++'
-" let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -Wno-int-to-void-pointer-cast'
-" let g:syntastic_cpp_include_dirs = ['./libs/assimp/include', './libs/glew/include', './libs/jemalloc/include', './libs/glm', './libs/stb', './libs/perlin', './libs/vcache', './libs/base']
-
-" let g:syntastic_python_checkers=['flake8']
-" let g:syntastic_python_flake8_args='--ignore=E501'
-" " let g:syntastic_css_checkers=['stylelint']
-" let g:syntastic_go_checkers = ['go', 'govet', 'golint']
-
-" " let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-
-" let g:syntastic_python_python_exec = '/usr/local/bin/python3'
 
 let g:neomake_javascript_enabled_makers = ['eslint', 'flow']
 let g:neomake_jsx_enabled_makers = ['eslint', 'flow']
@@ -455,15 +408,18 @@ let g:javascript_plugin_flow = 1
 let g:flow#enable = 0
 
 let g:go_fmt_command = "goimports"
+let g:go_def_mode = 'godef'
 
-" let g:go_highlight_functions = 1  
-" let g:go_highlight_methods = 1  
-" let g:go_highlight_structs = 1  
-" let g:go_highlight_operators = 1  
-" let g:go_highlight_build_constraints = 1  
+set grepprg=rg\ --vimgrep
+let g:ackprg = 'rg --vimgrep --no-heading --ignore-case'
 
+" let g:go_highlight_functions = 1
+" let g:go_highlight_methods = 1
+" let g:go_highlight_structs = 1
+" let g:go_highlight_operators = 1
+" let g:go_highlight_build_constraints = 1
 
-let g:tagbar_type_go = {  
+let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
     \ 'kinds'     : [
         \ 'p:package',
@@ -503,20 +459,3 @@ abbr functino function
 abbr reutrn return
 abbr heigth height
 abbr ligth light
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Python
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#show_call_signatures = "0"
-let g:jedi#goto_command = "<c-]>"
-
-
-nmap <leader>z :call <SID>SynStack()<CR>
-function! <SID>SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc

@@ -7,9 +7,9 @@ log.Println($1)
 endsnippet
 
 snippet e
-logrus.WithFields(logrus.Fields{
-	"err": err,
-}).Error("$0")
+if err != nil {
+	$0
+}
 endsnippet
 
 snippet r
@@ -17,4 +17,37 @@ return &rye.Response{
 	Err:        errors.New("$0"),
 	StatusCode: http.StatusInternalServerError,
 }
+endsnippet
+
+snippet ee
+if err := $0; err != nil {
+}
+endsnippet
+
+snippet tt
+import (
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+)
+
+var _ = Describe("Component", func() {
+	Describe("Function", func() {
+		It("Behavior", func() {
+			Expect(nil).To(BeNil())
+		})
+	})
+})
+endsnippet
+
+snippet it
+It("$1", func() {
+	$0
+	Expect(nil).To(BeNil())
+})
+endsnippet
+
+snippet d
+Describe("$1", func() {
+	$0
+})
 endsnippet

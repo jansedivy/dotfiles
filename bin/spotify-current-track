@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 value="$(osascript <<EOF
 if appIsRunning("Spotify") then
   tell application "Spotify"

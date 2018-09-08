@@ -8,8 +8,12 @@ alias u='cd ..'
 alias vi='nvim'
 alias vim='nvim'
 
+alias v7='cd ~/Documents/scratch/invision/invision-local && docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && ./utils/run.sh setup edge-gateway=all offline && docker-compose up -d'
+
 alias keyoff='sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
 alias keyon='sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
+
+alias fh='open $(curl -X POST "https://freehand-api.invisionapp.com/api/documents/create" -s | jq ".url" -r)'
 
 venv () {
   . $(up .env)

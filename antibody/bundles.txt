@@ -1,0 +1,5 @@
+caarlos0/zsh-git-sync kind:path
+zsh-users/zsh-completions
+rupa/z
+
+zsh-users/zsh-syntax-highlighting
