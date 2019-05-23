@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+value="$(osascript <<EOF
+set nextEvent to do shell script "/usr/local/bin/icalBuddy -ec 'Found in Natural Language' -npn -nc -iep 'title,datetime,location' -eed -ea -n -li 1 -ps '| @& |' -b '' eventsToday"
+
+if nextEvent is not "" then
+	set AppleScript's text item delimiters to " @& "
+	set itemCount to count of text items of nextEvent
+	
+	if itemCount is 1 then
+		set eventName to "Event"
+		set eventTime to nextEvent
+	else if itemCount is 2 then
+		set eventName to nextEvent's text item 1
+		set eventTime to nextEvent's text item 2
+	else if itemCount is 3 then
+		set eventName to nextEvent's text item 1
+		set eventTime to nextEvent's text item 3
+	end if
+	
+	set AppleScript's text item delimiters to ""
+	if eventName's length > 20 then set eventName to eventName's items 1 thru 20 & "…" as string
+	if eventTime's length > 20 then set eventTime to eventTime's items 1 thru 20 & "…" as string
+	set nextEvent to eventName & " at " & eventTime
+end if
+
+return nextEvent
+EOF)"
+
+echo $value

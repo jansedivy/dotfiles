@@ -1,0 +1,24 @@
+#!/usr/local/bin/zsh
+
+inbox=$(/usr/local/bin/things.sh inbox | wc -l | awk '{$1=$1};1')
+today=$(/usr/local/bin/things.sh today | wc -l | awk '{$1=$1};1')
+
+if [ "$inbox" -gt 0 ];then
+  echo -n "Inbox $inbox"
+fi
+
+if [ "$today" -gt 0 ];then
+  if [ "$inbox" -gt 0 ];then
+    echo -n " › "
+  fi
+fi
+
+if [ "$today" -gt 0 ];then
+  echo "Today $today"
+fi
+
+if [ "$today" -eq 0 ];then
+  if [ "$inbox" -eq 0 ];then
+    echo "Things"
+fi
+fi

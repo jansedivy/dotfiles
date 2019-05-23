@@ -51,3 +51,14 @@ Describe("$1", func() {
 	$0
 })
 endsnippet
+
+snippet ec
+if err != nil {
+	switch errors.Cause(err) {
+	case $0:
+		return "", $1
+	default:
+		return "", errors.Wrap(err, "${2:something went wrong}")
+	}
+}
+endsnippet

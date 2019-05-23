@@ -27,48 +27,32 @@ Plug 'unblevable/quick-scope'
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'craigemery/vim-autotag'
 Plug 'neomake/neomake'
 
 " syntax
-Plug 'cakebaker/scss-syntax.vim'
 Plug 'vim-ruby/vim-ruby'
 Plug 'pangloss/vim-javascript'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'kchmck/vim-coffee-script'
-Plug '~/Documents/scratch/vim-coffee-script'
 Plug 'groenewege/vim-less'
 Plug 'othree/html5.vim'
-Plug 'digitaltoad/vim-jade'
 Plug 'nono/vim-handlebars'
 Plug 'leafgarland/typescript-vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'wting/rust.vim'
-Plug 'dart-lang/dart-vim-plugin'
 Plug 'dag/vim2hs'
 Plug 'fatih/vim-go'
 Plug 'tikhomirov/vim-glsl'
 Plug 'beyondmarc/hlsl.vim'
 Plug 'mxw/vim-jsx'
-Plug 'gotcha/vimpdb'
 Plug 'jansedivy/jai.vim'
-Plug 'petRUShka/vim-opencl'
 Plug 'keith/swift.vim'
 Plug 'flowtype/vim-flow'
 Plug 'ernstvanderlinden/vim-coldfusion'
 
-Plug 'mhartington/oceanic-next'
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
-Plug 'atelierbram/vim-colors_atelier-schemes'
-Plug 'jdkanani/vim-material-theme'
-Plug 'chriskempson/base16-vim'
-Plug 'whatyouhide/vim-gotham'
-Plug 'jacoborus/tender.vim'
-Plug 'joshdick/onedark.vim'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-go', {'build': {'unix': 'make'}}
-Plug 'jodosha/vim-godebug' " Debugger integration via delve
 
 call plug#end()
 
@@ -169,10 +153,6 @@ autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 set foldmethod=manual
-" set nofoldenable
-
-" highlight colorcolumn ctermbg=magenta
-" call matchadd('colorcolumn', '\%81v', 100)
 
 let g:loaded_sql_completion = 0
 let g:omni_sql_no_default_maps = 1
@@ -229,14 +209,8 @@ augroup END
 " COLOR
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_co=256
-" set t_ut=
- " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
- " colorscheme OceanicNext
- " set background=dark
 let g:hybrid_use_iTerm_colors = 1
 color hybrid
-
-" colorscheme onedark
 
 " Fix contrast for search highlight color
 hi Search cterm=NONE ctermfg=8 ctermbg=3
@@ -270,15 +244,9 @@ nmap k gk
 
 map Y y$
 
-" Sudo to write
-cnoremap w!! w !sudo tee "%" >/dev/null
-
 map <C-s> <esc>:w<CR>
 imap <C-s> <esc>:w<CR>
 imap <c-c> <esc>
-
-imap <c-e> <c-o>$
-imap <c-a> <c-o>^
 
 function! MapCR()
   map <cr> :nohlsearch<cr>
@@ -299,8 +267,6 @@ nmap ga <Plug>(EasyAlign)
 nnoremap <silent> # :let stay_star_view = winsaveview()<cr>#:call winrestview(stay_star_view)<cr>
 nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<cr>
 
-map <c-k> :w\|:let stay_star_view = winsaveview()<cr>:%!clang-format %<cr>:call winrestview(stay_star_view)<cr>
-
 " Keep search matches in the middle of the window.
 nnoremap n nzzzv
 nnoremap N Nzzzv
@@ -312,12 +278,8 @@ map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.config/nvim/init.vim<cr>
-" map <leader>k :!vmd %&<cr><cr>
 
 map <leader>o :silent !open .<cr>
-
-map <leader>cn :e ~/Dropbox/coding-notes.markdown<cr>
-map <leader>pn :e ~/Dropbox/project-notes.markdown<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
@@ -354,6 +316,9 @@ function! OpenAlternativeFile()
   elseif current_extension == "cpp"
     exec ':e ' . current_file . ".h"
     return
+  elseif current_extension == "js"
+    exec ':e ' . current_file . ".test.js"
+    return
   elseif current_extension == "go"
     exec ':GoAlternate!'
     return
@@ -387,8 +352,8 @@ let g:UltiSnipsJumpBackwardTrigger="<C-p>"
 
 let g:netrw_liststyle=3
 
-let g:neomake_javascript_enabled_makers = ['eslint', 'flow']
-let g:neomake_jsx_enabled_makers = ['eslint', 'flow']
+let g:neomake_javascript_enabled_makers = ['flow']
+let g:neomake_jsx_enabled_makers = ['flow']
 let g:neomake_go_enabled_makers = ['go', 'govet', 'golint']
 
 let g:neomake_coffee_enabled_makers = ['coffeelint']
@@ -407,17 +372,21 @@ let g:jsx_ext_required = 0
 let g:javascript_plugin_flow = 1
 let g:flow#enable = 0
 
+let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
+if matchstr(local_flow, "^\/\\w") == ''
+  let local_flow= getcwd() . "/" . local_flow
+endif
+if executable(local_flow)
+  let g:flow#flowpath = local_flow
+endif
+
 let g:go_fmt_command = "goimports"
 let g:go_def_mode = 'godef'
 
-set grepprg=rg\ --vimgrep
 let g:ackprg = 'rg --vimgrep --no-heading --ignore-case'
 
-" let g:go_highlight_functions = 1
-" let g:go_highlight_methods = 1
-" let g:go_highlight_structs = 1
-" let g:go_highlight_operators = 1
-" let g:go_highlight_build_constraints = 1
+set grepprg=rg\ --vimgrep
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
@@ -459,3 +428,9 @@ abbr functino function
 abbr reutrn return
 abbr heigth height
 abbr ligth light
+abbr hightlight highlight
+abbr enitty entity
+abbr enityt entity
+abbr entity entity
+abbr rigth right
+abbr assing assign
