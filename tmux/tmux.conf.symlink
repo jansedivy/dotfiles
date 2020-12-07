@@ -23,7 +23,11 @@ set -g pane-base-index 1
 
 set -g renumber-windows on
 setw -g automatic-rename on
-set -g set-titles on
+
+set -g allow-rename 0
+set -g automatic-rename 1
+
+set-option -sa terminal-overrides ',screen-256color:RGB'
 
 ###########################
 #  Key Bindings
@@ -72,7 +76,7 @@ set -g message-style bg=0,fg=green
 set -g status-style bg=colour235,fg=colour4
 
 set-window-option -g window-status-style fg=colour248,bg=colour235,dim
-set-window-option -g window-status-current-style fg=green,bg=colour237,bright
+set-window-option -g window-status-current-style fg=green,bg=colour237
 
 ###########################
 #  Status Bar
@@ -90,8 +94,13 @@ set -g status-interval 30
 set -g status-left-length 40
 set -g status-left '#[fg=green]#S#[default] '
 
-setw -g window-status-format " #I #W "
-setw -g window-status-current-format " #I #W "
+# setw -g window-status-format " #I #W "
+# setw -g window-status-current-format " #I #W "
+setw -g window-status-format ' #(pwd="#{pane_current_path}"; echo ${pwd####*/}) '
+setw -g window-status-current-format ' #(pwd="#{pane_current_path}"; echo ${pwd####*/}) '
+
+# set-option -g automatic-rename on
+# set-option -g automatic-rename-format '#{b:pane_current_path}'
 
 set -g status-interval 10
 set -g status-right-length 90

@@ -7,8 +7,8 @@ then
 fi
 
 alias review='git diff master'
-alias gp='git push'
-alias amend='git commit --amend'
+alias gp='git push --no-verify'
+alias amend='git commit --amend --no-verify'
 alias gap='git add --all -p'
 
 # fbr - checkout git branch (including remote branches)

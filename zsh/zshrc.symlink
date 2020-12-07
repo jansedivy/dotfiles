@@ -41,3 +41,8 @@ unset config_files updated_at
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 eval "$(nodenv init -)"
+
+# In case of v6. Enable this
+# source /Users/sedivy/Documents/scratch/invision/InVision_Docker/scripts-native/invision.sh
+
+source /Users/sedivy/Documents/scratch/invision/InVision_Docker/scripts-native/invision.sh

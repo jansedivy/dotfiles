@@ -13,9 +13,9 @@ git_prompt() {
   git diff --quiet --ignore-submodules HEAD &>/dev/null
   if [[ $? -eq 0 ]]
   then
-    echo "(%{$fg_bold[green]%}$(git_prompt_branch)%{$reset_color%}$(need_push))"
+    echo "(%{$fg[green]%}$(git_prompt_branch)%{$reset_color%}$(need_push))"
   else
-    echo "(%{$fg_bold[red]%}$(git_prompt_branch)%{$reset_color%}$(need_push))"
+    echo "(%{$fg[red]%}$(git_prompt_branch)%{$reset_color%}$(need_push))"
   fi
 }
 
@@ -33,7 +33,7 @@ need_push() {
   then
     echo ""
   else
-    echo "%{$fg_bold[blue]%}!%{$reset_color%}"
+    echo "%{$fg[blue]%}!%{$reset_color%}"
   fi
 }
 
@@ -41,12 +41,12 @@ vim_jobs_count() {
   count=`echo $(jobs | wc -l)`
   if [ $count -ne "0" ]
   then
-    echo "%{$fg_bold[green]%}`echo $(jot -b ! $count) | sed 's/ //g'`%{$reset_color%}"
+    echo "%{$fg[green]%}`echo $(jot -b ! $count) | sed 's/ //g'`%{$reset_color%}"
   fi
 }
 
 directory_name() {
-  echo "%{$fg_bold[blue]%}%1/%{$reset_color%}"
+  echo "%{$fg[blue]%}%1/%{$reset_color%}"
 }
 
 export PROMPT=$'$(vim_jobs_count)$(directory_name)$(git_prompt) › '

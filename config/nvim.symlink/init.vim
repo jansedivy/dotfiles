@@ -36,10 +36,8 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'groenewege/vim-less'
 Plug 'othree/html5.vim'
 Plug 'nono/vim-handlebars'
-Plug 'leafgarland/typescript-vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'wting/rust.vim'
-Plug 'dag/vim2hs'
 Plug 'fatih/vim-go'
 Plug 'tikhomirov/vim-glsl'
 Plug 'beyondmarc/hlsl.vim'
@@ -48,6 +46,18 @@ Plug 'jansedivy/jai.vim'
 Plug 'keith/swift.vim'
 Plug 'flowtype/vim-flow'
 Plug 'ernstvanderlinden/vim-coldfusion'
+Plug 'jparise/vim-graphql'
+Plug 'justinj/vim-pico8-syntax'
+
+" typescript
+" Plug 'HerringtonDarkholme/yats.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'Quramy/tsuquyomi'
+
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['typescript'] }
 
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
 
@@ -96,7 +106,7 @@ set showcmd
 set title
 set cursorline
 set virtualedit=block
-set nowrap
+set wrap
 
 set exrc
 set secure
@@ -177,8 +187,6 @@ augroup vimrcEx
   autocmd BufWritePost,BufEnter *.js,*.coffee,*.go Neomake
 
   autocmd BufRead,BufNewFile *.sass setfiletype sass
-
-  autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
   autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
   autocmd BufNewFile,BufRead *.as setlocal filetype=javascript
@@ -271,7 +279,7 @@ nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(st
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-map <leader><leader> <c-^>
+map <leader><leader> :b#<cr>
 map <leader>w :normal ma<cr>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>:retab<CR>:normal 'a<cr>
 map <leader>e :edit %%
 map <leader>n :call RenameFile()<cr>
@@ -285,6 +293,29 @@ map <leader>o :silent !open .<cr>
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 cnoremap <expr> %% expand('%:h').'/'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NPM LOCAL PATH
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! GetNpmBin(binname)
+  let dir = getcwd()
+  while ! isdirectory(dir . '/node_modules')
+    let dir = fnamemodify(dir, ':h')
+    if dir == '/'
+      break
+    end
+  endwhile
+
+  let binpath = ''
+  if dir != '/'
+    let binpath = dir . '/node_modules/.bin/' . a:binname
+    if ! filereadable(binpath)
+      let binpath = ''
+    end
+  endif
+
+  return binpath
+endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RENAME CURRENT FILE
@@ -328,8 +359,9 @@ function! OpenAlternativeFile()
 endfunction
 
 nnoremap <leader>. :call OpenAlternativeFile()<cr>
-
 map <leader>t :FZF<cr>
+" map <leader>kr :call fzf#run({'sink': 'e', 'down': '40%', 'source': 'rg --files --hidden --follow --glob "!__test__" src/graphql/resolvers'})<cr>
+" map <leader>km :call fzf#run({'sink': 'e', 'down': '40%', 'source': 'rg --files --hidden --follow --glob "!__test__" src/data/models'})<cr>
 map <leader>b :Buffers<cr>
 
 inoremap <silent><expr> <TAB>
@@ -344,6 +376,9 @@ inoremap <silent><expr> <TAB>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python_host_prog = '/usr/local/bin/python'
+
 let g:deoplete#enable_at_startup = 1
 
 let g:UltiSnipsExpandTrigger="<C-\\>"
@@ -352,8 +387,13 @@ let g:UltiSnipsJumpBackwardTrigger="<C-p>"
 
 let g:netrw_liststyle=3
 
-let g:neomake_javascript_enabled_makers = ['flow']
-let g:neomake_jsx_enabled_makers = ['flow']
+let g:typescript_compiler_binary = GetNpmBin('tsc')
+
+let g:neomake_javascript_flow_exe = GetNpmBin('flow')
+let g:neomake_javascript_eslint_exe = GetNpmBin('eslint')
+
+let g:neomake_javascript_enabled_makers = ['flow', 'eslint']
+" let g:neomake_jsx_enabled_makers = ['flow']
 let g:neomake_go_enabled_makers = ['go', 'govet', 'golint']
 
 let g:neomake_coffee_enabled_makers = ['coffeelint']
@@ -367,18 +407,11 @@ let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 let g:user_emmet_mode='i'
 
+let g:javascript_plugin_flow = 1
 let g:jsx_ext_required = 0
 
-let g:javascript_plugin_flow = 1
 let g:flow#enable = 0
-
-let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
-if matchstr(local_flow, "^\/\\w") == ''
-  let local_flow= getcwd() . "/" . local_flow
-endif
-if executable(local_flow)
-  let g:flow#flowpath = local_flow
-endif
+let g:flow#flowpath = GetNpmBin('flow')
 
 let g:go_fmt_command = "goimports"
 let g:go_def_mode = 'godef'
@@ -431,6 +464,5 @@ abbr ligth light
 abbr hightlight highlight
 abbr enitty entity
 abbr enityt entity
-abbr entity entity
 abbr rigth right
 abbr assing assign

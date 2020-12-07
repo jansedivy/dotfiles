@@ -55,3 +55,11 @@ export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+
+
+function _zsh_title__precmd() {
+  echo -ne "\e]1;${PWD##*/}\a"
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _zsh_title__precmd

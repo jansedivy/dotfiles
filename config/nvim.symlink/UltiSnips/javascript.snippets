@@ -7,7 +7,15 @@ app.debug.log(${0:${VISUAL}});
 endsnippet
 
 snippet t
-return 
+// TODO(sedivy): $1
+endsnippet
+
+snippet no
+// NOCHECKIN(sedivy): $1
+endsnippet
+
+snippet note
+// NOTE(sedivy): $1
 endsnippet
 
 snippet r
@@ -69,30 +77,6 @@ snippet ae
 assert.equal(${1:actual}, ${2:expected});
 endsnippet
 
-snippet class
-var $1 = function() {
-	$0
-};
-
-module.exports = $1;
-endsnippet
-
-snippet classf
-module.exports = function(app) {
-	var $1 = function() {
-		$0
-	};
-
-	return $1;
-};
-endsnippet
-
-snippet p
-$1.prototype.$2 = function($3) {
-	$0
-};
-endsnippet
-
 snippet rectb
 app.video.ctx.fillRect(this.bounds.l, this.bounds.t, this.bounds.width, this.bounds.height);
 endsnippet
@@ -120,4 +104,9 @@ var $1 = React.createClass({
 });
 
 module.exports = $1;
+endsnippet
+
+snippet time
+let start = performance.now();
+console.log('[performance]: "$0"', (performance.now() - start), 'ms');
 endsnippet

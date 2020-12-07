@@ -85,7 +85,7 @@ install_package "Installing app Calibre" brew cask install calibre 2> /dev/null
 install_package "Installing app Numi" brew cask install numi 2> /dev/null
 install_package "Installing app encryptme" brew cask install cloak 2> /dev/null
 
-install_package "Homebrew tap fonts" brew tap caskroom/fonts
+install_package "Homebrew tap fonts" brew tap homebrew/cask-fonts
 
 install_package "Installing font Hack" brew cask install font-hack
 

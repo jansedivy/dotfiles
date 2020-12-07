@@ -8,7 +8,10 @@ alias u='cd ..'
 alias vi='nvim'
 alias vim='nvim'
 
+alias dc='docker-compose'
+
 alias v7='cd ~/Documents/scratch/invision/invision-local && docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && ./utils/run.sh setup edge-gateway=all offline && docker-compose up -d'
+alias v6='docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && in setup && in start freehand'
 
 alias keyoff='sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
 alias keyon='sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
