@@ -9,7 +9,7 @@
   wtf     = !$ZSH/bin/git-wtf
   rank-contributers = !$ZSH/bin/git-rank-contributers
   count   = !git shortlog -sn
-  ci      = commit --verbose
+  ci      = commit --verbose --no-verify
   aa      = add --all
 
   ff = merge --ff-only
@@ -27,7 +27,7 @@
   ui = true
 [core]
   excludesfile = ~/.gitignore
-  editor = vim
+  editor = nvim
   ignorecase = false
 [apply]
   whitespace = nowarn
@@ -42,9 +42,11 @@
 [push]
   default = simple
 [credential]
-  helper = GIT_CREDENTIAL_HELPER
+  helper = osxkeychain
 [diff]
   algorithm = patience
 [pager]
   diff = diff-so-fancy | less --tabs=1,5 -RFX
   show = diff-so-fancy | less --tabs=1,5 -RFX
+[branch]
+  sort = -committerdate
