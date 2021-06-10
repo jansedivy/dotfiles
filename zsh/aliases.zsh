@@ -8,6 +8,10 @@ alias u='cd ..'
 alias vi='nvim'
 alias vim='nvim'
 
+alias icat="kitty +kitten icat --align=left"
+alias isvg="rsvg-convert | icat"
+alias idot="dot -Tsvg -Gfontname=Hack -Gfontsize=16 -Nfontname=Hack -Nfontsize=16 -Efontname=Hack -Efontsize=16 -Gbgcolor=#222426 -Ecolor=#C4C7C5 -Nfontcolor=#C4C7C5 -Ncolor=#C4C7C5"
+
 alias dc='docker-compose'
 
 alias v7='cd ~/Documents/scratch/invision/invision-local && docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && ./utils/run.sh setup edge-gateway=all offline && docker-compose up -d'
@@ -16,7 +20,7 @@ alias v6='docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && in s
 alias keyoff='sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
 alias keyon='sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
 
-alias fh='open $(curl -X POST "https://freehand-api.invisionapp.com/api/documents/create" -s | jq ".url" -r)'
+alias f='./node_modules/.bin/flow'
 
 venv () {
   . $(up .env)

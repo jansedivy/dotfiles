@@ -32,6 +32,13 @@ for (let i = 0; i < $1; i++) {
 }
 endsnippet
 
+snippet fore
+for (let i = 0; i < entities.length; i++) {
+	let entity = entities[i];
+	$0
+}
+endsnippet
+
 snippet forl
 for (let i = 0, len = $1; i < len; i++) {
 	$0
@@ -39,7 +46,7 @@ for (let i = 0, len = $1; i < len; i++) {
 endsnippet
 
 snippet forr
-for (let i = 1; i <= $1.length; i++) {
+for (var i = $1.length - 1; i >= 0; i--) {
 	$0
 }
 endsnippet
@@ -109,4 +116,19 @@ endsnippet
 snippet time
 let start = performance.now();
 console.log('[performance]: "$0"', (performance.now() - start), 'ms');
+endsnippet
+
+snippet forc
+for (let childIndex = 0; childIndex < entity.transform.children.length; childIndex++) {
+	let child = entity.transform.children[childIndex].entity;
+	if (child) {
+		$0
+	}
+}
+endsnippet
+
+snippet foro
+for (let entity of entities) {
+	$0
+}
 endsnippet

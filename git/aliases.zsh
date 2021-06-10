@@ -10,6 +10,8 @@ alias review='git diff master'
 alias gp='git push --no-verify'
 alias amend='git commit --amend --no-verify'
 alias gap='git add --all -p'
+alias gho='gh pr view --web'
+alias ghp='gh pr create --web'
 
 # fbr - checkout git branch (including remote branches)
 fbr() {

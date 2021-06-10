@@ -25,8 +25,7 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'unblevable/quick-scope'
 Plug 'scrooloose/nerdtree'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug '/usr/local/opt/fzf'
 Plug 'neomake/neomake'
 
 " syntax
@@ -97,7 +96,7 @@ set switchbuf=useopen
 set numberwidth=3
 set showtabline=1
 set winwidth=81
-set relativenumber
+" set relativenumber
 set shell=zsh
 set nojoinspaces
 set shortmess=atI
@@ -184,7 +183,7 @@ augroup vimrcEx
   autocmd FileType python,sql set sw=4 sts=4 et
   autocmd FileType qf set nowrap
 
-  autocmd BufWritePost,BufEnter *.js,*.coffee,*.go Neomake
+  " autocmd BufWritePost,BufEnter *.js,*.coffee,*.go Neomake
 
   autocmd BufRead,BufNewFile *.sass setfiletype sass
 
@@ -247,8 +246,8 @@ map K <nop>
 
 vmap D y'>p
 
-nmap j gj
-nmap k gk
+" nmap j gj
+" nmap k gk
 
 map Y y$
 
@@ -376,8 +375,8 @@ inoremap <silent><expr> <TAB>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:python3_host_prog = '/usr/local/bin/python3'
-let g:python_host_prog = '/usr/local/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
+let g:python_host_prog = '/usr/bin/python2'
 
 let g:deoplete#enable_at_startup = 1
 
@@ -388,6 +387,8 @@ let g:UltiSnipsJumpBackwardTrigger="<C-p>"
 let g:netrw_liststyle=3
 
 let g:typescript_compiler_binary = GetNpmBin('tsc')
+
+call neomake#configure#automake('w')
 
 let g:neomake_javascript_flow_exe = GetNpmBin('flow')
 let g:neomake_javascript_eslint_exe = GetNpmBin('eslint')
@@ -420,6 +421,8 @@ let g:ackprg = 'rg --vimgrep --no-heading --ignore-case'
 
 set grepprg=rg\ --vimgrep
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+
+let g:fzf_layout = { 'down': '40%' }
 
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
@@ -464,5 +467,6 @@ abbr ligth light
 abbr hightlight highlight
 abbr enitty entity
 abbr enityt entity
+abbr enity entity
 abbr rigth right
 abbr assing assign
