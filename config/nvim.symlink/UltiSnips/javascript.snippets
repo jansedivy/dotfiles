@@ -46,7 +46,7 @@ for (let i = 0, len = $1; i < len; i++) {
 endsnippet
 
 snippet forr
-for (var i = $1.length - 1; i >= 0; i--) {
+for (let i = $1.length - 1; i >= 0; i--) {
 	$0
 }
 endsnippet
@@ -115,7 +115,21 @@ endsnippet
 
 snippet time
 let start = performance.now();
-console.log('[performance]: "$0"', (performance.now() - start), 'ms');
+console.log('DEBUGLOG', '[performance]: "$0"', (performance.now() - start), 'ms');
+endsnippet
+
+snippet ftime
+let count$1 = 1000;
+let start$1 = performance.now();
+for (let iterationIndex = 0; iterationIndex < count$1; iterationIndex++) {
+	$0
+}
+console.log('DEBUGLOG', '[performance]: "$1"', (performance.now() - start$1) / count$1, 'ms');
+endsnippet
+
+snippet profile
+console.profile("$1");
+console.profileEnd("$1");
 endsnippet
 
 snippet forc
@@ -131,4 +145,8 @@ snippet foro
 for (let entity of entities) {
 	$0
 }
+endsnippet
+
+snippet spy
+let $2 = jest.spyOn($1, '$2');
 endsnippet

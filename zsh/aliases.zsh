@@ -21,6 +21,8 @@ alias keyoff='sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Co
 alias keyon='sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/'
 
 alias f='./node_modules/.bin/flow'
+alias p='./node_modules/.bin/prettier --write $(git diff --name-only --diff-filter d | grep '\.js$' | xargs)'
+alias l='yarn lint'
 
 venv () {
   . $(up .env)

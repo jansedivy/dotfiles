@@ -25,8 +25,11 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'unblevable/quick-scope'
 Plug 'scrooloose/nerdtree'
-Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'neomake/neomake'
+Plug 'dense-analysis/ale'
+Plug 'romainl/vim-qf'
 
 " syntax
 Plug 'vim-ruby/vim-ruby'
@@ -43,7 +46,6 @@ Plug 'beyondmarc/hlsl.vim'
 Plug 'mxw/vim-jsx'
 Plug 'jansedivy/jai.vim'
 Plug 'keith/swift.vim'
-Plug 'flowtype/vim-flow'
 Plug 'ernstvanderlinden/vim-coldfusion'
 Plug 'jparise/vim-graphql'
 Plug 'justinj/vim-pico8-syntax'
@@ -54,14 +56,15 @@ Plug 'leafgarland/typescript-vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Quramy/tsuquyomi'
 
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['typescript'] }
+" Plug 'byeokim/vim-prettier', {
+"   \ 'do': 'yarn install --frozen-lockfile --production',
+"   \ 'for': ['typescript', 'javascript'],
+"   \ 'branch': 'fix-cursor-jump-when-redo' }
 
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 
 call plug#end()
 
@@ -183,17 +186,18 @@ augroup vimrcEx
   autocmd FileType python,sql set sw=4 sts=4 et
   autocmd FileType qf set nowrap
 
-  " autocmd BufWritePost,BufEnter *.js,*.coffee,*.go Neomake
+  " autocmd BufWritePost,BufEnter *.js Neomake
 
   autocmd BufRead,BufNewFile *.sass setfiletype sass
 
+  autocmd BufNewFile,BufRead *.widget setlocal filetype=javascript
   autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
   autocmd BufNewFile,BufRead *.as setlocal filetype=javascript
   autocmd BufNewFile,BufRead *.cocoascript setlocal filetype=javascript
 
   autocmd BufNewFile,BufRead *.usf setfiletype glsl
 
-  autocmd Filetype gitcommit setlocal spell textwidth=72
+  autocmd Filetype gitcommit setlocal spell textwidth=80
 
   " Leave the return key alone when in command line windows, since it's used
   " to run commands there.
@@ -281,10 +285,12 @@ nnoremap N Nzzzv
 map <leader><leader> :b#<cr>
 map <leader>w :normal ma<cr>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>:retab<CR>:normal 'a<cr>
 map <leader>e :edit %%
+map <leader>cn :e ~/notes.md<cr>
 map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.config/nvim/init.vim<cr>
+map <leader>k :Dispatch yarn test %<cr>
 
 map <leader>o :silent !open .<cr>
 
@@ -359,6 +365,9 @@ endfunction
 
 nnoremap <leader>. :call OpenAlternativeFile()<cr>
 map <leader>t :FZF<cr>
+map <leader>T :Rg<cr>
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
 " map <leader>kr :call fzf#run({'sink': 'e', 'down': '40%', 'source': 'rg --files --hidden --follow --glob "!__test__" src/graphql/resolvers'})<cr>
 " map <leader>km :call fzf#run({'sink': 'e', 'down': '40%', 'source': 'rg --files --hidden --follow --glob "!__test__" src/data/models'})<cr>
 map <leader>b :Buffers<cr>
@@ -366,23 +375,47 @@ map <leader>b :Buffers<cr>
 inoremap <silent><expr> <TAB>
     \ pumvisible() ? "\<C-n>" :
     \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#mappings#manual_complete()
+    \ deoplete#manual_complete()
     function! s:check_back_space() abort "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~ '\s'
     endfunction"}}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:python3_host_prog = '/usr/bin/python3'
+let g:qf_mapping_ack_style = 1
+
+" let g:prettier#autoformat = 1
+" let g:prettier#autoformat_require_pragma = 0
+
+let g:python3_host_prog = '/opt/homebrew/bin/python3'
 let g:python_host_prog = '/usr/bin/python2'
 
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+
+
+""" Ale
+let g:ale_sign_column_always = 1
+let g:ale_linters = {
+      \  'javascript': ['flow-language-server', 'eslint'],
+      \ }
+
+let g:ale_fixers = {
+      \  'javascript': ['prettier', 'eslint'],
+      \ }
+
+let g:ale_fix_on_save = 1
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> <C-]> <Plug>(ale_go_to_definition)
+"""
+
 
 let g:UltiSnipsExpandTrigger="<C-\\>"
-let g:UltiSnipsJumpForwardTrigger="<C-n>"
-let g:UltiSnipsJumpBackwardTrigger="<C-p>"
+let g:UltiSnipsJumpForwardTrigger="<C-j>"
+let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
 let g:netrw_liststyle=3
 
@@ -390,14 +423,7 @@ let g:typescript_compiler_binary = GetNpmBin('tsc')
 
 call neomake#configure#automake('w')
 
-let g:neomake_javascript_flow_exe = GetNpmBin('flow')
-let g:neomake_javascript_eslint_exe = GetNpmBin('eslint')
-
-let g:neomake_javascript_enabled_makers = ['flow', 'eslint']
-" let g:neomake_jsx_enabled_makers = ['flow']
 let g:neomake_go_enabled_makers = ['go', 'govet', 'golint']
-
-let g:neomake_coffee_enabled_makers = ['coffeelint']
 
 let g:neomake_error_sign = {'text': '●', 'texthl': 'NeomakeErrorSign'}
 let g:neomake_warning_sign = {'text': '◎', 'texthl': 'NeomakeWarningSign'}
@@ -410,9 +436,6 @@ let g:user_emmet_mode='i'
 
 let g:javascript_plugin_flow = 1
 let g:jsx_ext_required = 0
-
-let g:flow#enable = 0
-let g:flow#flowpath = GetNpmBin('flow')
 
 let g:go_fmt_command = "goimports"
 let g:go_def_mode = 'godef'

@@ -5,8 +5,6 @@ export ZSH=$HOME/.dotfiles
 typeset -U config_files
 config_files=($(find $ZSH/**/*.zsh | grep -v /nvim.symlink/ | grep -v "/lib/*/"))
 
-source <(antibody init)
-
 # load the path files
 for file in ${(M)config_files:#*/path.zsh}
 do
@@ -41,3 +39,6 @@ unset config_files updated_at
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 eval "$(nodenv init -)"
+
+source <(antibody init)
+
