@@ -31,8 +31,15 @@ Plug 'neomake/neomake'
 Plug 'dense-analysis/ale'
 Plug 'romainl/vim-qf'
 
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-lua/plenary.nvim'
+
+Plug 'sindrets/diffview.nvim' " needs nvim-lua/plenary.nvim
+Plug 'windwp/nvim-spectre' " needs nvim-lua/plenary.nvim
+
 " syntax
 Plug 'vim-ruby/vim-ruby'
+" Plug 'jansedivy/vim-javascript'
 Plug 'pangloss/vim-javascript'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'groenewege/vim-less'
@@ -55,11 +62,6 @@ Plug 'justinj/vim-pico8-syntax'
 Plug 'leafgarland/typescript-vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Quramy/tsuquyomi'
-
-" Plug 'byeokim/vim-prettier', {
-"   \ 'do': 'yarn install --frozen-lockfile --production',
-"   \ 'for': ['typescript', 'javascript'],
-"   \ 'branch': 'fix-cursor-jump-when-redo' }
 
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
 
@@ -225,6 +227,7 @@ color hybrid
 
 " Fix contrast for search highlight color
 hi Search cterm=NONE ctermfg=8 ctermbg=3
+highlight SignColumn ctermbg=234
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
@@ -291,8 +294,20 @@ map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.config/nvim/init.vim<cr>
 map <leader>k :Dispatch yarn test %<cr>
+map <leader>i :ALEImport<cr>
+map <leader>h :ALEHover<cr>
+map <leader>cc :!flow-coverage-report -i % -f "./node_modules/.bin/flow" -t html && open flow-coverage/index.html<cr>
+
 
 map <leader>o :silent !open .<cr>
+
+nnoremap <leader>R <cmd>lua require('spectre').open()<CR>
+
+"search current word
+nnoremap <leader>rw <cmd>lua require('spectre').open_visual({select_word=true})<CR>
+vnoremap <leader>rw <esc>:lua require('spectre').open_visual()<CR>
+"  search in current file
+nnoremap <leader>rp viw:lua require('spectre').open_file_search()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
@@ -384,6 +399,7 @@ inoremap <silent><expr> <TAB>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 let g:qf_mapping_ack_style = 1
 
 " let g:prettier#autoformat = 1
@@ -393,10 +409,12 @@ let g:python3_host_prog = '/opt/homebrew/bin/python3'
 let g:python_host_prog = '/usr/bin/python2'
 
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
 
 
 """ Ale
+set signcolumn=yes
+let g:ale_use_neovim_diagnostics_api = 1
 let g:ale_sign_column_always = 1
 let g:ale_linters = {
       \  'javascript': ['flow-language-server', 'eslint'],
@@ -421,9 +439,9 @@ let g:netrw_liststyle=3
 
 let g:typescript_compiler_binary = GetNpmBin('tsc')
 
-call neomake#configure#automake('w')
+" call neomake#configure#automake('w')
 
-let g:neomake_go_enabled_makers = ['go', 'govet', 'golint']
+" let g:neomake_go_enabled_makers = ['go', 'govet', 'golint']
 
 let g:neomake_error_sign = {'text': '●', 'texthl': 'NeomakeErrorSign'}
 let g:neomake_warning_sign = {'text': '◎', 'texthl': 'NeomakeWarningSign'}
@@ -438,6 +456,7 @@ let g:javascript_plugin_flow = 1
 let g:jsx_ext_required = 0
 
 let g:go_fmt_command = "goimports"
+let g:go_gopls_enabled = 0
 let g:go_def_mode = 'godef'
 
 let g:ackprg = 'rg --vimgrep --no-heading --ignore-case'
@@ -493,3 +512,6 @@ abbr enityt entity
 abbr enity entity
 abbr rigth right
 abbr assing assign
+
+lua << EOF
+EOF

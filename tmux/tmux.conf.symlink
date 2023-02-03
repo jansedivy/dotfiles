@@ -29,6 +29,8 @@ set -g automatic-rename 1
 
 set-option -sa terminal-overrides ',screen-256color:RGB'
 
+set-option -g focus-events on
+
 ###########################
 #  Key Bindings
 ###########################
