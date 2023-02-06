@@ -2,28 +2,12 @@ snippet c
 console.log('DEBUGLOG', ${0:${VISUAL}});
 endsnippet
 
-snippet d
-app.debug.log(${0:${VISUAL}});
-endsnippet
-
 snippet t
 // TODO(sedivy): $1
 endsnippet
 
-snippet no
-// NOCHECKIN(sedivy): $1
-endsnippet
-
-snippet note
+snippet n
 // NOTE(sedivy): $1
-endsnippet
-
-snippet r
-import $1 from '${2:$1}';
-endsnippet
-
-snippet m
-module.exports = $1;
 endsnippet
 
 snippet for
@@ -32,36 +16,10 @@ for (let i = 0; i < $1; i++) {
 }
 endsnippet
 
-snippet fore
-for (let i = 0; i < entities.length; i++) {
-	let entity = entities[i];
-	$0
-}
-endsnippet
-
-snippet forl
-for (let i = 0, len = $1; i < len; i++) {
-	$0
-}
-endsnippet
-
 snippet forr
 for (let i = $1.length - 1; i >= 0; i--) {
 	$0
 }
-endsnippet
-
-snippet qu
-document.querySelector($1);
-endsnippet
-
-snippet qua
-document.querySelectorAll($1);
-endsnippet
-
-snippet in
-$1.prototype = Object.create($2.prototype);
-$1.prototype.constructor = $2;
 endsnippet
 
 snippet it
@@ -74,43 +32,6 @@ snippet de
 describe('$1', () => {
 	$0
 });
-endsnippet
-
-snippet a
-assert(${1:value}, ${2:message});
-endsnippet
-
-snippet ae
-assert.equal(${1:actual}, ${2:expected});
-endsnippet
-
-snippet rectb
-app.video.ctx.fillRect(this.bounds.l, this.bounds.t, this.bounds.width, this.bounds.height);
-endsnippet
-
-snippet style
-app.video.ctx.fillStyle = $0;
-endsnippet
-
-snippet rect
-app.video.ctx.fillRect($0);
-endsnippet
-
-snippet text
-app.video.ctx.fillStyle = 'black';
-app.video.ctx.font = '20px sans-serif';
-app.video.ctx.textAlign = 'center';
-app.video.ctx.textBaseline = 'middle';
-app.video.ctx.fillText($1, $2, $3);
-endsnippet
-
-snippet react
-var React = require('react');
-
-var $1 = React.createClass({
-});
-
-module.exports = $1;
 endsnippet
 
 snippet time

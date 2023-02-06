@@ -52,6 +52,7 @@ Plug 'tikhomirov/vim-glsl'
 Plug 'beyondmarc/hlsl.vim'
 Plug 'mxw/vim-jsx'
 Plug 'jansedivy/jai.vim'
+Plug 'Tetralux/odin.vim'
 Plug 'keith/swift.vim'
 Plug 'ernstvanderlinden/vim-coldfusion'
 Plug 'jparise/vim-graphql'
@@ -196,6 +197,8 @@ augroup vimrcEx
   autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
   autocmd BufNewFile,BufRead *.as setlocal filetype=javascript
   autocmd BufNewFile,BufRead *.cocoascript setlocal filetype=javascript
+
+  autocmd BufNewFile,BufRead *.odin setlocal filetype=odin
 
   autocmd BufNewFile,BufRead *.usf setfiletype glsl
 
