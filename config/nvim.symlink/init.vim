@@ -192,7 +192,7 @@ augroup vimrcEx
 
   autocmd BufNewFile,BufRead *.usf setfiletype glsl
 
-  autocmd Filetype gitcommit setlocal spell textwidth=80
+  autocmd Filetype gitcommit setlocal spell textwidth=72
 
   " Leave the return key alone when in command line windows, since it's used
   " to run commands there.
