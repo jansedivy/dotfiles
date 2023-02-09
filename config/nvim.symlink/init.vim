@@ -4,8 +4,6 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-rails'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -13,17 +11,15 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
 Plug 'junegunn/vim-easy-align'
 Plug 'mileszs/ack.vim'
-Plug 'jiangmiao/auto-pairs'
+Plug 'windwp/nvim-autopairs'
 Plug 'mattn/emmet-vim'
 Plug 'tommcdo/vim-exchange'
 Plug 'SirVer/ultisnips'
-Plug 'majutsushi/tagbar', { 'on': 'Tagbar' }
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
-Plug 'unblevable/quick-scope'
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -39,22 +35,16 @@ Plug 'windwp/nvim-spectre' " needs nvim-lua/plenary.nvim
 
 " syntax
 Plug 'vim-ruby/vim-ruby'
-" Plug 'jansedivy/vim-javascript'
 Plug 'pangloss/vim-javascript'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'groenewege/vim-less'
 Plug 'othree/html5.vim'
 Plug 'nono/vim-handlebars'
-Plug 'elixir-lang/vim-elixir'
-Plug 'wting/rust.vim'
 Plug 'fatih/vim-go'
 Plug 'tikhomirov/vim-glsl'
 Plug 'beyondmarc/hlsl.vim'
 Plug 'mxw/vim-jsx'
 Plug 'jansedivy/jai.vim'
 Plug 'Tetralux/odin.vim'
-Plug 'keith/swift.vim'
-Plug 'ernstvanderlinden/vim-coldfusion'
 Plug 'jparise/vim-graphql'
 Plug 'justinj/vim-pico8-syntax'
 
@@ -358,7 +348,7 @@ endfunction
 map <leader>n :call RenameFile()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Switch to header/implementatino file
+" Switch to header/implementation file
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! OpenAlternativeFile()
   let current_file = expand("%:r")
@@ -402,6 +392,10 @@ inoremap <silent><expr> <TAB>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+lua << EOF
+require("nvim-autopairs").setup {}
+EOF
 
 let g:qf_mapping_ack_style = 1
 
