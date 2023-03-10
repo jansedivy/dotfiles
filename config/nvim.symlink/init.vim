@@ -23,7 +23,6 @@ Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'neomake/neomake'
 Plug 'dense-analysis/ale'
 Plug 'romainl/vim-qf'
 
@@ -57,7 +56,6 @@ Plug 'Quramy/tsuquyomi'
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 
 call plug#end()
 
@@ -179,8 +177,6 @@ augroup vimrcEx
   autocmd FileType python,sql set sw=4 sts=4 et
   autocmd FileType qf set nowrap
 
-  " autocmd BufWritePost,BufEnter *.js Neomake
-
   autocmd BufRead,BufNewFile *.sass setfiletype sass
 
   autocmd BufNewFile,BufRead *.widget setlocal filetype=javascript
@@ -286,7 +282,7 @@ map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.config/nvim/init.vim<cr>
-map <leader>k :Dispatch yarn test %<cr>
+map <leader>k :w\|:!tmux new-window yarn test --watch %<cr>
 map <leader>i :ALEImport<cr>
 map <leader>h :ALEHover<cr>
 map <leader>cc :!flow-coverage-report -i % -f "./node_modules/.bin/flow" -t html && open flow-coverage/index.html<cr>
@@ -399,15 +395,11 @@ EOF
 
 let g:qf_mapping_ack_style = 1
 
-" let g:prettier#autoformat = 1
-" let g:prettier#autoformat_require_pragma = 0
-
 let g:python3_host_prog = '/opt/homebrew/bin/python3'
 let g:python_host_prog = '/usr/bin/python2'
 
 let g:deoplete#enable_at_startup = 1
-" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-
+let g:go_def_mapping_enabled = 0
 
 """ Ale
 set signcolumn=yes
@@ -415,10 +407,13 @@ let g:ale_use_neovim_diagnostics_api = 1
 let g:ale_sign_column_always = 1
 let g:ale_linters = {
       \  'javascript': ['flow-language-server', 'eslint'],
+      \  'go': ['gopls']
       \ }
 
+let g:ale_go_golangci_lint_package = 1
+
 let g:ale_fixers = {
-      \  'javascript': ['prettier', 'eslint'],
+      \  'javascript': ['prettier', 'eslint']
       \ }
 
 let g:ale_fix_on_save = 1
@@ -436,15 +431,6 @@ let g:netrw_liststyle=3
 
 let g:typescript_compiler_binary = GetNpmBin('tsc')
 
-" call neomake#configure#automake('w')
-
-" let g:neomake_go_enabled_makers = ['go', 'govet', 'golint']
-
-let g:neomake_error_sign = {'text': '●', 'texthl': 'NeomakeErrorSign'}
-let g:neomake_warning_sign = {'text': '◎', 'texthl': 'NeomakeWarningSign'}
-let g:neomake_message_sign = {'text': '➤', 'texthl': 'NeomakeMessageSign'}
-let g:neomake_info_sign = {'text': 'ℹ', 'texthl': 'NeomakeInfoSign'}
-
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 let g:user_emmet_mode='i'
@@ -452,9 +438,9 @@ let g:user_emmet_mode='i'
 let g:javascript_plugin_flow = 1
 let g:jsx_ext_required = 0
 
-let g:go_fmt_command = "goimports"
-let g:go_gopls_enabled = 0
-let g:go_def_mode = 'godef'
+" let g:go_fmt_command = "goimports"
+" let g:go_gopls_enabled = 0
+" let g:go_def_mode = 'godef'
 
 let g:ackprg = 'rg --vimgrep --no-heading --ignore-case'
 

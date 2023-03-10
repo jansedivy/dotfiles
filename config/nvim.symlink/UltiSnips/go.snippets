@@ -7,9 +7,7 @@ log.Println($1)
 endsnippet
 
 snippet e
-if err != nil {
-	$0
-}
+return fmt.Errorf("$0: %w", err)
 endsnippet
 
 snippet r
