@@ -282,7 +282,7 @@ map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.config/nvim/init.vim<cr>
-map <leader>k :w\|:!tmux new-window yarn test --watch %<cr>
+map <leader>k :w\|:!tmux new-window node --inspect ./node_modules/.bin/jest --runInBand --watch %<cr>
 map <leader>i :ALEImport<cr>
 map <leader>h :ALEHover<cr>
 map <leader>cc :!flow-coverage-report -i % -f "./node_modules/.bin/flow" -t html && open flow-coverage/index.html<cr>

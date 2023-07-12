@@ -71,3 +71,11 @@ endsnippet
 snippet spy
 let $2 = jest.spyOn($1, '$2');
 endsnippet
+
+
+snippet drect
+if (window.aabb) {
+  let aabb = window.aabb;
+  this.commandBuffer.rectangle(aabb.l, aabb.t, aabb.width, aabb.height, [1, 0, 1, 0.5]);
+}
+endsnippet
