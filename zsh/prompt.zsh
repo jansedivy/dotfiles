@@ -37,8 +37,8 @@ need_push() {
   fi
 }
 
-vim_jobs_count() {
-  count=`echo $(jobs | wc -l)`
+jobs_count() {
+  count=`echo ${#jobstates}`
   if [ $count -ne "0" ]
   then
     echo "%{$fg[green]%}`echo $(jot -b ! $count) | sed 's/ //g'`%{$reset_color%}"
@@ -49,4 +49,4 @@ directory_name() {
   echo "%{$fg[blue]%}%1/%{$reset_color%}"
 }
 
-export PROMPT=$'$(vim_jobs_count)$(directory_name)$(git_prompt) › '
+export PROMPT=$'$(jobs_count)$(directory_name)$(git_prompt) › '
