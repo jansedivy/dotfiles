@@ -406,7 +406,7 @@ set signcolumn=yes
 let g:ale_use_neovim_diagnostics_api = 1
 let g:ale_sign_column_always = 1
 let g:ale_linters = {
-      \  'javascript': ['flow-language-server', 'eslint'],
+      \  'javascript': ['flow_ls', 'eslint'],
       \  'go': ['gopls']
       \ }
 
