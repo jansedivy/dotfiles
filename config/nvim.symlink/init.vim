@@ -278,6 +278,7 @@ map <leader><leader> :b#<cr>
 map <leader>w :normal ma<cr>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>:retab<CR>:normal 'a<cr>
 map <leader>e :edit %%
 map <leader>cn :e ~/notes.md<cr>
+map <leader>d '.<cr>
 map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
