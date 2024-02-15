@@ -3,7 +3,16 @@ printf("${0}");
 endsnippet
 
 snippet for
-for (u32 $1=0; $1<$2; $1++) {
+for (u32 $1 = 0; $1 < $2; $1++) {
+	$0
+}
+endsnippet
+
+snippet forl
+for ($1 *item = ${2:first};
+		item != NULL;
+		item = item->${3:next})
+{
 	$0
 }
 endsnippet

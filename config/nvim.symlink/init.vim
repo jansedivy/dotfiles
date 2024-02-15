@@ -25,6 +25,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 Plug 'romainl/vim-qf'
+Plug 'wsdjeg/vim-fetch'
 
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lua/plenary.nvim'
@@ -205,6 +206,9 @@ augroup vimrcEx
 
   autocmd Bufread,BufNewFile *.cfm set filetype=eoz
   autocmd Bufread,BufNewFile *.cfc set filetype=eoz
+
+  autocmd BufEnter *.c,*.h syntax keyword CustomCTypes u8 u16 u32 u64 s8 s16 s32 s64 f32 f64 v2 v2i str8 f32x4 u32x4 u16x4 u8x4
+  autocmd BufEnter *.c,*.h syntax keyword CustomCKeywords global internal local_persist
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -217,6 +221,9 @@ color hybrid
 " Fix contrast for search highlight color
 hi Search cterm=NONE ctermfg=8 ctermbg=3
 highlight SignColumn ctermbg=234
+
+highlight CustomCTypes ctermbg=NONE ctermfg=11
+highlight CustomCKeywords ctermbg=NONE ctermfg=6
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
@@ -287,6 +294,7 @@ map <leader>k :w\|:!tmux new-window node --inspect ./node_modules/.bin/jest --ru
 map <leader>i :ALEImport<cr>
 map <leader>h :ALEHover<cr>
 map <leader>cc :!flow-coverage-report -i % -f "./node_modules/.bin/flow" -t html && open flow-coverage/index.html<cr>
+map <leader>f :normal gF<cr>
 
 
 map <leader>o :silent !open .<cr>
@@ -352,9 +360,9 @@ function! OpenAlternativeFile()
   let current_extension = expand("%:e")
 
   if current_extension == "h"
-    exec ':e ' . current_file . ".cpp"
+    exec ':e ' . current_file . ".c"
     return
-  elseif current_extension == "cpp"
+  elseif current_extension == "c"
     exec ':e ' . current_file . ".h"
     return
   elseif current_extension == "js"
@@ -408,13 +416,19 @@ let g:ale_use_neovim_diagnostics_api = 1
 let g:ale_sign_column_always = 1
 let g:ale_linters = {
       \  'javascript': ['flow_ls', 'eslint'],
-      \  'go': ['gopls']
+      \  'go': ['gopls'],
+      \  'c': [],
+      \  'cpp': [],
+      \  'h': []
       \ }
 
 let g:ale_go_golangci_lint_package = 1
 
 let g:ale_fixers = {
-      \  'javascript': ['prettier', 'eslint']
+      \  'javascript': ['prettier', 'eslint'],
+      \  'c': [],
+      \  'cpp': [],
+      \  'h': []
       \ }
 
 let g:ale_fix_on_save = 1
