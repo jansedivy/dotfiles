@@ -2,31 +2,44 @@ snippet c
 printf("${0}");
 endsnippet
 
-snippet for
-for (u32 $1 = 0; $1 < $2; $1++) {
-	$0
-}
+snippet sf
+%.*s
+endsnippet
+
+snippet sv
+(s32)$1.size, $1.data
 endsnippet
 
 snippet forl
-for ($1 *item = ${2:first};
-		item != NULL;
-		item = item->${3:next})
-{
+for ($1 *item = ${2:first}; item != NULL; item = item->${3:next}) {
 	$0
 }
 endsnippet
 
-snippet iter
-for (auto it = array::begin($1); it != array::end($1); it++) {
+snippet forr
+for (u64 i = $1.size - 1; i >= 0; i--) {
 	$0
 }
+endsnippet
+
+snippet profile
+ProfilerBlock start = profiler_start($0);
+profiler_stop(start);
 endsnippet
 
 snippet time
-auto start = std::chrono::high_resolution_clock::now();
-$0
-auto end = std::chrono::high_resolution_clock::now();
-auto diff = end - start;
-printf("time: %lld\n", std::chrono::duration_cast<std::chrono::milliseconds> (diff).count());
+Stopwatch setup_$1 = stopwatch_start();
+printf("$1: %.2fms\n", (f64)stopwatch_stop(setup_$1));
+endsnippet
+
+snippet scratch
+TempArenaPosition scratch = arena_get_scratch($1);
+arena_release_scratch(scratch);
+endsnippet
+
+snippet fn
+internal ${1:void}
+${2:fn}($3) {
+	$0
+}
 endsnippet

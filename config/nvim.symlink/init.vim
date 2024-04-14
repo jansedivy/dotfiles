@@ -26,6 +26,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 Plug 'romainl/vim-qf'
 Plug 'wsdjeg/vim-fetch'
+Plug 'github/copilot.vim'
+Plug 'echasnovski/mini.nvim'
+Plug 'mfussenegger/nvim-dap'
 
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lua/plenary.nvim'
@@ -47,6 +50,8 @@ Plug 'jansedivy/jai.vim'
 Plug 'Tetralux/odin.vim'
 Plug 'jparise/vim-graphql'
 Plug 'justinj/vim-pico8-syntax'
+Plug 'bfrg/vim-cpp-modern'
+Plug 'rhysd/vim-llvm'
 
 " typescript
 " Plug 'HerringtonDarkholme/yats.vim'
@@ -56,7 +61,10 @@ Plug 'Quramy/tsuquyomi'
 
 Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
 call plug#end()
 
@@ -207,8 +215,10 @@ augroup vimrcEx
   autocmd Bufread,BufNewFile *.cfm set filetype=eoz
   autocmd Bufread,BufNewFile *.cfc set filetype=eoz
 
-  autocmd BufEnter *.c,*.h syntax keyword CustomCTypes u8 u16 u32 u64 s8 s16 s32 s64 f32 f64 v2 v2i str8 f32x4 u32x4 u16x4 u8x4
+  autocmd BufEnter *.c,*.h syntax keyword CustomCTypes u8 u16 u32 u64 s8 s16 s32 s64 f32 f64 v2 v2i str8 f32x4 u32x4 u16x8 u8x8 u8x16
   autocmd BufEnter *.c,*.h syntax keyword CustomCKeywords global internal local_persist
+
+  autocmd BufWritePost *.c,*.cpp,*.h silent! !/opt/homebrew/bin/ctags src/**/* . &
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -222,9 +232,13 @@ color hybrid
 hi Search cterm=NONE ctermfg=8 ctermbg=3
 highlight SignColumn ctermbg=234
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" C
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 highlight CustomCTypes ctermbg=NONE ctermfg=11
 highlight CustomCKeywords ctermbg=NONE ctermfg=6
 
+set cinoptions=l1,(2
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -290,7 +304,7 @@ map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.config/nvim/init.vim<cr>
-map <leader>k :w\|:!tmux new-window node --inspect ./node_modules/.bin/jest --runInBand --watch %<cr>
+map <leader>K :!tmux new-window ./run.sh<cr>
 map <leader>i :ALEImport<cr>
 map <leader>h :ALEHover<cr>
 map <leader>cc :!flow-coverage-report -i % -f "./node_modules/.bin/flow" -t html && open flow-coverage/index.html<cr>
@@ -379,27 +393,60 @@ endfunction
 nnoremap <leader>. :call OpenAlternativeFile()<cr>
 map <leader>t :FZF<cr>
 map <leader>T :Rg<cr>
+map <leader>g :Tags<cr>
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 " map <leader>kr :call fzf#run({'sink': 'e', 'down': '40%', 'source': 'rg --files --hidden --follow --glob "!__test__" src/graphql/resolvers'})<cr>
 " map <leader>km :call fzf#run({'sink': 'e', 'down': '40%', 'source': 'rg --files --hidden --follow --glob "!__test__" src/data/models'})<cr>
 map <leader>b :Buffers<cr>
 
-inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#manual_complete()
-    function! s:check_back_space() abort "{{{
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~ '\s'
-    endfunction"}}}
+" inoremap <silent><expr> <TAB>
+"     \ pumvisible() ? "\<C-n>" :
+"     \ <SID>check_back_space() ? "\<TAB>" :
+"     \ deoplete#manual_complete()
+"     function! s:check_back_space() abort "{{{
+"       let col = col('.') - 1
+"       return !col || getline('.')[col - 1]  =~ '\s'
+"     endfunction"}}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+let g:cpp_function_highlight = 1
+let g:cpp_member_highlight = 0
+
 lua << EOF
+require('mini.cursorword').setup({
+  delay = 0,
+})
+
 require("nvim-autopairs").setup {}
+
+local cmp = require('cmp')
+cmp.setup({
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+  },
+  sources = {
+    { name = 'buffer' },
+    { name = 'path' },
+    { name = 'ultisnips' },
+  },
+})
+
+vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false
+})
+vim.g.copilot_no_tab_map = true
+
 EOF
 
 let g:qf_mapping_ack_style = 1
@@ -407,7 +454,6 @@ let g:qf_mapping_ack_style = 1
 let g:python3_host_prog = '/opt/homebrew/bin/python3'
 let g:python_host_prog = '/usr/bin/python2'
 
-let g:deoplete#enable_at_startup = 1
 let g:go_def_mapping_enabled = 0
 
 """ Ale

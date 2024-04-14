@@ -8,7 +8,7 @@ export CLICOLOR=true
 
 export TERM="screen-256color"
 
-export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
+export MANPAGER="/bin/sh -c \"col -b | nvim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
 
 fpath=($ZSH/zsh/functions $fpath)
 
@@ -55,7 +55,6 @@ export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-
 
 function _zsh_title__precmd() {
   echo -ne "\e]1;${PWD##*/}\a"

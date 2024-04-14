@@ -7,3 +7,5 @@ export PATH="/opt/homebrew/bin:$PATH"
 export PATH="${HOME}/.jsvu:${PATH}"
 
 export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
+
+export LIBRARY_PATH="$LIBRARY_PATH:/opt/homebrew/lib"
