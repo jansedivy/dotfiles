@@ -22,6 +22,12 @@ for (u64 i = $1.size - 1; i >= 0; i--) {
 }
 endsnippet
 
+snippet for
+for (u64 i = 0; i < $1; i++) {
+	$0
+}
+endsnippet
+
 snippet profile
 ProfilerBlock start = profiler_start($0);
 profiler_stop(start);
@@ -35,6 +41,11 @@ endsnippet
 snippet scratch
 TempArenaPosition scratch = arena_get_scratch($1);
 arena_release_scratch(scratch);
+endsnippet
+
+snippet temp
+TempArenaPosition temp = arena_temp_begin($1);
+arena_temp_end(temp);
 endsnippet
 
 snippet fn

@@ -21,8 +21,6 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 Plug 'romainl/vim-qf'
 Plug 'wsdjeg/vim-fetch'
@@ -35,6 +33,8 @@ Plug 'nvim-lua/plenary.nvim'
 
 Plug 'sindrets/diffview.nvim' " needs nvim-lua/plenary.nvim
 Plug 'windwp/nvim-spectre' " needs nvim-lua/plenary.nvim
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' } " needs nvim-lua/plenary.nvim
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 " syntax
 Plug 'vim-ruby/vim-ruby'
@@ -216,9 +216,9 @@ augroup vimrcEx
   autocmd Bufread,BufNewFile *.cfc set filetype=eoz
 
   autocmd BufEnter *.c,*.h syntax keyword CustomCTypes u8 u16 u32 u64 s8 s16 s32 s64 f32 f64 v2 v2i str8 f32x4 u32x4 u16x8 u8x8 u8x16
-  autocmd BufEnter *.c,*.h syntax keyword CustomCKeywords global internal local_persist
+  autocmd BufEnter *.c,*.h syntax keyword CustomCKeywords global internal local_persist Defer
 
-  autocmd BufWritePost *.c,*.cpp,*.h silent! !/opt/homebrew/bin/ctags src/**/* . &
+  autocmd BufWritePost *.c,*.cpp,*.h silent! !/opt/homebrew/bin/ctags src/**/*.{h,c} . &
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -391,14 +391,8 @@ function! OpenAlternativeFile()
 endfunction
 
 nnoremap <leader>. :call OpenAlternativeFile()<cr>
-map <leader>t :FZF<cr>
 map <leader>T :Rg<cr>
 map <leader>g :Tags<cr>
-command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
-
-" map <leader>kr :call fzf#run({'sink': 'e', 'down': '40%', 'source': 'rg --files --hidden --follow --glob "!__test__" src/graphql/resolvers'})<cr>
-" map <leader>km :call fzf#run({'sink': 'e', 'down': '40%', 'source': 'rg --files --hidden --follow --glob "!__test__" src/data/models'})<cr>
-map <leader>b :Buffers<cr>
 
 " inoremap <silent><expr> <TAB>
 "     \ pumvisible() ? "\<C-n>" :
@@ -417,6 +411,25 @@ let g:cpp_function_highlight = 1
 let g:cpp_member_highlight = 0
 
 lua << EOF
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>t', builtin.find_files, {})
+vim.keymap.set('n', '<leader>b', builtin.buffers, {})
+vim.keymap.set('n', '<leader>g', builtin.live_grep, {})
+
+require('telescope').setup {
+  extensions = {
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = true,  -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+    }
+  }
+}
+-- To get fzf loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require('telescope').load_extension('fzf')
+
 require('mini.cursorword').setup({
   delay = 0,
 })
@@ -465,8 +478,13 @@ let g:ale_linters = {
       \  'go': ['gopls'],
       \  'c': [],
       \  'cpp': [],
-      \  'h': []
+      \  'h': [],
       \ }
+
+let g:ale_c_cc_executable = '/opt/homebrew/opt/llvm/bin/clang'
+let g:ale_c_clangcheck_executable = '/opt/homebrew/opt/llvm/bin/clang-check'
+" let g:ale_c_build_dir = 'build'
+" let g:ale_c_always_make = 0
 
 let g:ale_go_golangci_lint_package = 1
 
@@ -478,9 +496,9 @@ let g:ale_fixers = {
       \ }
 
 let g:ale_fix_on_save = 1
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-nmap <silent> <C-]> <Plug>(ale_go_to_definition)
+" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" nmap <silent> <C-]> <Plug>(ale_go_to_definition)
 """
 
 
@@ -503,12 +521,8 @@ let g:jsx_ext_required = 0
 " let g:go_gopls_enabled = 0
 " let g:go_def_mode = 'godef'
 
-let g:ackprg = 'rg --vimgrep --no-heading --ignore-case'
-
-set grepprg=rg\ --vimgrep
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-
-let g:fzf_layout = { 'down': '40%' }
+" let g:ackprg = 'rg --vimgrep --no-heading --ignore-case'
+" set grepprg=rg\ --vimgrep
 
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
