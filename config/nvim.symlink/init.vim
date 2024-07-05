@@ -215,8 +215,8 @@ augroup vimrcEx
   autocmd Bufread,BufNewFile *.cfm set filetype=eoz
   autocmd Bufread,BufNewFile *.cfc set filetype=eoz
 
-  autocmd BufEnter *.c,*.h syntax keyword CustomCTypes u8 u16 u32 u64 s8 s16 s32 s64 f32 f64 v2 v2i str8 f32x4 u32x4 u16x8 u8x8 u8x16
-  autocmd BufEnter *.c,*.h syntax keyword CustomCKeywords global internal local_persist Defer
+  autocmd BufEnter *.c,*.h syntax keyword Type u8 u16 u32 u64 s8 s16 s32 s64 f32 f64 v2 v2i str8 f32x4 u32x4 u16x8 u8x8 u8x16
+  autocmd BufEnter *.c,*.h syntax keyword Operator global internal local_persist Defer
 
   autocmd BufWritePost *.c,*.cpp,*.h silent! !/opt/homebrew/bin/ctags src/**/*.{h,c} . &
 augroup END
@@ -229,10 +229,8 @@ color hybrid
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " C
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-highlight CustomCTypes guibg=NONE guifg=#EA9A67
-highlight CustomCKeywords guibg=NONE guifg=#90C7C0
-
 set cinoptions=l1,(2
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
