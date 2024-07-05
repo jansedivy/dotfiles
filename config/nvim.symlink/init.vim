@@ -59,7 +59,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Quramy/tsuquyomi'
 
-Plug 'jansedivy/vim-hybrid', { 'branch': '471b235' }
+Plug 'jansedivy/vim-hybrid'
 
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-path'
@@ -224,19 +224,18 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COLOR
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set t_co=256
-let g:hybrid_use_iTerm_colors = 1
 color hybrid
 
 " Fix contrast for search highlight color
-hi Search cterm=NONE ctermfg=8 ctermbg=3
-highlight SignColumn ctermbg=234
+hi Search guifg=#2B2D30 guibg=#E9BF77
+highlight SignColumn guibg=#1c1c1c
+highlight Normal guibg=none
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " C
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-highlight CustomCTypes ctermbg=NONE ctermfg=11
-highlight CustomCKeywords ctermbg=NONE ctermfg=6
+highlight CustomCTypes guibg=NONE guifg=#EA9A67
+highlight CustomCKeywords guibg=NONE guifg=#90C7C0
 
 set cinoptions=l1,(2
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -244,7 +243,7 @@ set cinoptions=l1,(2
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set stl=%f\ %m\ %r\ Line:%l/%L[%p%%]
 
-hi StatusLine ctermfg=235 ctermbg=2
+hi StatusLine guifg=#262626 guibg=#BFC674
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
