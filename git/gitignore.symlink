@@ -24,3 +24,5 @@ Session.vim
 *.log
 *.sqlite
 .python-version
+
+tags

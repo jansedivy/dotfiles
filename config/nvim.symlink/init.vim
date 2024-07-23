@@ -20,15 +20,20 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
-Plug 'scrooloose/nerdtree'
 Plug 'dense-analysis/ale'
 Plug 'romainl/vim-qf'
 Plug 'wsdjeg/vim-fetch'
 Plug 'github/copilot.vim'
 Plug 'echasnovski/mini.nvim'
 Plug 'mfussenegger/nvim-dap'
+Plug 'cocopon/inspecthi.vim'
+Plug 'lewis6991/gitsigns.nvim'
 
+Plug 'nvim-neo-tree/neo-tree.nvim' " needs nvim-lua/plenary.nvim, nvim-tree/nvim-web-devicons, MunifTanjim/nui.nvim
+
+Plug 'ryanoasis/vim-devicons'
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'MunifTanjim/nui.nvim'
 Plug 'nvim-lua/plenary.nvim'
 
 Plug 'sindrets/diffview.nvim' " needs nvim-lua/plenary.nvim
@@ -109,6 +114,8 @@ set title
 set cursorline
 set virtualedit=block
 set wrap
+
+set inccommand=split
 
 set exrc
 set secure
@@ -234,7 +241,7 @@ set cinoptions=l1,(2
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set stl=%f\ %m\ %r\ Line:%l/%L[%p%%]
+set stl=\ %{WebDevIconsGetFileTypeSymbol()}\ %f\ %m\ %r\ Line:%l/%L[%p%%]
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -339,23 +346,6 @@ function! GetNpmBin(binname)
 endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" RENAME CURRENT FILE
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-        let old_alt = expand('#')
-        exec ':saveas ' . new_name
-        let @# = old_alt
-        exec ':bd ' . bufnr(old_name)
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
-endfunction
-map <leader>n :call RenameFile()<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Switch to header/implementation file
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! OpenAlternativeFile()
@@ -400,6 +390,43 @@ let g:cpp_function_highlight = 1
 let g:cpp_member_highlight = 0
 
 lua << EOF
+tasks = require('tasks')
+
+vim.keymap.set('n', '<leader>k', function() vim.cmd('w'); tasks.run_task("./test.sh", "^([^:]+%.c):(%d+) (.+)$") end, opts)
+
+vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev() end, opts)
+vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next() end, opts)
+
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '󰌵',
+    },
+  },
+})
+
+function RenameFile()
+  local old_name = vim.fn.expand('%')
+  local new_name = vim.fn.input('New file name: ', old_name, 'file')
+  if new_name ~= '' and new_name ~= old_name then
+    vim.cmd('Move ' .. new_name)
+  end
+end
+
+vim.api.nvim_set_keymap('n', '<leader>n', ':lua RenameFile()<CR>', { noremap = true, silent = true })
+
+require('gitsigns').setup()
+
+local hipatterns = require('mini.hipatterns')
+hipatterns.setup({
+  highlighters = {
+    hex_color = hipatterns.gen_highlighter.hex_color(),
+  },
+})
+
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>t', builtin.find_files, {})
 vim.keymap.set('n', '<leader>b', builtin.buffers, {})
