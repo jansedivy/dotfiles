@@ -1,5 +1,5 @@
 local function cleanup_term_string(s)
-  return s:gsub('\r', ''):gsub('\27%[%d*m', '')
+  return s:gsub('\r', ''):gsub('\x1b%[[%d;]*m', '')
 end
 
 local bufenter_callbacks = {}

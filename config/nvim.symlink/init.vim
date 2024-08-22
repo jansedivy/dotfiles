@@ -64,7 +64,10 @@ Plug 'leafgarland/typescript-vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Quramy/tsuquyomi'
 
-Plug 'jansedivy/jansedivy-theme'
+Plug 'folke/tokyonight.nvim'
+
+" Plug 'jansedivy/jansedivy-theme'
+Plug '~/Documents/scratch/jansedivy-theme'
 
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-path'
@@ -294,16 +297,15 @@ nnoremap N Nzzzv
 map <leader><leader> :b#<cr>
 map <leader>w :normal ma<cr>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>:retab<CR>:normal 'a<cr>
 map <leader>e :edit %%
-map <leader>cn :e ~/notes.md<cr>
+" map <leader>cn :e ~/notes.md<cr>
 map <leader>d '.<cr>
 map <leader>n :call RenameFile()<cr>
 map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.config/nvim/init.vim<cr>
-map <leader>K :!tmux new-window ./run.sh<cr>
 map <leader>i :ALEImport<cr>
 map <leader>h :ALEHover<cr>
-map <leader>cc :!flow-coverage-report -i % -f "./node_modules/.bin/flow" -t html && open flow-coverage/index.html<cr>
+" map <leader>cc :!flow-coverage-report -i % -f "./node_modules/.bin/flow" -t html && open flow-coverage/index.html<cr>
 map <leader>f :normal gF<cr>
 
 
@@ -370,17 +372,6 @@ function! OpenAlternativeFile()
 endfunction
 
 nnoremap <leader>. :call OpenAlternativeFile()<cr>
-map <leader>T :Rg<cr>
-map <leader>g :Tags<cr>
-
-" inoremap <silent><expr> <TAB>
-"     \ pumvisible() ? "\<C-n>" :
-"     \ <SID>check_back_space() ? "\<TAB>" :
-"     \ deoplete#manual_complete()
-"     function! s:check_back_space() abort "{{{
-"       let col = col('.') - 1
-"       return !col || getline('.')[col - 1]  =~ '\s'
-"     endfunction"}}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
@@ -392,7 +383,33 @@ let g:cpp_member_highlight = 0
 lua << EOF
 tasks = require('tasks')
 
-vim.keymap.set('n', '<leader>k', function() vim.cmd('w'); tasks.run_task("./test.sh", "^([^:]+%.c):(%d+) (.+)$") end, opts)
+local function save_if_modified()
+  local buf = vim.api.nvim_get_current_buf()
+  local is_modified = vim.api.nvim_buf_get_option(buf, 'modified')
+
+  if is_modified then
+    vim.api.nvim_command('write')
+  end
+end
+
+require("neo-tree").setup({
+  filesystem = {
+    bind_to_cwd = false,
+    hijack_netrw_behavior = "open_current",
+  },
+})
+
+vim.keymap.set('n', '<leader>K', ':!tmux new-window ./run.sh<CR>', {})
+
+vim.keymap.set('n', '<leader>k', function()
+  save_if_modified()
+  tasks.run_task("./test.sh", "^([^:]+%.c):(%d+) (.+)$")
+end, opts)
+
+vim.keymap.set('n', '<leader>c', function()
+  save_if_modified()
+  tasks.run_task("./build.sh", "^([^:]+%.c):(%d+):%d+: (.+)$")
+end, opts)
 
 vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev() end, opts)
 vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next() end, opts)
@@ -408,26 +425,55 @@ vim.diagnostic.config({
   },
 })
 
-function RenameFile()
+vim.keymap.set('n', '<leader>n', function()
   local old_name = vim.fn.expand('%')
   local new_name = vim.fn.input('New file name: ', old_name, 'file')
   if new_name ~= '' and new_name ~= old_name then
     vim.cmd('Move ' .. new_name)
   end
-end
-
-vim.api.nvim_set_keymap('n', '<leader>n', ':lua RenameFile()<CR>', { noremap = true, silent = true })
+end, { noremap = true, silent = true })
 
 require('gitsigns').setup()
 
 local hipatterns = require('mini.hipatterns')
+
+local function rgb(c)
+  c = string.lower(c)
+  return { tonumber(c:sub(2, 3), 16), tonumber(c:sub(4, 5), 16), tonumber(c:sub(6, 7), 16) }
+end
+
+function blend(foreground, alpha, background)
+  local bg = rgb(background)
+  local fg = rgb(foreground)
+
+  local r = math.floor(math.min(math.max(0, (alpha * fg[1] + ((1 - alpha) * bg[1]))), 255) + 0.5)
+  local g = math.floor(math.min(math.max(0, (alpha * fg[2] + ((1 - alpha) * bg[2]))), 255) + 0.5)
+  local b = math.floor(math.min(math.max(0, (alpha * fg[3] + ((1 - alpha) * bg[3]))), 255) + 0.5)
+
+  return string.format("#%02x%02x%02x", r, g, b)
+end
+
+function u32_hex_color(_, match)
+  background = "#222426"
+  alpha = tonumber(match:sub(9), 16) / 255
+  hex = "#" .. match:sub(3, 8)
+
+  hex = blend(hex, alpha, background);
+
+  return hipatterns.compute_hex_color_group(hex, 'bg')
+end
+
 hipatterns.setup({
   highlighters = {
     hex_color = hipatterns.gen_highlighter.hex_color(),
+    u32_hex_color = { pattern = "0x%x%x%x%x%x%x%x%x", group = u32_hex_color },
   },
 })
 
+vim.keymap.set('n', '<leader>d', ':lua vim.diagnostic.setqflist()<CR>', {})
+
 local builtin = require('telescope.builtin')
+
 vim.keymap.set('n', '<leader>t', builtin.find_files, {})
 vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 vim.keymap.set('n', '<leader>g', builtin.live_grep, {})
@@ -442,8 +488,6 @@ require('telescope').setup {
     }
   }
 }
--- To get fzf loaded and working with telescope, you need to call
--- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
 
 require('mini.cursorword').setup({
@@ -586,6 +630,3 @@ abbr enityt entity
 abbr enity entity
 abbr rigth right
 abbr assing assign
-
-lua << EOF
-EOF

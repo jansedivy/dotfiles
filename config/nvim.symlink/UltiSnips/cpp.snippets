@@ -40,12 +40,12 @@ endsnippet
 
 snippet scratch
 TempArenaPosition scratch = arena_get_scratch($1);
-arena_release_scratch(scratch);
+Defer { arena_release_scratch(scratch); };
 endsnippet
 
 snippet temp
 TempArenaPosition temp = arena_temp_begin($1);
-arena_temp_end(temp);
+Defer { arena_temp_end(temp); }
 endsnippet
 
 snippet fn

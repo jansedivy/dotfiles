@@ -1,0 +1,4 @@
+rupa/z
+
+zsh-users/zsh-completions
+zsh-users/zsh-syntax-highlighting

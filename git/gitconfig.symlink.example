@@ -5,12 +5,11 @@
   email = AUTHOREMAIL
 [alias]
   co = checkout
-  promote = !$ZSH/bin/git-promote
-  wtf     = !$ZSH/bin/git-wtf
-  rank-contributers = !$ZSH/bin/git-rank-contributers
   count   = !git shortlog -sn
   ci      = commit --verbose --no-verify
   aa      = add --all
+
+  fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
 
   ff = merge --ff-only
   noff = merge --no-ff
@@ -40,6 +39,7 @@
 [help]
   autocorrect = 1
 [push]
+  autoSetupRemote = true
   default = simple
 [credential]
   helper = osxkeychain
@@ -55,3 +55,7 @@
 	rebase = true
 [fetch]
 	prune = true
+[init]
+	defaultBranch = main
+[rebase]
+	autosquash = true

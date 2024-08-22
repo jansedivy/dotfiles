@@ -1,9 +1,0 @@
-#!/bin/bash
-
-BASEDIR=$(dirname $0)
-result=`cat $BASEDIR/gl3.data | fzf`
-
-if [[ -n $result ]]
-then
-  open "http://docs.gl/gl3/$result"
-fi

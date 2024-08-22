@@ -1,3 +1,0 @@
-#!/bin/bash
-
-ab -n 5000 -c 50 -k -q http://127.0.0.1:8000/ | grep "Requests per" | cut -d ' ' -f 7 | xargs echo "$2:"

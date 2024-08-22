@@ -11,9 +11,6 @@ do
   source $file
 done
 
-# load antibody plugins
-source ~/.zsh_plugins.sh
-
 # load everything but the path and completion files
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
 do
@@ -39,6 +36,3 @@ unset config_files updated_at
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 eval "$(nodenv init -)"
-
-source <(antibody init)
-
