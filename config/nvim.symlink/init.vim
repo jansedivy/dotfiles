@@ -18,18 +18,21 @@ Plug 'SirVer/ultisnips'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'haya14busa/incsearch.vim'
-Plug 'haya14busa/incsearch-fuzzy.vim'
+" Plug 'haya14busa/incsearch.vim'
+" Plug 'haya14busa/incsearch-fuzzy.vim'
 Plug 'dense-analysis/ale'
 Plug 'romainl/vim-qf'
 Plug 'wsdjeg/vim-fetch'
-Plug 'github/copilot.vim'
+" Plug 'github/copilot.vim'
 Plug 'echasnovski/mini.nvim'
-Plug 'mfussenegger/nvim-dap'
 Plug 'cocopon/inspecthi.vim'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'brenoprata10/nvim-highlight-colors'
 
-Plug 'nvim-neo-tree/neo-tree.nvim' " needs nvim-lua/plenary.nvim, nvim-tree/nvim-web-devicons, MunifTanjim/nui.nvim
+Plug 'stevearc/dressing.nvim'
+
+" Plug 'nvim-neo-tree/neo-tree.nvim' " needs nvim-lua/plenary.nvim, nvim-tree/nvim-web-devicons, MunifTanjim/nui.nvim
+Plug 'stevearc/oil.nvim'
 
 Plug 'ryanoasis/vim-devicons'
 Plug 'nvim-tree/nvim-web-devicons'
@@ -38,8 +41,9 @@ Plug 'nvim-lua/plenary.nvim'
 
 Plug 'sindrets/diffview.nvim' " needs nvim-lua/plenary.nvim
 Plug 'windwp/nvim-spectre' " needs nvim-lua/plenary.nvim
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' } " needs nvim-lua/plenary.nvim
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'ibhagwan/fzf-lua' " needs nvim-tree/nvim-web-devicons
+
+Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' } " needs nvim-lua/plenary.nvim
 
 " syntax
 Plug 'vim-ruby/vim-ruby'
@@ -58,21 +62,17 @@ Plug 'justinj/vim-pico8-syntax'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'rhysd/vim-llvm'
 
-" typescript
-" Plug 'HerringtonDarkholme/yats.vim'
-Plug 'leafgarland/typescript-vim'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Quramy/tsuquyomi'
-
-Plug 'folke/tokyonight.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Plug 'jansedivy/jansedivy-theme'
 Plug '~/Documents/scratch/jansedivy-theme'
 
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+" Plug 'hrsh7th/nvim-cmp'
+" Plug 'hrsh7th/cmp-path'
+" Plug 'hrsh7th/cmp-buffer'
+" Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
+Plug 'saghen/blink.cmp', { 'do': 'cargo build --release' }
 
 call plug#end()
 
@@ -202,10 +202,13 @@ augroup vimrcEx
   autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
   autocmd BufNewFile,BufRead *.as setlocal filetype=javascript
   autocmd BufNewFile,BufRead *.cocoascript setlocal filetype=javascript
+  autocmd BufNewFile,BufRead *.mm setlocal filetype=objc
 
   autocmd BufNewFile,BufRead *.odin setlocal filetype=odin
+  autocmd BufRead,BufNewFile *.h,*.c set filetype=c
 
   autocmd BufNewFile,BufRead *.usf setfiletype glsl
+  autocmd BufNewFile,BufRead *.slang setfiletype hlsl
 
   autocmd Filetype gitcommit setlocal spell textwidth=72
 
@@ -225,10 +228,12 @@ augroup vimrcEx
   autocmd Bufread,BufNewFile *.cfm set filetype=eoz
   autocmd Bufread,BufNewFile *.cfc set filetype=eoz
 
-  autocmd BufEnter *.c,*.h syntax keyword Type u8 u16 u32 u64 s8 s16 s32 s64 f32 f64 v2 v2i str8 f32x4 u32x4 u16x8 u8x8 u8x16
-  autocmd BufEnter *.c,*.h syntax keyword Operator global internal local_persist Defer
+  autocmd BufEnter *.c,*.h,*.m syntax keyword Type u8 u16 u32 u64 s8 s16 s32 s64 f32 f64 v2 v2i str8 string f32x4 u32x4 u16x8 u8x8 u8x16
+  autocmd BufEnter *.c,*.h,*.m syntax keyword Operator global internal local_persist Defer
 
-  autocmd BufWritePost *.c,*.cpp,*.h silent! !/opt/homebrew/bin/ctags src/**/*.{h,c} . &
+  autocmd BufWritePost *.c,*.cpp,*.h,*.m silent! !/opt/homebrew/bin/ctags src/**/*.{h,c,m} . &
+
+  autocmd Syntax c syn match Number "\<0b[01]\('\=[01]\+\)*\([Uu]\=\([Ll]\|LL\|ll\)\|\([Ll]\|LL\|ll\)\=[Uu]\|i[fl]\=\|h\|min\|s\|ms\|us\|ns\|_\i*\)\=\>"
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -276,14 +281,6 @@ function! MapCR()
 endfunction
 call MapCR()
 
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-
-map z/ <Plug>(incsearch-fuzzy-/)
-map z? <Plug>(incsearch-fuzzy-?)
-map zg/ <Plug>(incsearch-fuzzy-stay)
-
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
@@ -304,10 +301,11 @@ map <Leader>ra :%s/
 map <Leader>s :set spell!<cr>
 map <Leader>v :e ~/.config/nvim/init.vim<cr>
 map <leader>i :ALEImport<cr>
-map <leader>h :ALEHover<cr>
 " map <leader>cc :!flow-coverage-report -i % -f "./node_modules/.bin/flow" -t html && open flow-coverage/index.html<cr>
 map <leader>f :normal gF<cr>
 
+" open the current file and line number in xcode
+map <leader>x :w\|:execute '!xed -l ' . line(".") . ' ' expand("%")<cr><cr>
 
 map <leader>o :silent !open .<cr>
 
@@ -363,6 +361,12 @@ function! OpenAlternativeFile()
   elseif current_extension == "js"
     exec ':e ' . current_file . ".test.js"
     return
+  elseif current_extension == "frag"
+    exec ':e ' . current_file . ".vert"
+    return
+  elseif current_extension == "vert"
+    exec ':e ' . current_file . ".frag"
+    return
   elseif current_extension == "go"
     exec ':GoAlternate!'
     return
@@ -392,23 +396,102 @@ local function save_if_modified()
   end
 end
 
-require("neo-tree").setup({
-  filesystem = {
-    bind_to_cwd = false,
-    hijack_netrw_behavior = "open_current",
+require("spectre").setup({
+  replace_engine = {
+    ["sed"] = {
+      cmd = "sed",
+      args = {
+        "-i",
+        "",
+        "-E",
+      },
+    },
   },
 })
 
-vim.keymap.set('n', '<leader>K', ':!tmux new-window ./run.sh<CR>', {})
+require('nvim-treesitter.configs').setup({
+  ensure_installed = {"c","comment"},
+  sync_install = false,
+
+  auto_install = true,
+
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+})
+
+-- require('treesitter-context').setup({
+--   enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+--   multiwindow = false, -- Enable multiwindow support.
+--   max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+--   min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+--   line_numbers = true,
+--   multiline_threshold = 20, -- Maximum number of lines to show for a single context
+--   trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+--   mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+--   -- Separator between context and content. Should be a single character string, like '-'.
+--   -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+--   separator = nil,
+--   zindex = 20, -- The Z-index of the context window
+--   on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+-- })
+
+local harpoon = require('harpoon')
+harpoon:setup({
+  settings = {
+    sync_on_ui_close = true,
+    save_on_toggle = true,
+  }
+})
+
+harpoon:extend({
+  UI_CREATE = function(cx)
+    vim.keymap.set("n", "<C-c>", function()
+      harpoon.ui:close_menu()
+    end, { buffer = cx.bufnr })
+  end,
+})
+
+vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+vim.keymap.set("n", "<leader>g", function() harpoon.ui:toggle_quick_menu(harpoon:list(), {
+  title = "",
+  border = "rounded",
+}) end)
+
+vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<leader>5", function() harpoon:list():select(5) end)
+
+require("oil").setup({
+  keymaps = {
+    ["<C-c>"] = false,
+  },
+  cleanup_delay_ms = false,
+  buf_options = {
+    buflisted = true,
+    bufhidden = "hide",
+  },
+})
 
 vim.keymap.set('n', '<leader>k', function()
   save_if_modified()
-  tasks.run_task("./test.sh", "^([^:]+%.c):(%d+) (.+)$")
+  tasks.run_task("./test.sh", "^([^:]+%a):(%d+) ()(.+)$")
 end, opts)
+
 
 vim.keymap.set('n', '<leader>c', function()
   save_if_modified()
-  tasks.run_task("./build.sh", "^([^:]+%.c):(%d+):%d+: (.+)$")
+  tasks.run_task("./build.sh", "^([^:]+%a):(%d+):%d+: (%a+): (.+)$")
+end, opts)
+
+vim.keymap.set('n', '<leader>K', function()
+  save_if_modified()
+  tasks.run_task("./build.sh", "^([^:]+%a):(%d+):%d+: (%a+): (.+)$", function()
+    vim.cmd('!tmux new-window ./run.sh')
+  end)
 end, opts)
 
 vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev() end, opts)
@@ -472,23 +555,18 @@ hipatterns.setup({
 
 vim.keymap.set('n', '<leader>d', ':lua vim.diagnostic.setqflist()<CR>', {})
 
-local builtin = require('telescope.builtin')
+local fzf = require('fzf-lua')
 
-vim.keymap.set('n', '<leader>t', builtin.find_files, {})
-vim.keymap.set('n', '<leader>b', builtin.buffers, {})
-vim.keymap.set('n', '<leader>g', builtin.live_grep, {})
-
-require('telescope').setup {
-  extensions = {
-    fzf = {
-      fuzzy = true,                    -- false will only do exact matching
-      override_generic_sorter = true,  -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-    }
+require("fzf-lua").setup({
+  winopts = {
+    backdrop = 90,
+    preview = {
+      horizontal = "right:40%",
+    },
   }
-}
-require('telescope').load_extension('fzf')
+})
+
+vim.keymap.set('n', '<leader>t', function() fzf.files() end, {})
 
 require('mini.cursorword').setup({
   delay = 0,
@@ -496,36 +574,66 @@ require('mini.cursorword').setup({
 
 require("nvim-autopairs").setup {}
 
-local cmp = require('cmp')
-cmp.setup({
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<Tab>'] = cmp.mapping.select_next_item(),
-    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
+require('blink.cmp').setup({
+  completion = {
+    list = { selection = { preselect = false, auto_insert = true } },
   },
+
+  cmdline = {
+    enabled = false
+  },
+
   sources = {
-    { name = 'buffer' },
-    { name = 'path' },
-    { name = 'ultisnips' },
+    default = { 'path', 'buffer' },
+
+    providers = {
+      buffer = {
+        name = 'Buffer',
+        module = 'blink.cmp.sources.buffer',
+        opts = {
+          get_bufnrs = function()
+            return vim.api.nvim_list_bufs()
+          end,
+        }
+      },
+    },
   },
 })
 
-vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
-  expr = true,
-  replace_keycodes = false
-})
-vim.g.copilot_no_tab_map = true
+-- local cmp = require('cmp')
+-- cmp.setup({
+--   mapping = {
+--     ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+--     ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+--     ['<C-j>'] = cmp.mapping.confirm({ select = true }),
+--   },
+--   sources = {
+--     {
+--       name = 'buffer',
+--       option = {
+--         keyword_pattern = [[\k\+]],
+--         get_bufnrs = function()
+--           return vim.api.nvim_list_bufs()
+--         end
+--       }
+--     },
+--     { name = 'path' },
+--   },
+-- })
+
+--vim.keymap.set('i', '<C-l>', 'copilot#Accept("\\<CR>")', {
+  --expr = true,
+  --replace_keycodes = false
+--})
+--vim.g.copilot_no_tab_map = true
+--vim.g.copilot_enabled = false
 
 EOF
 
 let g:qf_mapping_ack_style = 1
 
-let g:python3_host_prog = '/opt/homebrew/bin/python3'
-let g:python_host_prog = '/usr/bin/python2'
+" let g:python3_host_prog = '/opt/homebrew/bin/python3'
+" let g:python_host_prog = '/usr/bin/python2'
 
 let g:go_def_mapping_enabled = 0
 
@@ -537,6 +645,7 @@ let g:ale_linters = {
       \  'javascript': ['flow_ls', 'eslint'],
       \  'go': ['gopls'],
       \  'c': [],
+      \  'objc': [],
       \  'cpp': [],
       \  'h': [],
       \ }
@@ -552,6 +661,7 @@ let g:ale_fixers = {
       \  'javascript': ['prettier', 'eslint'],
       \  'c': [],
       \  'cpp': [],
+      \  'objc': [],
       \  'h': []
       \ }
 

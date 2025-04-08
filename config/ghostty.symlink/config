@@ -1,0 +1,42 @@
+font-size   = 18.0
+font-family = Hack Nerd Font Mono
+
+background           = #222426
+foreground           = #C3C7C5
+selection-background = #2C2E31
+selection-foreground = #C3C7C5
+cursor-color         = #C3C7C5
+palette = 0=#3B3F44
+palette = 8=#2B2D30
+palette = 1=#C36364
+palette = 9=#9D4244
+palette = 2=#BFC674
+palette = 10=#8A924A
+palette = 3=#E9BF77
+palette = 11=#EA9A67
+palette = 4=#7FA1BB
+palette = 12=#5D7E97
+palette = 5=#AF92B7
+palette = 13=#806589
+palette = 6=#90C7C0
+palette = 14=#5F8B86
+palette = 7=#C1C3C2
+palette = 15=#6C747B
+
+cursor-style-blink=false
+
+adjust-cell-height = 1%
+
+mouse-hide-while-typing = true
+window-padding-balance = true
+
+confirm-close-surface = false
+
+macos-titlebar-proxy-icon = hidden
+macos-titlebar-style = transparent
+macos-non-native-fullscreen = true
+macos-titlebar-style = tabs
+
+shell-integration = detect
+
+macos-icon = holographic

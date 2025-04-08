@@ -44,18 +44,21 @@
 [credential]
   helper = osxkeychain
 [diff]
-  algorithm = patience
-	colorMoved = zebra
+  algorithm = histogram
+  colorMoved = zebra
+  renames = true
 [pager]
   diff = diff-so-fancy | less --tabs=1,5 -RFX
   show = diff-so-fancy | less --tabs=1,5 -RFX
 [branch]
   sort = -committerdate
 [pull]
-	rebase = true
+  rebase = true
 [fetch]
-	prune = true
+  prune = true
+  pruneTags = true
+  all = true
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [rebase]
-	autosquash = true
+  autosquash = true

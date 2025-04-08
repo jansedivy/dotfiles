@@ -1,6 +1,113 @@
-extends cpp
-
 snippet struct
 typedef struct $1 {
 } $1;
+endsnippet
+
+snippet c
+fprintf(stderr, "${0}");
+endsnippet
+
+snippet sf
+%.*s
+endsnippet
+
+snippet sv
+(s32)$1.size, $1.data
+endsnippet
+
+snippet forl
+for ($1 *item = ${2:first}; item; item = item->${3:next}) {
+	$0
+}
+endsnippet
+
+snippet forr
+for (u64 i = $1.size - 1; i >= 0; i--) {
+	$0
+}
+endsnippet
+
+snippet for
+for (u64 i = 0; i < $1; i++) {
+	$0
+}
+endsnippet
+
+snippet profile
+ProfilerBlock start = profiler_start($0);
+profiler_stop(start);
+endsnippet
+
+snippet time
+Stopwatch setup_$1 = stopwatch_start();
+fprintf(stderr, "$1: %.2fms\n", (f64)stopwatch_stop(setup_$1));
+endsnippet
+
+snippet scratch
+TempArenaPosition scratch = arena_get_scratch($1);
+Defer { arena_release_scratch(scratch); };
+endsnippet
+
+snippet temp
+TempArenaPosition temp = arena_temp_begin($1);
+Defer { arena_temp_end(temp); }
+endsnippet
+
+snippet fn
+internal ${1:void}
+${2:fn}($3) {
+	$0
+}
+endsnippet
+
+snippet chunk
+typedef struct $1Node {
+	struct $1Node *next;
+	TYPE v;
+	u64 count;
+	u64 cap;
+} $1Node;
+
+typedef struct $1ChunkList {
+	$1Node *first;
+	$1Node *last;
+	u64 chunk_count;
+	u64 total_count;
+} $1ChunkList;
+endsnippet
+
+snippet forchunk
+for (Node *chunk = $0.first; chunk; chunk = chunk->next) {
+	for (u64 node_index = 0; node_index < chunk->count; node_index++) {
+		ItemType item = chunk->v[node_index];
+	}
+}
+endsnippet
+
+snippet rec
+typedef struct NodeRecursion {
+	Node *next;
+	u32 push_count;
+	u32 pop_count;
+} NodeRecursion;
+
+internal NodeRecursion
+node_recursion_depth_first_pre(Node *root) {
+	NodeRecursion rec = {0};
+	if (root->first) {
+		rec.next = root->first;
+		rec.push_count = 1;
+	} else {
+		for (Node *item = root; item; item = item->parent) {
+			if (item->next) {
+				rec.next = item->next;
+				break;
+			}
+
+			rec.pop_count += 1;
+		}
+	}
+
+	return rec;
+}
 endsnippet
