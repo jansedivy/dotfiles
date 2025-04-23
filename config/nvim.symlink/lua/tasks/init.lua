@@ -30,9 +30,9 @@ end
 local function find_matches(output, regex)
   local matches = {}
   for line in output:gmatch("[^\r\n]+") do
-    local filename, lineno, type, message = line:match(regex)
+    local filename, lineno, colno, type, message = line:match(regex)
     if filename and lineno and message then
-      table.insert(matches, { filename = filename, lineno = tonumber(lineno), message = message, type = type })
+      table.insert(matches, { filename = filename, lineno = tonumber(lineno), colno = tonumber(colno), message = message, type = type })
     end
   end
   return matches
@@ -63,7 +63,7 @@ local function set_diagnostics(matches)
         table.insert(diagnostics_by_file[match.filename], {
           bufnr = bufnr,
           lnum = match.lineno - 1, -- Line numbers are 0-indexed in the diagnostics API
-          col = 0,
+          col = match.colno - 1,
           end_lnum = match.lineno - 1,
           end_col = -1,
           severity = serenity,
@@ -75,11 +75,10 @@ local function set_diagnostics(matches)
   end
 
   -- Set diagnostics for each buffer
-  local namespace = vim.api.nvim_create_namespace("custom_diagnostics")
   for filename, diagnostics in pairs(diagnostics_by_file) do
     local bufnr = vim.fn.bufadd(filename)
     if bufnr ~= -1 then
-      vim.diagnostic.set(namespace, bufnr, diagnostics, {})
+      vim.diagnostic.set(ns, bufnr, diagnostics, {})
 
       if not vim.api.nvim_buf_is_loaded(bufnr) then
         set_bufenter_callback(bufnr, "diagnostics_show", function()
@@ -92,7 +91,7 @@ end
 
 local terminal_buf_id = nil
 
-local function run_command(cmd, args, callback)
+local function run_command(cmd, callback)
   local output = ""
 
   local function on_output(_, data, event, exit_code)
@@ -132,13 +131,13 @@ local function run_command(cmd, args, callback)
     end,
   }
 
-  vim.fn.termopen({ cmd, unpack(args) }, opts)
+  vim.fn.termopen(cmd, opts)
 end
 
 local function run_task(cmd, regex, callback)
   vim.diagnostic.reset()
 
-  run_command(cmd, {}, function(output, success)
+  run_command(cmd, function(output, success)
     local matches = find_matches(output, regex)
     set_diagnostics(matches)
 

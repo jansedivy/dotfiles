@@ -111,3 +111,22 @@ node_recursion_depth_first_pre(Node *root) {
 	return rec;
 }
 endsnippet
+
+snippet bench
+BENCH("$0") {
+	// setup
+
+	BENCHMARK_RESET_TIMER();
+
+	for (u64 i = 0; i < ITERATIONS; i++) {
+		// code
+
+		// DoNotOptimize(value);
+	}
+}
+endsnippet
+
+snippet test
+TEST("$0") {
+}
+endsnippet
