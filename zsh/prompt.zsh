@@ -10,12 +10,10 @@ fi
 git_prompt() {
   git rev-parse --is-inside-work-tree &>/dev/null || return
 
-  git diff --quiet --ignore-submodules HEAD &>/dev/null
-  if [[ $? -eq 0 ]]
-  then
-    echo "(%{$fg[green]%}$(git_prompt_branch)%{$reset_color%}$(need_push))"
-  else
+  if [[ -n $(git status --porcelain) ]] then
     echo "(%{$fg[red]%}$(git_prompt_branch)%{$reset_color%}$(need_push))"
+  else
+    echo "(%{$fg[green]%}$(git_prompt_branch)%{$reset_color%}$(need_push))"
   fi
 }
 

@@ -7,7 +7,8 @@ export PATH="/usr/local/sbin:/usr/local/bin:$ZSH/bin:$GOPATH/bin:$HOME/.cargo/bi
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="${HOME}/.jsvu:${PATH}"
 
+export PATH="$(brew --prefix python)/libexec/bin:${PATH}"
+
 export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 
 export LIBRARY_PATH="$LIBRARY_PATH:/opt/homebrew/lib"
-export PATH="$(brew --prefix python)/libexec/bin:${PATH}"

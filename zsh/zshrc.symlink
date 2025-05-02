@@ -34,5 +34,5 @@ done
 unset config_files updated_at
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 eval "$(nodenv init -)"
+eval "$(zoxide init zsh)"

@@ -10,12 +10,12 @@ success() {
 
 printf "[ \033[00;33mSetup\033[0m ]\n"
 info "Installing Homebrew"
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 success "Installing Homebrew"
 
 info "Downloading dotfiles"
 git clone https://github.com/jansedivy/dotfiles.git ~/.dotfiles --recursive
-success "Installing Homebrew"
+success "Downloading dotfiles"
 
 cd ~/.dotfiles
 scripts/bootstrap

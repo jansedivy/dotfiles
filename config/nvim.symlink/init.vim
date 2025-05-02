@@ -1,15 +1,139 @@
-let g:mapleader=","
+autocmd!
 
 lua << EOF
-require("config.lazy")
-EOF
+---------------------------------------
+-- Basic settings
+---------------------------------------
 
-autocmd!
+vim.g.mapleader = ','
+vim.g.maplocalleader = ','
+vim.opt.mouse = 'a'
+vim.opt.undofile = true
+
+-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+vim.opt.signcolumn = 'yes'
+
+vim.schedule(function()
+  vim.opt.clipboard = 'unnamedplus'
+end)
+
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+---------------------------------------
+-- Task setup
+---------------------------------------
+tasks = require('tasks')
+
+local function save_if_modified()
+  local buf = vim.api.nvim_get_current_buf()
+  local is_modified = vim.api.nvim_buf_get_option(buf, 'modified')
+
+  if is_modified then
+    vim.api.nvim_command('write')
+  end
+end
+
+vim.keymap.set('n', '<leader>k', function()
+  save_if_modified()
+  tasks.run_task({"./build.sh", "--test"}, "^([^:]+%a):(%d+) ()(.+)$")
+end, opts)
+
+vim.keymap.set('n', '<leader>c', function()
+  save_if_modified()
+  tasks.run_task({"./build.sh", "--asan", "--build", "MacOS"}, "^([^:]+%a):(%d+):(%d+): (%a+): (.+)$")
+end, opts)
+
+vim.keymap.set('n', '<leader>K', function()
+  save_if_modified()
+  tasks.run_task({"./build.sh", "--asan"}, "^([^:]+%a):(%d+):(%d+): (%a+): (.+)$", function()
+    vim.cmd('!tmux new-window ./run.sh')
+  end)
+end, opts)
+
+---------------------------------------
+-- Diagnostics
+---------------------------------------
+vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev() end, opts)
+vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next() end, opts)
+
+vim.diagnostic.config({
+  virtual_lines = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '󰌵',
+    },
+  },
+})
+
+---------------------------------------
+-- Rename
+---------------------------------------
+vim.keymap.set('n', '<leader>n', function()
+  local old_name = vim.fn.expand('%')
+  local new_name = vim.fn.input('New file name: ', old_name, 'file')
+  if new_name ~= '' and new_name ~= old_name then
+    vim.cmd('Move ' .. new_name)
+  end
+end, { noremap = true, silent = true })
+
+---------------------------------------
+-- Abbreviations
+---------------------------------------
+vim.cmd([[
+  abbr tihs this
+  abbr htis this
+  abbr thsi this
+  abbr vra var
+  abbr funciton function
+  abbr functino function
+  abbr reutrn return
+  abbr heigth height
+  abbr ligth light
+  abbr hightlight highlight
+  abbr enitty entity
+  abbr enityt entity
+  abbr enity entity
+  abbr rigth right
+  abbr assing assign
+]])
+
+---------------------------------------
+-- Lazy.nvim setup
+---------------------------------------
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+  spec = {
+    { import = "plugins" },
+  },
+  checker = { enabled = false },
+  change_detection = { enabled = false },
+})
+EOF
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " BASIC EDITING CONFIGURATION
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set hidden
 set history=10000
 
 set autoindent
@@ -24,27 +148,18 @@ set softtabstop=2
 set laststatus=2
 set showmatch
 set incsearch
-set inccommand=nosplit
 set hlsearch
-set ignorecase smartcase
-set mouse=
-set encoding=utf-8 nobomb
-scriptencoding utf-8
-set cmdheight=1
 set switchbuf=useopen
 set numberwidth=3
 set showtabline=1
-set winwidth=81
 set shell=zsh
 set nojoinspaces
 set shortmess=atI
-set lazyredraw
 set showcmd
 set title
 set cursorline
 set virtualedit=block
 set wrap
-set signcolumn=yes
 
 set inccommand=split
 
@@ -60,12 +175,6 @@ set vb
 set noswapfile
 set nobackup
 set nowritebackup
-
-set undofile
-set undodir=~/.config/nvim/undos
-if !isdirectory(expand(&undodir))
-  call mkdir(expand(&undodir), "p")
-endif
 
 set synmaxcol=256
 
@@ -84,8 +193,6 @@ set wildignore+=*DS_Store*
 set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.pyc
 
-" System clipboard
-set clipboard=unnamed
 set autoread
 set list listchars=tab:▸⋅,trail:⋅,nbsp:⋅
 let &showbreak = '↳ '
@@ -98,10 +205,10 @@ set ttimeoutlen=10
 set shiftround
 set gdefault
 
+set foldmethod=manual
+
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
-set foldmethod=manual
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM AUTOCMDS
@@ -195,9 +302,6 @@ function! MapCR()
 endfunction
 call MapCR()
 
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-
 nnoremap <silent> # :let stay_star_view = winsaveview()<cr>#:call winrestview(stay_star_view)<cr>
 nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<cr>
 
@@ -209,11 +313,11 @@ map <leader><leader> :b#<cr>
 map <leader>w :normal ma<cr>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>:retab<CR>:normal 'a<cr>
 map <leader>e :edit %%
 map <leader>d '.<cr>
-map <leader>n :call RenameFile()<cr>
-map <Leader>ra :%s/
-map <Leader>s :set spell!<cr>
-map <Leader>v :e ~/.config/nvim/init.vim<cr>
+map <leader>ra :%s/
+map <leader>s :set spell!<cr>
+map <leader>v :e ~/.config/nvim/init.vim<cr>
 map <leader>f :normal gF<cr>
+map <leader>` vipga\
 
 " open the current file and line number in xcode
 map <leader>x :w\|:execute '!xed -l ' . line(".") . ' ' expand("%")<cr><cr>

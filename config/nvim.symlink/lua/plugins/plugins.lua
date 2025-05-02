@@ -1,33 +1,34 @@
 return {
   { "tpope/vim-fugitive" },
   { "tpope/vim-rhubarb" },
-  { "tpope/vim-repeat" },
-  { "tpope/vim-surround" },
-  { "tpope/vim-commentary" },
-  { "tpope/vim-dispatch" },
-  { "tpope/vim-eunuch" },
-  { "junegunn/vim-easy-align" },
-  { "mileszs/ack.vim" },
+  { "tpope/vim-eunuch" }, -- used for :Rename, :Remove, ...
   { "tommcdo/vim-exchange" },
-  { "nelstrom/vim-visual-star-search" },
-  { "mbbill/undotree", cmd = "UndotreeToggle" },
-  { "AndrewRadev/splitjoin.vim" },
+  { "mbbill/undotree" },
   { "romainl/vim-qf" },
-  { "wsdjeg/vim-fetch" },
-  { "github/copilot.vim" },
-  { "cocopon/inspecthi.vim" },
-  { "lewis6991/gitsigns.nvim", opts = {} },
-  { "brenoprata10/nvim-highlight-colors" },
-  { "stevearc/dressing.nvim" },
+  { "wsdjeg/vim-fetch" }, -- Open files at specific rows ./file.txt:123
   { "ryanoasis/vim-devicons" },
-  { "nvim-tree/nvim-web-devicons" },
   { "MunifTanjim/nui.nvim" },
-  { "nvim-lua/plenary.nvim" },
-  { "sindrets/diffview.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+  { "sindrets/diffview.nvim" },
+
+  { "lewis6991/gitsigns.nvim", opts = {} },
+
+  { "folke/snacks.nvim", opts = {} },
+
+  {
+    "github/copilot.vim",
+    config = function()
+      vim.keymap.set('i', '<C-l>', 'copilot#Accept("\\<CR>")', {
+        expr = true,
+        replace_keycodes = false
+      })
+      vim.g.copilot_no_tab_map = true
+      vim.g.copilot_enabled = true
+    end
+  },
 
   {
     "SirVer/ultisnips",
-    config = function() 
+    config = function()
       vim.g.UltiSnipsExpandTrigger = "<C-\\>"
       vim.g.UltiSnipsJumpForwardTrigger = "<C-j>"
       vim.g.UltiSnipsJumpBackwardTrigger = "<C-k>"
@@ -46,18 +47,29 @@ return {
     dir = "~/Documents/scratch/jansedivy-theme",
 
     config = function()
-      vim.cmd([[colorscheme jansedivy]])
+      vim.cmd.colorscheme 'jansedivy'
     end
   },
 
   { "windwp/nvim-autopairs", opts = {} },
 
+  { "kylechui/nvim-surround", opts = {} },
+
   {
     "echasnovski/mini.nvim",
     config = function()
-      require('mini.cursorword').setup({
-        delay = 0,
+      require('mini.splitjoin').setup()
+
+      require('mini.comment').setup()
+
+      require('mini.align').setup({
+        mappings = {
+          start = "ga",
+          start_with_preview = 'gA',
+        },
       })
+
+      require('mini.cursorword').setup({ delay = 0 })
 
       local hipatterns = require('mini.hipatterns')
 
@@ -136,17 +148,20 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    opts = {
-      ensure_installed = {"c","comment"},
-      sync_install = false,
 
-      auto_install = true,
+    config = function()
+      require('nvim-treesitter.configs').setup({
+        ensure_installed = {"c","comment"},
+        sync_install = false,
 
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-    }
+        auto_install = true,
+
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+        },
+      })
+    end
   },
 
   {
@@ -234,5 +249,25 @@ return {
         },
       },
     }
+  },
+
+  {
+    "stevearc/oil.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+
+    config = function()
+      require("oil").setup({
+        keymaps = {
+          ["<C-c>"] = false,
+        },
+        cleanup_delay_ms = false,
+        buf_options = {
+          buflisted = true,
+          bufhidden = "hide",
+        },
+      })
+
+      vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+    end
   },
 }

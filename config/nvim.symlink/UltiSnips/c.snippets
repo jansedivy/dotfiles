@@ -130,3 +130,59 @@ snippet test
 TEST("$0") {
 }
 endsnippet
+
+snippet preorder
+internal $1*
+NAME_pre_order_iterator_begin($1 *node) {
+	return node;
+}
+
+internal $1*
+NAME_pre_order_iterator_next($1 *node, $1 *root) {
+	if (node->first) {
+		return node->first;
+	}
+
+	for ($1 *item = node; item && item != root; item = item->parent) {
+		if (item->next) {
+			return item->next;
+		}
+	}
+
+	return 0;
+}
+endsnippet
+
+snippet iterpreorder
+for ($1 *node = NAME_pre_order_iterator_begin(root); node; node = NAME_pre_order_iterator_next(node, root)) {
+}
+endsnippet
+
+snippet iterpostorder
+for ($1 *node = NAME_post_order_iterator_begin(root); node; node = NAME_post_order_iterator_next(node, root)) {
+}
+endsnippet
+
+snippet postorder
+internal $1*
+NAME_post_order_iterator_begin($1 *node) {
+	while (node->first) {
+		node = node->first;
+	}
+
+	return node;
+}
+
+internal $1*
+NAME_post_order_iterator_next($1 *node, $1 *root) {
+	if (node->next) {
+		node = node->next;
+		while (node->first) {
+			node = node->first;
+		}
+		return node;
+	}
+
+	return node->parent != root ? node->parent : 0;
+}
+endsnippet
