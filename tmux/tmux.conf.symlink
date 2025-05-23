@@ -55,8 +55,8 @@ bind-key C-k select-pane -U
 bind-key l   select-pane -R
 bind-key C-l select-pane -R
 
-bind-key -n C-S-Left swap-window -t -1
-bind-key -n C-S-Right swap-window -t +1
+bind-key -n C-S-Left swap-window -t -1\; select-window -t -1
+bind-key -n C-S-Right swap-window -t +1\; select-window -t +1
 
 bind-key "|" split-window -h -c "#{pane_current_path}"
 bind-key "-" split-window -v -c "#{pane_current_path}"
