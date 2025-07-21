@@ -1,6 +1,9 @@
 font-size   = 18.0
 font-family = Hack Nerd Font Mono
 
+window-width=144
+window-height=44
+
 background           = #222426
 foreground           = #C3C7C5
 selection-background = #2C2E31

@@ -1,0 +1,8 @@
+{
+  "fprintf stderr": {
+    "prefix": "c",
+    "body": [
+      "console.log('DEBUGLOG', $0);"
+    ]
+  }
+}

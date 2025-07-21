@@ -39,37 +39,19 @@ end
 vim.keymap.set('n', '<leader>k', function()
   save_if_modified()
   tasks.run_task({"./build.sh", "--test"}, "^([^:]+%a):(%d+) ()(.+)$")
-end, opts)
+end)
 
 vim.keymap.set('n', '<leader>c', function()
   save_if_modified()
-  tasks.run_task({"./build.sh", "--asan", "--build", "MacOS"}, "^([^:]+%a):(%d+):(%d+): (%a+): (.+)$")
-end, opts)
+  tasks.run_task({"./build.sh", "--build", "MacOS"}, "^([^:]+%a):(%d+):(%d+): (%a+): (.+)$")
+end)
 
 vim.keymap.set('n', '<leader>K', function()
   save_if_modified()
   tasks.run_task({"./build.sh", "--asan"}, "^([^:]+%a):(%d+):(%d+): (%a+): (.+)$", function()
     vim.cmd('!tmux new-window ./run.sh')
   end)
-end, opts)
-
----------------------------------------
--- Diagnostics
----------------------------------------
-vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev() end, opts)
-vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next() end, opts)
-
-vim.diagnostic.config({
-  virtual_lines = true,
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = '',
-      [vim.diagnostic.severity.WARN] = '',
-      [vim.diagnostic.severity.INFO] = '',
-      [vim.diagnostic.severity.HINT] = '󰌵',
-    },
-  },
-})
+end)
 
 ---------------------------------------
 -- Rename

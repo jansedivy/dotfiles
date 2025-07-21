@@ -133,11 +133,6 @@ endsnippet
 
 snippet preorder
 internal $1*
-NAME_pre_order_iterator_begin($1 *node) {
-	return node;
-}
-
-internal $1*
 NAME_pre_order_iterator_next($1 *node, $1 *root) {
 	if (node->first) {
 		return node->first;
@@ -154,7 +149,11 @@ NAME_pre_order_iterator_next($1 *node, $1 *root) {
 endsnippet
 
 snippet iterpreorder
-for ($1 *node = NAME_pre_order_iterator_begin(root); node; node = NAME_pre_order_iterator_next(node, root)) {
+for (
+	$1 *node = root, *next = NAME_node_pre_order_iterator_next(node, root->parent);
+	node;
+	node = next)
+{
 }
 endsnippet
 

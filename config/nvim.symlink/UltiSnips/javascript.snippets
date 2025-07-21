@@ -53,29 +53,6 @@ console.profile("$1");
 console.profileEnd("$1");
 endsnippet
 
-snippet forc
-for (let childIndex = 0; childIndex < entity.transform.children.length; childIndex++) {
-	let child = entity.transform.children[childIndex].entity;
-	if (child) {
-		$0
-	}
-}
-endsnippet
-
-snippet foro
-for (let entity of entities) {
-	$0
-}
-endsnippet
-
 snippet spy
 let $2 = jest.spyOn($1, '$2');
-endsnippet
-
-
-snippet drect
-if (window.aabb) {
-  let aabb = window.aabb;
-  this.commandBuffer.rectangle(aabb.l, aabb.t, aabb.width, aabb.height, [1, 0, 1, 0.5]);
-}
 endsnippet

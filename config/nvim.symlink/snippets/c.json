@@ -1,0 +1,224 @@
+{
+  "fprintf stderr": {
+    "prefix": "c",
+    "body": [
+      "fprintf(stderr, \"${0}\");"
+    ],
+    "description": "fprintf stderr"
+  },
+
+  "for linked list": {
+    "prefix": "forl",
+    "body": [
+      "for ($1 *item = ${2:first}; item; item = item->next) {",
+      "}"
+    ],
+    "description": "For loop linked list"
+  },
+
+  "for reverse array": {
+    "prefix": "forr",
+    "body": [
+      "for (u64 i = ${0:list.count} - 1; i >= 0; i--) {",
+      "}"
+    ],
+    "description": "For loop reverse"
+  },
+
+  "for array": {
+    "prefix": "for",
+    "body": [
+      "for (u64 i = 0; i < $0; i++) {",
+      "}"
+    ],
+    "description": "For loop array"
+  },
+
+  "time block": {
+    "prefix": "time",
+    "body": [
+      "Stopwatch setup_$0 = stopwatch_start();",
+      "Defer { fprintf(stderr, \"$1: %.2fms\\n\", (f64)stopwatch_stop(setup_$0)); };"
+    ],
+    "description": "Timing block"
+  },
+
+  "scratch arena": {
+    "prefix": "scratch",
+    "body": [
+      "TempArenaPosition scratch = arena_get_scratch($0);",
+      "Defer { arena_release_scratch(scratch); };"
+    ],
+    "description": "Scratch arena"
+  },
+
+  "temp arena": {
+    "prefix": "temp",
+    "body": [
+      "TempArenaPosition temp = arena_temp_begin($0);",
+      "Defer { arena_temp_end(temp); };"
+    ],
+    "description": "Temp arena"
+  },
+
+  "chunked list": {
+    "prefix": "chunk",
+    "body": [
+      "typedef struct $1Node {",
+      "\tstruct $1Node *next;",
+      "\t$0 *v;",
+      "\tu64 count;",
+      "\tu64 cap;",
+      "} $1Node;",
+      "",
+      "typedef struct $1ChunkList {",
+      "\t$1Node *first;",
+      "\t$1Node *last;",
+      "\tu64 chunk_count;",
+      "\tu64 total_count;",
+      "} $1ChunkList;"
+    ],
+    "description": "Chunked list struct"
+  },
+
+  "for chunked list": {
+    "prefix": "forchunk",
+    "body": [
+      "for (${1:ItemNode} *chunk = $2.first; chunk; chunk = chunk->next) {",
+      "\tfor (u64 node_index = 0; node_index < chunk->count; node_index++) {",
+      "\t\t$0 item = chunk->v[node_index];",
+      "\t}",
+      "}"
+    ],
+    "description": "For loop chunked list"
+  },
+
+  "node recursion": {
+    "prefix": "rec",
+    "body": [
+      "typedef struct NodeRecursion {",
+      "\tNode *next;",
+      "\tu32 push_count;",
+      "\tu32 pop_count;",
+      "} NodeRecursion;",
+      "",
+      "internal NodeRecursion",
+      "node_recursion_depth_first_pre(Node *root) {",
+      "\tNodeRecursion rec = {0};",
+      "\tif (root->first) {",
+      "\t\trec.next = root->first;",
+      "\t\trec.push_count = 1;",
+      "\t} else {",
+      "\t\tfor (Node *item = root; item; item = item->parent) {",
+      "\t\t\tif (item->next) {",
+      "\t\t\t\trec.next = item->next;",
+      "\t\t\t\tbreak;",
+      "\t\t\t}",
+      "",
+      "\t\t\trec.pop_count += 1;",
+      "\t\t}",
+      "\t}",
+      "",
+      "\treturn rec;",
+      "}"
+    ],
+    "description": "Node recursion struct & function"
+  },
+
+  "benchmark block": {
+    "prefix": "bench",
+    "body": [
+      "BENCH(\"$0\") {",
+      "\t// setup",
+      "",
+      "\tBENCHMARK_RESET_TIMER();",
+      "",
+      "\tBenchmarkLoop() {",
+      "\t\t// code",
+      "\t\t// DoNotOptimize(value);",
+      "\t}",
+      "}"
+    ],
+    "description": "Benchmark block"
+  },
+
+  "test block": {
+    "prefix": "test",
+    "body": [
+      "TEST(\"$0\") {",
+      "}"
+    ],
+    "description": "Test block"
+  },
+
+  "pre-order iterator": {
+    "prefix": "preorder",
+    "body": [
+      "internal ${1:UINode}*",
+      "${0:ui_node}_pre_order_iterator_next($1 *node, $1 *root) {",
+      "\tif (node->first) {",
+      "\t\treturn node->first;",
+      "\t}",
+      "",
+      "\tfor ($1 *item = node; item && item != root; item = item->parent) {",
+      "\t\tif (item->next) {",
+      "\t\t\treturn item->next;",
+      "\t\t}",
+      "\t}",
+      "",
+      "\treturn 0;",
+      "}"
+    ],
+    "description": "Pre-order iterator"
+  },
+
+  "pre-order loop": {
+    "prefix": "iterpreorder",
+    "body": [
+      "for (",
+      "\t${1:UINode} *node = root, *next = ${0:ui_node}_pre_order_iterator_next(node, root->parent);",
+      "\tnode;",
+      "\tnode = next)",
+      "{",
+      "}"
+    ],
+    "description": "Pre-order loop"
+  },
+
+  "post-order iterator": {
+    "prefix": "postorder",
+    "body": [
+      "internal ${1:UINode}*",
+      "${2:ui_node}_post_order_iterator_begin($1 *node) {",
+      "\twhile (node->first) {",
+      "\t\tnode = node->first;",
+      "\t}",
+      "",
+      "\treturn node;",
+      "}",
+      "",
+      "internal $1*",
+      "${2:ui_node}_post_order_iterator_next($1 *node, $1 *root) {",
+      "\tif (node->next) {",
+      "\t\tnode = node->next;",
+      "\t\twhile (node->first) {",
+      "\t\t\tnode = node->first;",
+      "\t\t}",
+      "\t\treturn node;",
+      "\t}",
+      "",
+      "\treturn node->parent != root ? node->parent : 0;",
+      "}"
+    ],
+    "description": "Post-order iterator"
+  },
+
+  "post-order loop": {
+    "prefix": "iterpostorder",
+    "body": [
+      "for (${1:UINode} *node = ${2:ui_node}_post_order_iterator_begin(root); node; node = ${2}_post_order_iterator_next(node, root)) {",
+      "}"
+    ],
+    "description": "Post-order loop"
+  }
+}

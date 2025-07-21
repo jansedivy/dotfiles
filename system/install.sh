@@ -12,6 +12,6 @@ brew install nodenv
 brew install go
 brew install llvm ctags cmake clang-build-analyzer emscripten
 
-brew install --cask spotify ghostty telegram discord microsoft-edge 1password numi imhex the-unarchiver monitorcontrol imaging-edge-webcam
+brew install --cask spotify ghostty telegram discord microsoft-edge 1password numi imhex the-unarchiver monitorcontrol imaging-edge-webcam visual-studio-code cursor
 
 brew install wabt
