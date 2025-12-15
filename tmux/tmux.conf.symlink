@@ -72,7 +72,8 @@ unbind-key -T copy-mode-vi ]         ;   bind-key -T copy-mode-vi ] send-keys -X
 #  Colors
 ###########################
 
-set -g pane-border-style fg=colour240,fg=green
+set -g pane-border-style fg=colour240
+set -g pane-active-border-style fg=green
 
 set -g message-style bg=0,fg=green
 set -g status-style bg=colour235,fg=colour4
