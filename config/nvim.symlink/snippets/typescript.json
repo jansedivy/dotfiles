@@ -4,5 +4,13 @@
     "body": [
       "console.log('DEBUGLOG', $0);"
     ]
+  },
+
+  "time": {
+    "prefix": "time",
+    "body": [
+      "const start = performance.now();",
+      "console.log('DEBUGLOG perf', performance.now() - start);"
+    ]
   }
 }

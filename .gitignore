@@ -6,5 +6,7 @@ config/nvim.symlink/plugged
 config/nvim.symlink/undos
 git/gitconfig.symlink
 cache/
+config/nvim.symlink/spell/*.spl
+config/nvim.symlink/spell/*.sug
 
 zsh/local.zsh

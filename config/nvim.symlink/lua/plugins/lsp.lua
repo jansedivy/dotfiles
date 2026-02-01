@@ -24,8 +24,6 @@ return {
         capabilities = require('cmp_nvim_lsp').default_capabilities()
       end
 
-      local lspconfig = require 'lspconfig'
-
       local servers = {
         bashls = true,
         gopls = {
@@ -51,6 +49,11 @@ return {
 
         biome = true,
         astro = true,
+        tailwindcss = true,
+
+        typos_lsp = true,
+
+        zls = true,
 
         slangd = {
           settings = {
@@ -103,7 +106,8 @@ return {
           capabilities = capabilities,
         }, config)
 
-        lspconfig[name].setup(config)
+        vim.lsp.config(name, config)
+        vim.lsp.enable { name }
       end
 
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -114,6 +118,7 @@ return {
           end
 
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+          map('grk', vim.lsp.buf.hover, 'Type hover', { 'n' })
 
           local client = assert(vim.lsp.get_client_by_id(event.data.client_id), 'must have valid client')
 

@@ -54,6 +54,7 @@
   sort = -committerdate
 [pull]
   rebase = true
+  autosquash = true
 [fetch]
   prune = true
   pruneTags = true
@@ -62,4 +63,6 @@
   defaultBranch = main
 [rebase]
   autosquash = true
-	updateRefs = true
+  updateRefs = true
+[rerere]
+  enabled = true

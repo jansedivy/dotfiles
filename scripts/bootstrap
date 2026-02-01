@@ -146,5 +146,4 @@ install_dotfiles () {
 mkdir -p ~/.config
 setup_gitconfig
 install_dotfiles
-# osx/setup.sh
 scripts/install

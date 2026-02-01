@@ -22,7 +22,6 @@ return {
         replace_keycodes = false,
       })
       vim.g.copilot_no_tab_map = true
-      vim.g.copilot_enabled = false
     end,
   },
 
@@ -47,7 +46,7 @@ return {
   { 'kylechui/nvim-surround', opts = {} },
 
   {
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     config = function()
       require('mini.splitjoin').setup()
 
@@ -196,7 +195,7 @@ return {
         end,
       }
 
-      vim.keymap.set('n', '<leader>a', function()
+      vim.keymap.set('n', '<leader>y', function()
         harpoon:list():add()
       end)
       vim.keymap.set('n', '<leader>g', function()
@@ -225,6 +224,29 @@ return {
   },
 
   {
+    'dmtrKovalenko/fff.nvim',
+    build = 'cargo build --release',
+    opts = {
+      layout = {
+        prompt_position = 'top',
+        preview_position = 'right',
+        preview_size = 0.4,
+        height = 0.8,
+        width = 0.8,
+      },
+    },
+    keys = {
+      {
+        '<leader>t',
+        function()
+          require('fff').find_files()
+        end,
+        desc = 'Open file picker',
+      },
+    },
+  },
+
+  {
     'ibhagwan/fzf-lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
 
@@ -240,9 +262,6 @@ return {
         },
       }
 
-      vim.keymap.set('n', '<leader>t', function()
-        fzf.files()
-      end, {})
       vim.keymap.set('n', '<leader>b', function()
         fzf.buffers()
       end, {})
@@ -318,7 +337,12 @@ return {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        typescript = { 'biome', stop_after_first = true },
+        go = { 'goimports', 'gofmt' },
+        json = { 'biome' },
+        javascript = { 'biome', 'biome-organize-imports' },
+        javascriptreact = { 'biome', 'biome-organize-imports' },
+        typescript = { 'biome', 'biome-organize-imports' },
+        typescriptreact = { 'biome', 'biome-organize-imports' },
       },
     },
   },

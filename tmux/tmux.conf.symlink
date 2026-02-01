@@ -13,7 +13,7 @@ set -sg escape-time 0
 
 set-window-option -g mode-keys vi
 
-set-option -g default-command "reattach-to-user-namespace -l zsh"
+set-option -g default-command "reattach-to-user-namespace -l nu"
 
 set-window-option -g aggressive-resize on
 

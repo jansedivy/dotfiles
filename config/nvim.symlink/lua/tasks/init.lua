@@ -132,9 +132,18 @@ local function run_command(cmd, callback)
 end
 
 local function run_task(cmd, regex, callback)
-  vim.diagnostic.reset()
+  if regex ~= nil then
+    vim.diagnostic.reset()
+  end
 
   run_command(cmd, function(output, success)
+    if regex == nil then
+      if callback then
+        callback()
+      end
+      return
+    end
+
     local matches = find_matches(output, regex)
     set_diagnostics(matches)
 

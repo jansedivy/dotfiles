@@ -43,7 +43,8 @@ end)
 
 vim.keymap.set('n', '<leader>c', function()
   save_if_modified()
-  tasks.run_task({"./build.sh", "--build", "MacOS"}, "^([^:]+%a):(%d+):(%d+): (%a+): (.+)$")
+  -- tasks.run_task({"./build.sh", "--build", "MacOS"}, "^([^:]+%a):(%d+):(%d+): (%a+): (.+)$")
+  tasks.run_task({"tsc", "--noEmit"}, nil)
 end)
 
 vim.keymap.set('n', '<leader>K', function()
@@ -187,6 +188,10 @@ set ttimeoutlen=10
 set shiftround
 set gdefault
 
+
+set textwidth=80
+set formatoptions+=cqrj
+
 set foldmethod=manual
 
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
@@ -252,7 +257,7 @@ set cinoptions=l1,(2
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUSLINE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set stl=\ %{WebDevIconsGetFileTypeSymbol()}\ %f\ %m\ %r\ Line:%l/%L[%p%%]
+set stl=%f\ %m\ %r\ Line:%l/%L[%p%%]
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
