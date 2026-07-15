@@ -4,7 +4,7 @@ brew update
 
 brew install font-hack-nerd-font
 
-brew install git diff-so-fancy
+brew install git git-delta
 
 brew install fzf neovim zoxide tmux zsh coreutils reattach-to-user-namespace rg luarocks wget imagemagick
 

@@ -1,5 +1,3 @@
-[hub]
-  protocol = https
 [user]
   name = AUTHORNAME
   email = AUTHOREMAIL
@@ -24,13 +22,17 @@
   status = auto
   branch = auto
   ui = true
+[interactive]
+  diffFilter = delta --color-only
 [core]
+  pager = delta
   excludesfile = ~/.gitignore
   editor = nvim
   ignorecase = false
 [apply]
   whitespace = nowarn
 [merge]
+  conflictStyle = zdiff3
   tool = vimdiff
 [mergetool]
   keepBackup = false
@@ -47,9 +49,6 @@
   algorithm = histogram
   colorMoved = zebra
   renames = true
-[pager]
-  diff = diff-so-fancy | less --tabs=1,5 -RFX
-  show = diff-so-fancy | less --tabs=1,5 -RFX
 [branch]
   sort = -committerdate
 [pull]
@@ -66,3 +65,37 @@
   updateRefs = true
 [rerere]
   enabled = true
+[delta]
+  navigate = true
+  dark = true
+  line-numbers = true
+  side-by-side = true
+  true-color = always
+  features = jansedivy
+[delta "jansedivy"]
+  syntax-theme = jansedivy
+  minus-style                   = syntax "#2a1c1d"
+  minus-emph-style              = syntax "#5f2a2c"
+  minus-non-emph-style          = syntax "#2a1c1d"
+  plus-style                    = syntax "#1c2a1a"
+  plus-emph-style               = syntax "#2c5a26"
+  plus-non-emph-style           = syntax "#1c2a1a"
+  zero-style                    = syntax
+  line-numbers-minus-style      = "#C36364"
+  line-numbers-plus-style       = "#BFC674"
+  line-numbers-left-style       = "#3B3F44"
+  line-numbers-right-style      = "#3B3F44"
+  line-numbers-zero-style       = "#3B3F44"
+  file-style                    = "#E9BF77" bold
+  file-decoration-style         = "#7FA1BB" ul
+  hunk-header-style             = "#7AC4DC" bold
+  hunk-header-decoration-style  = "#303030" box
+  hunk-header-file-style        = "#AF92B7"
+  hunk-header-line-number-style = "#E9BF77"
+  blame-palette                 = "#222426" "#2a2d30" "#303030" "#3B3F44"
+  merge-conflict-begin-symbol   = ⌃
+  merge-conflict-end-symbol     = ⌄
+  merge-conflict-ours-diff-header-style          = "#E9BF77" bold
+  merge-conflict-theirs-diff-header-style        = "#7FA1BB" bold
+  merge-conflict-ours-diff-header-decoration-style   = "#303030" box
+  merge-conflict-theirs-diff-header-decoration-style = "#303030" box

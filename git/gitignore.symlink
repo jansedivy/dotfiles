@@ -26,3 +26,5 @@ Session.vim
 .python-version
 
 tags
+
+**/.claude/settings.local.json

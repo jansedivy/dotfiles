@@ -143,6 +143,7 @@ set title
 set cursorline
 set virtualedit=block
 set wrap
+set guicursor=
 
 set inccommand=split
 
@@ -188,8 +189,7 @@ set ttimeoutlen=10
 set shiftround
 set gdefault
 
-
-set textwidth=80
+set textwidth=0
 set formatoptions+=cqrj
 
 set foldmethod=manual
@@ -213,6 +213,7 @@ augroup vimrcEx
   autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
   autocmd FileType python,sql set sw=4 sts=4 et
   autocmd FileType qf set nowrap
+  autocmd FileType qf nnoremap <buffer> <cr> <cr>
 
   autocmd BufRead,BufNewFile *.sass setfiletype sass
 
@@ -289,6 +290,8 @@ function! MapCR()
 endfunction
 call MapCR()
 
+nnoremap <C-S-x> <C-a>
+
 nnoremap <silent> # :let stay_star_view = winsaveview()<cr>#:call winrestview(stay_star_view)<cr>
 nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<cr>
 
@@ -303,8 +306,10 @@ map <leader>d '.<cr>
 map <leader>ra :%s/
 map <leader>s :set spell!<cr>
 map <leader>v :e ~/.config/nvim/init.vim<cr>
+map <leader>m :enew<cr>:setfiletype calc<cr>
 map <leader>f :normal gF<cr>
 map <leader>` vipga\
+nnoremap <leader>p :%s/\\n/\r/e<bar>%s/\\"/"/e<CR>:setfiletype javascript<CR>
 
 " open the current file and line number in xcode
 map <leader>x :w\|:execute '!xed -l ' . line(".") . ' ' expand("%")<cr><cr>

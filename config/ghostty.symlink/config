@@ -35,6 +35,8 @@ window-padding-balance = true
 
 confirm-close-surface = false
 
+title = " "
+
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = transparent
 macos-non-native-fullscreen = true

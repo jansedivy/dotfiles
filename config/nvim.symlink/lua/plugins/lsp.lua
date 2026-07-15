@@ -119,6 +119,8 @@ return {
 
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
           map('grk', vim.lsp.buf.hover, 'Type hover', { 'n' })
+          map('grn', vim.lsp.buf.rename, '[R]e[n]ame', { 'n' })
+          map('grr', vim.lsp.buf.references, '[R]eferences', { 'n' })
 
           local client = assert(vim.lsp.get_client_by_id(event.data.client_id), 'must have valid client')
 

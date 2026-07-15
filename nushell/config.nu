@@ -11,6 +11,9 @@ $env.config.color_config.shape_internalcall = 'green'
 $env.config.color_config.shape_external = 'red_bold'
 $env.config.color_config.shape_externalarg = 'white'
 
+# export PATH="/Users/jansedivy/.nodenv/shims:${PATH}"
+$env.PATH = $env.PATH? | prepend '~/.nodenv/shims'
+
 if ('/opt/homebrew' | path type) == 'dir' {
   $env.HOMEBREW_PREFIX = '/opt/homebrew'
   $env.HOMEBREW_CELLAR = '/opt/homebrew/Cellar'
@@ -22,6 +25,12 @@ if ('/opt/homebrew' | path type) == 'dir' {
   $env.MANPATH = $env.MANPATH? | prepend '/opt/homebrew/share/man'
   $env.INFOPATH = $env.INFOPATH? | prepend '/opt/homebrew/share/info'
 }
+
+$env.PATH = $env.PATH? | append '~/.local/bin'
+$env.PATH = $env.PATH? | append '~/.bun/bin'
+
+
+$env.NO_HISTORY = ["fg", "gap"]
 
 alias d = cd ~/Documents/scratch/
 
@@ -40,6 +49,7 @@ alias gpf = git push --no-verify --force-with-lease
 alias amend = git commit --amend --verbose --no-verify
 
 alias rd = npm run dev
+alias rb = npm run build
 
 def --wrapped g [...rest] {
   if ($rest | is-empty) {

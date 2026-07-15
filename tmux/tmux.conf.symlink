@@ -5,15 +5,13 @@
 set -g default-terminal "screen-256color"
 set -g history-limit 5000
 
-set-window-option -g xterm-keys on
-
 set-option -g -q mouse on
 
 set -sg escape-time 0
 
 set-window-option -g mode-keys vi
 
-set-option -g default-command "reattach-to-user-namespace -l nu"
+set-option -g default-command "nu"
 
 set-window-option -g aggressive-resize on
 
@@ -22,12 +20,12 @@ set -g base-index 1
 set -g pane-base-index 1
 
 set -g renumber-windows on
-setw -g automatic-rename on
 
 set -g allow-rename 0
 set -g automatic-rename 1
+set -g automatic-rename-format '#{b:pane_current_path}'
 
-set-option -sa terminal-overrides ',screen-256color:RGB'
+set-option -sa terminal-features ',*:RGB'
 
 set-option -g focus-events on
 
@@ -63,7 +61,7 @@ bind-key "-" split-window -v -c "#{pane_current_path}"
 bind-key "c" new-window -c "#{pane_current_path}"
 
 unbind-key -T copy-mode-vi Space     ;   bind-key -T copy-mode-vi v send-keys -X begin-selection
-unbind-key -T copy-mode-vi Enter     ;   bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "reattach-to-user-namespace pbcopy"
+unbind-key -T copy-mode-vi Enter     ;   bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
 unbind-key -T copy-mode-vi C-v       ;   bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
 unbind-key -T copy-mode-vi [         ;   bind-key -T copy-mode-vi [ send-keys -X begin-selection
 unbind-key -T copy-mode-vi ]         ;   bind-key -T copy-mode-vi ] send-keys -X copy-selection
@@ -85,7 +83,6 @@ set-window-option -g window-status-current-style fg=green,bg=colour237
 #  Status Bar
 ###########################
 
-# set -g status-utf8 on
 set-option -g status on
 set -g status-justify left
 
@@ -95,13 +92,8 @@ set-window-option -ag word-separators "'"
 set -g status-left-length 40
 set -g status-left '#[fg=green]#S#[default] '
 
-# setw -g window-status-format " #I #W "
-# setw -g window-status-current-format " #I #W "
-setw -g window-status-format ' #(pwd="#{pane_current_path}"; echo ${pwd####*/}) '
-setw -g window-status-current-format ' #(pwd="#{pane_current_path}"; echo ${pwd####*/}) '
-
-# set-option -g automatic-rename on
-# set-option -g automatic-rename-format '#{b:pane_current_path}'
+setw -g window-status-format ' #W '
+setw -g window-status-current-format ' #W '
 
 set -g status-interval 60
 set -g status-right-length 90

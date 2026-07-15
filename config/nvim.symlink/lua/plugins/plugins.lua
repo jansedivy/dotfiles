@@ -10,7 +10,10 @@ return {
   { 'MunifTanjim/nui.nvim' },
   { 'sindrets/diffview.nvim' },
 
-  { 'lewis6991/gitsigns.nvim', opts = {} },
+  {
+    'esmuellert/codediff.nvim',
+    cmd = 'CodeDiff',
+  },
 
   { 'folke/snacks.nvim', opts = {} },
 
@@ -39,6 +42,22 @@ return {
     config = function()
       vim.cmd.colorscheme 'jansedivy'
     end,
+  },
+
+  {
+    'https://github.com/lewis6991/gitsigns.nvim',
+    opts = {},
+  },
+
+  -- {
+  --   dir = '~/Documents/scratch/calc',
+  --   opts = {},
+  -- },
+  --
+
+  {
+    'https://github.com/jansedivy/calc.nvim',
+    opts = {},
   },
 
   { 'windwp/nvim-autopairs', opts = {} },
@@ -105,8 +124,8 @@ return {
       local gen_loader = require('mini.snippets').gen_loader
       require('mini.snippets').setup {
         snippets = {
-          gen_loader.from_file '~/.config/nvim/snippets/global.json',
           gen_loader.from_lang(),
+          gen_loader.from_file('~/.config/nvim/snippets/typescript.json', { ft = { 'typescriptreact' } }),
         },
 
         mappings = {
@@ -115,6 +134,70 @@ return {
           jump_prev = '<C-k>',
         },
       }
+    end,
+  },
+
+  {
+    'MagicDuck/grug-far.nvim',
+    config = function()
+      local grug = require 'grug-far'
+
+      grug.setup {
+        resultsHighlight = false,
+        inputsHighlight = false,
+        wrap = false,
+
+        normalModeSearch = true,
+
+        transient = true,
+
+        startInInsertMode = false,
+        showEngineInfo = false,
+
+        icons = {
+          enabled = false,
+        },
+
+        keymaps = {
+          replace = '<localleader>R',
+          historyOpen = '',
+        },
+
+        resultsSeparatorLineChar = '',
+        showInputsBottomPadding = false,
+
+        folding = {
+          enabled = false,
+        },
+
+        resultLocation = {
+          showNumberLabel = false,
+        },
+
+        openTargetWindow = {
+          preferredLocation = 'right',
+        },
+
+        engines = {
+          ripgrep = {
+            defaults = {
+              flags = '-i',
+            },
+
+            placeholders = {
+              enabled = false,
+            },
+          },
+        },
+      }
+
+      vim.keymap.set('n', '<leader>rr', function()
+        grug.open()
+      end, { desc = 'Search: Open search UI' })
+
+      vim.keymap.set('n', '<leader>rw', function()
+        grug.open { prefills = { search = vim.fn.expand '<cword>' } }
+      end, { desc = 'Search: Search current word' })
     end,
   },
 
@@ -136,41 +219,54 @@ return {
           },
         },
       }
-
-      vim.keymap.set('n', '<leader>R', function()
-        require('spectre').open()
-      end, { desc = 'Spectre: Open search UI' })
-
-      vim.keymap.set('n', '<leader>rw', function()
-        spectre.open_visual { select_word = true }
-      end, { desc = 'Spectre: Search current word' })
-
-      vim.keymap.set('n', '<leader>rp', function()
-        spectre.open_file_search()
-      end, { desc = 'Spectre: Search in current file' })
-
-      vim.keymap.set('v', '<leader>rw', function()
-        spectre.open_visual()
-      end, { desc = 'Spectre: Search visual selection' })
+      --
+      -- vim.keymap.set('n', '<leader>rr', function()
+      --   require('spectre').open()
+      -- end, { desc = 'Spectre: Open search UI' })
+      --
+      -- vim.keymap.set('n', '<leader>rw', function()
+      --   spectre.open_visual { select_word = true }
+      -- end, { desc = 'Spectre: Search current word' })
     end,
   },
 
   {
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
+    branch = 'main',
 
     config = function()
-      require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'c', 'comment' },
-        sync_install = false,
+      require('nvim-treesitter').setup()
 
-        auto_install = true,
-
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
+      local ensureInstalled = {
+        'lua',
+        'python',
+        'c',
+        'comment',
+        'typescript',
+        'tsx',
+        'javascript',
+        'jsx',
       }
+      local alreadyInstalled = require('nvim-treesitter.config').get_installed()
+
+      local parsersToInstall = vim
+        .iter(ensureInstalled)
+        :filter(function(parser)
+          return not vim.tbl_contains(alreadyInstalled, parser)
+        end)
+        :totable()
+
+      require('nvim-treesitter').install(parsersToInstall)
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function()
+          pcall(vim.treesitter.start)
+
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
     end,
   },
 
@@ -225,8 +321,15 @@ return {
 
   {
     'dmtrKovalenko/fff.nvim',
-    build = 'cargo build --release',
+
+    build = function()
+      require('fff.download').download_or_build_binary()
+    end,
+
     opts = {
+      preview = {
+        enabled = false,
+      },
       layout = {
         prompt_position = 'top',
         preview_position = 'right',
@@ -242,6 +345,13 @@ return {
           require('fff').find_files()
         end,
         desc = 'Open file picker',
+      },
+      {
+        'fg',
+        function()
+          require('fff').live_grep()
+        end,
+        desc = 'LiFFFe grep',
       },
     },
   },
@@ -270,7 +380,7 @@ return {
 
   {
     'saghen/blink.cmp',
-    build = 'cargo build --release',
+    version = '1.*',
 
     opts = {
       completion = {
@@ -325,15 +435,10 @@ return {
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
-        local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[vim.bo[bufnr].filetype] then
-          return nil
-        else
-          return {
-            timeout_ms = 500,
-            lsp_format = 'fallback',
-          }
-        end
+        return {
+          timeout_ms = 500,
+          lsp_format = 'fallback',
+        }
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
@@ -343,6 +448,13 @@ return {
         javascriptreact = { 'biome', 'biome-organize-imports' },
         typescript = { 'biome', 'biome-organize-imports' },
         typescriptreact = { 'biome', 'biome-organize-imports' },
+        c = { 'clang-format' },
+        cpp = { 'clang-format' },
+      },
+      formatters = {
+        ['clang-format'] = {
+          prepend_args = { '--style=file' },
+        },
       },
     },
   },
