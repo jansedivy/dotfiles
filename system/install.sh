@@ -24,3 +24,4 @@ defaults write com.apple.HIToolbox AppleFnUsageType -int "0"
 defaults write kCFPreferencesAnyApplication TSMLanguageIndicatorEnabled -bool "false"
 defaults write -g InitialKeyRepeat -int 10
 defaults write -g KeyRepeat -int 1
+defaults write -g ApplePressAndHoldEnabled -bool false
